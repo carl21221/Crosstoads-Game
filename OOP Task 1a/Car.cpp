@@ -1,6 +1,10 @@
 #include "Car.h" 
 
-Car::Car(int newX, int newY)
+// Shall we call the class that this inherits from 'Movable'?
+// Inside 
+
+
+Car::Car()
 {
 	this->x = newX;
 	this->y = newY;
