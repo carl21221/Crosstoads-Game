@@ -1,8 +1,10 @@
 #pragma once
+#include "Constants.h"
 class Tile
 {
 public:
     // constructors
+    Tile();
     Tile(int x, int y);
 
     // assessors
@@ -11,9 +13,12 @@ public:
     char GetSymbol() const;
     bool IsAtPosition(int x, int y) const;
 
-private:
-    // data members
+protected:
     char symbol;
-    int x, y;
+    int x = 0;
+    int y = 0;
+
+private:
+
 };
 

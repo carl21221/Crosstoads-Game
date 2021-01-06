@@ -1,5 +1,6 @@
 #include "Tile.h"
-// Tile::Tile(){}
+Tile::Tile() : symbol('x')
+{}
 
 Tile::Tile(int x, int y) : x(x), y(y), symbol('x') // initalisation list . (the char of 'x' is just a placeholder for an invalid tile)
 {

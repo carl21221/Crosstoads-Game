@@ -4,7 +4,7 @@
 class Car : public Movable
 {
     public:
-        Car();
+        Car(int x, int y);
         
     private: 
         int x = 0;

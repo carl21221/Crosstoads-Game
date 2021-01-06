@@ -1,5 +1,7 @@
 #pragma once
-class Movable
+#include "Tile.h"
+
+class Movable : public Tile
 {
 public:
 	// constructors
@@ -19,11 +21,13 @@ public:
 	void DecrementMoveTimer(int amount); // Decrements the the move cooldown timer of the tile. If the hits 0, the timer resets
 	void MoveX(int value); //Moves the tile a specified amount of spaces left
 
-private:
+protected:
 	int x = 0;
 	int y = 0;
 	int moveTimerMax = 60;
 	int moveTimer = 0;
 	bool isReadyToMove = false;
+
+private:
 };
 

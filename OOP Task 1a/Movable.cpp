@@ -31,7 +31,7 @@ void Movable::SetY(int newY)
 
 void Movable::DecrementMoveTimer(int amount) 
 {
-	moveTimer + -amount;
+	moveTimer = moveTimer - amount;
 	if (moveTimer <= 0)
 	{
 		this->isReadyToMove = true;
@@ -41,5 +41,5 @@ void Movable::DecrementMoveTimer(int amount)
 
 void Movable::MoveX(int value)
 {
-	if (value >= 0) this->x + -value;
+	if (value >= 0) this->x = this->x + value;
 }

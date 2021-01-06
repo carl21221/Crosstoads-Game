@@ -10,10 +10,12 @@ class Safezone : public Tile
 {
     public:
         // constructors
+        Safezone();
         Safezone(int x, int y);
 
     private:
         // data members
         char symbol;
-        int x, y;
+        int x = 0;
+        int y = 0;
 };
