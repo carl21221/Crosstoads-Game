@@ -22,12 +22,15 @@ class Player
 
     private:
         // data members
-        bool alive;
+        bool isAlive;
         bool escaped;
+        bool alive;
+        int maxLives;
+        int currentLives;
         int dx;
         int dy;
 
         // supporting functions 
-        void PositionInMiddleOfGrid();
+        void PositionAtStart();
         void UpdatePosition(int dx, int dy);
 };

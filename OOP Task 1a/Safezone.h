@@ -16,6 +16,5 @@ class Safezone : public Tile
     private:
         // data members
         char symbol;
-        int x = 0;
-        int y = 0;
+        int x, y;
 };

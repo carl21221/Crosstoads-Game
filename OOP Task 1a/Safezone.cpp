@@ -5,7 +5,11 @@
 Safezone::Safezone() : symbol(SAFEZONE)
 {}
 
-Safezone::Safezone(int x, int y) : x(x), y(y), symbol(SAFEZONE)
+Safezone::Safezone(int x, int y)
 {
+	this->x = x;
+	this->y = y;
+	this->symbol = SAFEZONE;
+
 
 }

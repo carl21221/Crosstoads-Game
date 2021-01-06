@@ -2,41 +2,11 @@
 
 void Game::Setup()
 {
-    //puts specific wall tiles into the walls vector
-    tiles.push_back(Safezone(14, 0));
-    tiles.push_back(Safezone(14, 1));
-    tiles.push_back(Safezone(14, 2));
-    tiles.push_back(Safezone(14, 3));
-    tiles.push_back(Safezone(14, 4));
-    tiles.push_back(Safezone(14, 5));
-    tiles.push_back(Safezone(14, 6));
-    tiles.push_back(Safezone(14, 7));
-    tiles.push_back(Safezone(14, 8));
-    tiles.push_back(Safezone(14, 9));
-    tiles.push_back(Safezone(14, 10));
-    tiles.push_back(Safezone(14, 11));
-    tiles.push_back(Safezone(14, 12));
-    tiles.push_back(Safezone(14, 13));
-    tiles.push_back(Safezone(14, 14));
-
-    tiles.push_back(Safezone(13, 0));
-    tiles.push_back(Safezone(13, 1));
-    tiles.push_back(Safezone(13, 2));
-    tiles.push_back(Safezone(13, 3));
-    tiles.push_back(Safezone(13, 4));
-    tiles.push_back(Safezone(13, 5));
-    tiles.push_back(Safezone(13, 6));
-    tiles.push_back(Safezone(13, 7));
-    tiles.push_back(Safezone(13, 8));
-    tiles.push_back(Safezone(13, 9));
-    tiles.push_back(Safezone(13, 10));
-    tiles.push_back(Safezone(13, 11));
-    tiles.push_back(Safezone(13, 12));
-    tiles.push_back(Safezone(13, 13));
-    tiles.push_back(Safezone(13, 14));
-    
-
-    // for just one level, add all the tiles here
+    //// make a vector of safezones
+    //Safezone* sz = new Safezone(1, 1); // make a new safezone and store the address in a variable
+    //vector<Tile> tiles; // create the vector of tiles
+    //tiles.push_back(*sz); // add the value of what is pointed to by sz
+   
 
 }
 
@@ -99,8 +69,8 @@ bool Game::IsSafezoneAtPosition(int x, int y)
         {
             return true;
         }
-        else return false;
     }
+    return false;
 }
 
 bool Game::IsAquaAtPosition(int x, int y)
@@ -111,8 +81,8 @@ bool Game::IsAquaAtPosition(int x, int y)
         {
             return true;
         }
-        else return false;
     }
+    return false;
 }
 
 bool Game::IsRunning()

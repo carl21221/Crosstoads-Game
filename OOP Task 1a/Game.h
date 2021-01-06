@@ -14,7 +14,7 @@ class Game
 {
    public:
       Player player;
-      vector<Tile> tiles;
+      vector<Safezone> tiles;
 
       void Setup();
       void ProcessInput(int key);
