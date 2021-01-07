@@ -17,8 +17,10 @@
 #define AQUA      'A'
 #define CAR		  'C'
 #define VAN		  'V'
+
 // Others
-#define WALL      'W' //not needed for our game, but keep it in to prevent errors at the moment
+#define GOAL      'G'
+#define WALL      'W' //not needed for our game, but keep it in to prevent errors during development
 
 // the command letters to move the mouse on the maze
 #define KEY_RIGHT 262

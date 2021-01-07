@@ -1,9 +1,10 @@
 #include "raylib.h"
 #include "Game.h"
+#include <iostream>
 
 int main()
 {
-    InitWindow(600, 600, "OOP Assignment 1");
+    InitWindow(600, 600, "Frogger");
     SetTargetFPS(60);
 
     Game game;
@@ -45,6 +46,7 @@ int main()
                     case AQUA:   DrawRectangle(xPosition, yPosition, cellSize, cellSize, SKYBLUE);   break;
                     case SAFEZONE: DrawRectangle(xPosition, yPosition, cellSize, cellSize, PINK);    break;
                     case ROAD: DrawRectangle(xPosition, yPosition, cellSize, cellSize, BLACK);       break;
+                    case GOAL: DrawRectangle(xPosition, yPosition, cellSize, cellSize, GOLD);        break;
                     case CAR:    DrawRectangle(xPosition, yPosition, cellSize, cellSize, RED);       break; 
                     case LOG:    DrawRectangle(xPosition, yPosition, cellSize, cellSize, BROWN);     break;
                     case VAN:    DrawRectangle(xPosition, yPosition, cellSize, cellSize, WHITE);     break;
@@ -52,11 +54,12 @@ int main()
                 }
 
                 // draw lines around each tile, remove this if you don't like it!
-                DrawRectangleLines(x * cellSize, y * cellSize, cellSize, cellSize, LIGHTGRAY);
+                //DrawRectangleLines(x * cellSize, y * cellSize, cellSize, cellSize, LIGHTGRAY);
 
             }
         }
         EndDrawing(); // Draws all the stuff in the buffer
+        game.CheckForPlayerDeath();
     }
     CloseWindow();
     return 0;

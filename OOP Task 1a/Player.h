@@ -17,18 +17,29 @@ class Player
         // mutators
         void Move(int key);
 
-        char symbol;
-        int  x, y;
+        //other functions
+        void Die();
+
+        int GetCurrentLives();
+
+        int GetMaxLives();
+
+        void ResetLives();
+
+    protected:
+        //data members
+
 
     private:
         // data members
-        bool isAlive;
-        bool escaped;
         bool alive;
+        bool escaped;
         int maxLives;
         int currentLives;
         int dx;
         int dy;
+        char symbol;
+        int  x, y;
 
         // supporting functions 
         void PositionAtStart();

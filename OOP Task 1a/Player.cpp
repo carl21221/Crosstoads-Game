@@ -1,6 +1,8 @@
 #include "Player.h"
+#include <iostream>
 
-Player::Player() : symbol(PLAYER), x(0), y(0), alive(true), escaped(false), dx(0), dy(0)
+Player::Player() 
+    : symbol(PLAYER), x(0), y(0), alive(true), escaped(false), dx(0), dy(0), currentLives(5), maxLives(5)
 {
     PositionAtStart();
 }
@@ -56,6 +58,21 @@ void Player::Move(int key)
         UpdatePosition(dx, dy);
     }
 }
+
+void Player::Die()
+{
+    //lose life
+    this->currentLives--;
+    PositionAtStart();
+
+    //DEBUGGING
+    std::cout << "Player Died\n";
+    std::cout << "Current Lives: " << this->currentLives;
+}
+
+int Player::GetCurrentLives() { return currentLives; }
+int Player::GetMaxLives() { return maxLives; }
+void Player::ResetLives() { this->currentLives = this->maxLives; }
 
 void Player::UpdatePosition(int dx, int dy)
 {

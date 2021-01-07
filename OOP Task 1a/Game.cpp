@@ -6,6 +6,7 @@ void Game::Setup()
     PushTiles_Safezone();
     PushTiles_Road();
     PushTiles_Aqua();
+    PushTiles_Goal();
 }
 
 void Game::ProcessInput(int key)
@@ -49,6 +50,10 @@ vector<vector<char>> Game::PrepareGrid()
             {
                 line.push_back(ROAD);
             }
+            else if (IsGoalAtPosition(col, row))
+            {
+                line.push_back(GOAL);
+            }
             else
             {
                 line.push_back(FLOOR);
@@ -60,6 +65,14 @@ vector<vector<char>> Game::PrepareGrid()
     }
 
     return grid;
+}
+
+void Game::CheckForPlayerDeath()
+{
+    for each(Aqua a in aquas)
+    {
+        if (player.GetX() == a.GetX() && player.GetY() == a.GetY()) player.Die();
+    }
 }
 
 bool Game::IsSafezoneAtPosition(int x, int y)
@@ -91,6 +104,18 @@ bool Game::IsRoadAtPosition(int x, int y)
     for (size_t i = 0; i < tiles.size(); ++i)
     {
         if (tiles[i].IsAtPosition(x, y) && tiles[i].GetSymbol() == ROAD)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Game::IsGoalAtPosition(int x, int y)
+{
+    for (size_t i = 0; i < tiles.size(); ++i)
+    {
+        if (tiles[i].IsAtPosition(x, y) && tiles[i].GetSymbol() == GOAL)
         {
             return true;
         }
@@ -132,4 +157,11 @@ void Game::PushTiles_Aqua()
     for (int i = 1; i <= 15; i++) { aquas.push_back(Aqua(i, 6)); }
     for (int i = 1; i <= 15; i++) { aquas.push_back(Aqua(i, 7)); }
     for each (Aqua a in aquas) { tiles.push_back(a); }
+}
+
+void Game::PushTiles_Goal()
+{
+    for (int i = 1; i <= 15; i++) { goals.push_back(Goal(i, 1)); }
+    for (int i = 1; i <= 15; i++) { goals.push_back(Goal(i, 2)); }
+    for each (Goal g in goals) { tiles.push_back(g); }
 }

@@ -139,6 +139,7 @@
     <ClCompile Include="Aqua.cpp" />
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Goal.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Movable.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="Car.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Goal.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Movable.h" />
     <ClInclude Include="Player.h" />

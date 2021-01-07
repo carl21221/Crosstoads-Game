@@ -13,6 +13,7 @@
     <ClCompile Include="Safezone.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Road.cpp" />
+    <ClCompile Include="Goal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h" />
@@ -27,5 +28,6 @@
     <ClInclude Include="Safezone.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Road.h" />
+    <ClInclude Include="Goal.h" />
   </ItemGroup>
 </Project>
