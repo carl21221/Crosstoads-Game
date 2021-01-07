@@ -2,8 +2,8 @@
 
 void Game::Setup()
 {
-    //// make a vector of safezones
-    //Safezone* sz = new Safezone(1, 1); // make a new safezone and store the address in a variable
+    // Method of adding safezones 
+    //Safezone* sz = new Safezone(1, 1); // make a new safezone and store the address of it in a variable
     //vector<Tile> tiles; // create the vector of tiles
     //tiles.push_back(*sz); // add the value of what is pointed to by sz
    
