@@ -2,12 +2,13 @@
 
 void Game::Setup()
 {
-    // Method of adding safezones 
-    //Safezone* sz = new Safezone(1, 1); // make a new safezone and store the address of it in a variable
-    //vector<Tile> tiles; // create the vector of tiles
-    //tiles.push_back(*sz); // add the value of what is pointed to by sz
-   
-
+    // Method of adding safezones
+    PushTiles_Safezone();
+    
+    for each (Safezone sz in safezones)
+    {
+        tiles.push_back(sz); // add the value of what is pointed to by sz
+    }
 }
 
 void Game::ProcessInput(int key)
@@ -90,4 +91,21 @@ bool Game::IsRunning()
     // depending on your game you'll need to modify this to return false
     // maybe it's when the player runs out of moves, maybe it's when they get caught, it's up to you!
     return true;
+}
+
+//Load Tile functions
+void Game::PushTiles_Safezone()
+{
+    for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 15)); }
+    for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 14)); }
+    for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 8)); }
+    for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 9)); }
+}
+
+void Game::PushTiles_Road()
+{
+    //for (int i = 1; i <= 15; i++) { safezones.push_back(Road(i, 13)); }
+    //for (int i = 1; i <= 15; i++) { safezones.push_back(Road(i, 12)); }
+    //for (int i = 1; i <= 15; i++) { safezones.push_back(Road(i, 11)); }
+    //for (int i = 1; i <= 15; i++) { safezones.push_back(Road(i, 10)); }
 }

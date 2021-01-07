@@ -6,8 +6,6 @@ int main()
     InitWindow(900, 600, "OOP Assignment 1");
     SetTargetFPS(60);
 
-
-
     Game game;
     game.Setup();
 

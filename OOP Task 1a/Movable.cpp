@@ -2,12 +2,7 @@
 
 Movable::Movable()
 {
-
 }
-
-int Movable::GetX() const { return x; }
-
-int Movable::GetY() const { return y; }
 
 bool Movable::IsReadyToMove() const
 {
@@ -17,16 +12,6 @@ bool Movable::IsReadyToMove() const
 void Movable::SetReadyToMove(bool value)
 {
 	this->isReadyToMove = value;
-}
-
-void Movable::SetX(int newX)
-{
-	this->x = newX;
-}
-
-void Movable::SetY(int newY)
-{
-	this->y = newY;
 }
 
 void Movable::DecrementMoveTimer(int amount) 
@@ -42,4 +27,9 @@ void Movable::DecrementMoveTimer(int amount)
 void Movable::MoveX(int value)
 {
 	if (value >= 0) this->x = this->x + value;
+}
+
+void Movable::MoveY(int value)
+{
+	if (value >= 0) this->y = this->y + value;
 }

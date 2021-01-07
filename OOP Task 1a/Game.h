@@ -14,7 +14,9 @@ class Game
 {
    public:
       Player player;
-      vector<Safezone> tiles;
+      vector<Tile> tiles;
+      vector<Safezone> safezones;
+
 
       void Setup();
       void ProcessInput(int key);
@@ -27,4 +29,8 @@ class Game
       bool IsCarAtPosition(int x, int y);
       bool IsVanAtPosition(int x, int y);
       bool IsLogAtPosition(int x, int y);
+
+      //Tile Load Functions
+      void PushTiles_Safezone();
+      void PushTiles_Road();
 };
