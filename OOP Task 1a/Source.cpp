@@ -3,7 +3,7 @@
 
 int main()
 {
-    InitWindow(900, 600, "OOP Assignment 1");
+    InitWindow(600, 600, "OOP Assignment 1");
     SetTargetFPS(60);
 
     Game game;
@@ -40,13 +40,14 @@ int main()
                 switch (grid[y][x])
                 {
                     case FLOOR:  DrawRectangle(xPosition, yPosition, cellSize, cellSize, DARKGRAY);  break;
-                    case WALL:   DrawRectangle(xPosition, yPosition, cellSize, cellSize, BLACK);     break;
+                    case WALL:   DrawRectangle(xPosition, yPosition, cellSize, cellSize, DARKGREEN); break;
                     case PLAYER: DrawRectangle(xPosition, yPosition, cellSize, cellSize, GREEN);     break;
                     case AQUA:   DrawRectangle(xPosition, yPosition, cellSize, cellSize, SKYBLUE);   break;
+                    case SAFEZONE: DrawRectangle(xPosition, yPosition, cellSize, cellSize, PINK);    break;
+                    case ROAD: DrawRectangle(xPosition, yPosition, cellSize, cellSize, BLACK);       break;
                     case CAR:    DrawRectangle(xPosition, yPosition, cellSize, cellSize, RED);       break; 
                     case LOG:    DrawRectangle(xPosition, yPosition, cellSize, cellSize, BROWN);     break;
                     case VAN:    DrawRectangle(xPosition, yPosition, cellSize, cellSize, WHITE);     break;
-                    case SAFEZONE: DrawRectangle(xPosition, yPosition, cellSize, cellSize, PINK);    break;
                     default:     assert(false);  // if this hits you probably forgot to add your new tile type :)
                 }
 

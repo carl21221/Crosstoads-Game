@@ -4,11 +4,8 @@ void Game::Setup()
 {
     // Method of adding safezones
     PushTiles_Safezone();
-    
-    for each (Safezone sz in safezones)
-    {
-        tiles.push_back(sz); // add the value of what is pointed to by sz
-    }
+    PushTiles_Road();
+    PushTiles_Aqua();
 }
 
 void Game::ProcessInput(int key)
@@ -48,7 +45,10 @@ vector<vector<char>> Game::PrepareGrid()
             {
                 line.push_back(AQUA);
             }
-
+            else if (IsRoadAtPosition(col, row)) //CHECK IF THERES IS AQUA MATCHING THAT COORDINATE
+            {
+                line.push_back(ROAD);
+            }
             else
             {
                 line.push_back(FLOOR);
@@ -86,6 +86,18 @@ bool Game::IsAquaAtPosition(int x, int y)
     return false;
 }
 
+bool Game::IsRoadAtPosition(int x, int y)
+{
+    for (size_t i = 0; i < tiles.size(); ++i)
+    {
+        if (tiles[i].IsAtPosition(x, y) && tiles[i].GetSymbol() == ROAD)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool Game::IsRunning()
 {
     // depending on your game you'll need to modify this to return false
@@ -96,16 +108,28 @@ bool Game::IsRunning()
 //Load Tile functions
 void Game::PushTiles_Safezone()
 {
-    for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 15)); }
-    for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 14)); }
     for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 8)); }
     for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 9)); }
+    for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 14)); }
+    for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 15)); }
+    for each (Safezone sz in safezones) { tiles.push_back(sz); }
 }
 
 void Game::PushTiles_Road()
 {
-    //for (int i = 1; i <= 15; i++) { safezones.push_back(Road(i, 13)); }
-    //for (int i = 1; i <= 15; i++) { safezones.push_back(Road(i, 12)); }
-    //for (int i = 1; i <= 15; i++) { safezones.push_back(Road(i, 11)); }
-    //for (int i = 1; i <= 15; i++) { safezones.push_back(Road(i, 10)); }
+    for (int i = 1; i <= 15; i++) { roads.push_back(Road(i, 10)); }
+    for (int i = 1; i <= 15; i++) { roads.push_back(Road(i, 11)); }
+    for (int i = 1; i <= 15; i++) { roads.push_back(Road(i, 12)); }
+    for (int i = 1; i <= 15; i++) { roads.push_back(Road(i, 13)); }
+    for each (Road r in roads) { tiles.push_back(r); }
+}
+
+void Game::PushTiles_Aqua()
+{
+    for (int i = 1; i <= 15; i++) { aquas.push_back(Aqua(i, 3)); }
+    for (int i = 1; i <= 15; i++) { aquas.push_back(Aqua(i, 4)); }
+    for (int i = 1; i <= 15; i++) { aquas.push_back(Aqua(i, 5)); }
+    for (int i = 1; i <= 15; i++) { aquas.push_back(Aqua(i, 6)); }
+    for (int i = 1; i <= 15; i++) { aquas.push_back(Aqua(i, 7)); }
+    for each (Aqua a in aquas) { tiles.push_back(a); }
 }

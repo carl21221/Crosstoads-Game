@@ -6,11 +6,9 @@ class Aqua : public Tile
 {
 public:
     // constructors
+    Aqua();
     Aqua(int x, int y);
-
 private:
-    // data members
-    char symbol;
-    int x, y;
+
 };
 

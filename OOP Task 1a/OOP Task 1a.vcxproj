@@ -143,6 +143,7 @@
     <ClCompile Include="Movable.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RandomNumberGenerator.cpp" />
+    <ClCompile Include="Road.cpp" />
     <ClCompile Include="Safezone.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Tile.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="Movable.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RandomNumberGenerator.h" />
+    <ClInclude Include="Road.h" />
     <ClInclude Include="Safezone.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Wall.h" />

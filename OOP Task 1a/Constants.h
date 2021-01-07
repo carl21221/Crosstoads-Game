@@ -11,6 +11,7 @@
 #define FLOOR     'F'
 #define LOG		  'L'
 #define SAFEZONE  'S'
+#define ROAD	  'R'
 
 // Death Tiles
 #define AQUA      'A'
