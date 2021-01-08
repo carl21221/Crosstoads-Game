@@ -5,7 +5,7 @@
 int main()
 {
     InitWindow(600, 600, "Frogger");
-    SetTargetFPS(60);
+    SetTargetFPS(30);
 
     Game game;
     game.Setup();
@@ -21,6 +21,8 @@ int main()
             if (IsKeyPressed(KEY_LEFT))   game.ProcessInput(KEY_LEFT);
             if (IsKeyPressed(KEY_UP))     game.ProcessInput(KEY_UP);
             if (IsKeyPressed(KEY_DOWN))   game.ProcessInput(KEY_DOWN);
+
+            game.UpdateMoveableTiles();
         }
         else
         {
@@ -40,17 +42,18 @@ int main()
 
                 switch (grid[y][x])
                 {
-                    case FLOOR:  DrawRectangle(xPosition, yPosition, cellSize, cellSize, DARKGRAY);  break;
-                    case WALL:   DrawRectangle(xPosition, yPosition, cellSize, cellSize, DARKGREEN); break;
-                    case PLAYER: DrawRectangle(xPosition, yPosition, cellSize, cellSize, GREEN);     break;
-                    case AQUA:   DrawRectangle(xPosition, yPosition, cellSize, cellSize, SKYBLUE);   break;
-                    case SAFEZONE: DrawRectangle(xPosition, yPosition, cellSize, cellSize, PINK);    break;
-                    case ROAD: DrawRectangle(xPosition, yPosition, cellSize, cellSize, BLACK);       break;
-                    case GOAL: DrawRectangle(xPosition, yPosition, cellSize, cellSize, GOLD);        break;
-                    case CAR:    DrawRectangle(xPosition, yPosition, cellSize, cellSize, RED);       break; 
-                    case LOG:    DrawRectangle(xPosition, yPosition, cellSize, cellSize, BROWN);     break;
-                    case VAN:    DrawRectangle(xPosition, yPosition, cellSize, cellSize, WHITE);     break;
-                    default:     assert(false);  // if this hits you probably forgot to add your new tile type :)
+                    case FLOOR:     DrawRectangle(xPosition, yPosition, cellSize, cellSize, DARKGRAY);  break;
+                    case WALL:      DrawRectangle(xPosition, yPosition, cellSize, cellSize, DARKGREEN); break;
+                    case PLAYER:    DrawRectangle(xPosition, yPosition, cellSize, cellSize, GREEN);     break;
+                    case AQUA:      DrawRectangle(xPosition, yPosition, cellSize, cellSize, SKYBLUE);   break;
+                    case SAFEZONE:  DrawRectangle(xPosition, yPosition, cellSize, cellSize, PINK);      break;
+                    case ROAD:      DrawRectangle(xPosition, yPosition, cellSize, cellSize, BLACK);     break;
+                    case GOAL:      DrawRectangle(xPosition, yPosition, cellSize, cellSize, GOLD);      break;
+
+                    case CAR:       DrawRectangle(xPosition, yPosition, cellSize, cellSize, RED);       break; 
+                    case LOG:       DrawRectangle(xPosition, yPosition, cellSize, cellSize, BROWN);     break;
+                    case VAN:       DrawRectangle(xPosition, yPosition, cellSize, cellSize, WHITE);     break;
+                    default:        assert(false);
                 }
 
                 // draw lines around each tile, remove this if you don't like it!

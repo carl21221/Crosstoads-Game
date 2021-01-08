@@ -7,6 +7,8 @@ public:
 	// constructors
 	Movable();
 
+	void CalculateMove();
+
 	//Getters
 	bool IsReadyToMove() const; // Returns whether the tile is ready to move or not
 
@@ -14,9 +16,10 @@ public:
 	void SetReadyToMove(bool value); // sets whether the tile is ready to move to a specific boolean value
 
 	//Other Functions
-	void DecrementMoveTimer(int amount); // Decrements the the move cooldown timer of the tile. If the hits 0, the timer resets
-	void MoveX(int value); //Moves the tile a specified amount of spaces horizontally
-	void MoveY(int value); //Moves the tile a specified amount of space vertically
+	void UpdateMoveTimer(int amount); // Decrements the move cooldown timer of the tile. If the hits 0, the timer resets
+	void UpdateX(int value); //Moves the tile a specified amount of spaces horizontally
+
+	void ResetMoveTimer();
 
 protected:
 	int moveTimerMax = 60;

@@ -1,35 +1,46 @@
 #include "Movable.h"
+#include <iostream>
 
 Movable::Movable()
 {
 }
 
-bool Movable::IsReadyToMove() const
+void Movable::CalculateMove()
 {
-	return this->isReadyToMove;
-}
-
-void Movable::SetReadyToMove(bool value)
-{
-	this->isReadyToMove = value;
-}
-
-void Movable::DecrementMoveTimer(int amount) 
-{
-	moveTimer = moveTimer - amount;
-	if (moveTimer <= 0)
+	if (this->isReadyToMove == true)
 	{
-		this->isReadyToMove = true;
-		this->moveTimer = this->moveTimerMax;
+		UpdateX(1);
+	}
+	else
+	{
+		std::cout << "Vehicle was not ready to move\n";
+		UpdateMoveTimer(1);
+		std::cout << "Move timer is at " << this->moveTimer << "\n";
 	}
 }
 
-void Movable::MoveX(int value)
+bool Movable::IsReadyToMove() const { return this->isReadyToMove; }
+
+void Movable::SetReadyToMove(bool value) { this->isReadyToMove = value; }
+
+void Movable::UpdateMoveTimer(int amount) 
 {
-	if (value >= 0) this->x = this->x + value;
+	this->moveTimer = this->moveTimer - amount;
+	if (this->moveTimer <= 0)
+	{
+		this->isReadyToMove = true;
+		ResetMoveTimer(); // set timer to max
+	}
 }
 
-void Movable::MoveY(int value)
+void Movable::ResetMoveTimer() { this->moveTimer = 30; } // this->moveTimerMax; }
+
+void Movable::UpdateX(int value)
 {
-	if (value >= 0) this->y = this->y + value;
+	this->x = this->x - value;
+	if(this->x <= 0) this->x = 15;
+
+	SetReadyToMove(false); //once moved, set bool to false
+	//std::cout << "Vehicle has moved to coordinate" << this->x << ":" << this->y << "\n";
 }
+

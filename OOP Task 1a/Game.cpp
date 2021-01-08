@@ -2,11 +2,8 @@
 
 void Game::Setup()
 {
-    // Method of adding safezones
-    PushTiles_Safezone();
-    PushTiles_Road();
-    PushTiles_Aqua();
-    PushTiles_Goal();
+    SetupEnvironmentTiles();
+    SetupMoveableTiles();
 }
 
 void Game::ProcessInput(int key)
@@ -29,37 +26,20 @@ vector<vector<char>> Game::PrepareGrid()
     {
         // create the inner vector to add to the 2D grid
         vector<char> line;
-
         // for each column, work out what's in that position and add the relevant char to the 2D grid
         for (int col = 1; col <= SIZE; ++col)
         {
-            if (row == player.GetY() && col == player.GetX()) // CHECK FOR PLAYER
+            if (row == player.GetY() && col == player.GetX())   line.push_back(player.GetSymbol());
+            else if (IsSafezoneAtPosition(col, row))            line.push_back(SAFEZONE);
+            else if (IsAquaAtPosition(col, row))                line.push_back(AQUA);
+            else if (IsRoadAtPosition(col, row))
             {
-                line.push_back(player.GetSymbol());
+                if (!IsCarAtPosition(col, row))                 line.push_back(ROAD);
+                else                                            line.push_back(CAR);
             }
-
-            else if (IsSafezoneAtPosition(col, row)) //CHECK IF THERES IS A SAFEZONE MATCHING THAT COORDINATE
-            {
-                line.push_back(SAFEZONE);
-            }
-            else if (IsAquaAtPosition(col, row)) //CHECK IF THERES IS AQUA MATCHING THAT COORDINATE
-            {
-                line.push_back(AQUA);
-            }
-            else if (IsRoadAtPosition(col, row)) //CHECK IF THERES IS AQUA MATCHING THAT COORDINATE
-            {
-                line.push_back(ROAD);
-            }
-            else if (IsGoalAtPosition(col, row))
-            {
-                line.push_back(GOAL);
-            }
-            else
-            {
-                line.push_back(FLOOR);
-            }
+            else if (IsGoalAtPosition(col, row))                line.push_back(GOAL);
+            else                                                line.push_back(FLOOR);
         }
-
         // now that the row is full, add it to the 2D grid
         grid.push_back(line);
     }
@@ -123,14 +103,40 @@ bool Game::IsGoalAtPosition(int x, int y)
     return false;
 }
 
+bool Game::IsCarAtPosition(int x, int y)
+{
+    for (size_t i = 0; i < cars.size(); ++i)
+    {
+        if (cars[i].IsAtPosition(x, y) && cars[i].GetSymbol() == CAR) return true;
+    }
+    return false;
+}
+
 bool Game::IsRunning()
 {
-    // depending on your game you'll need to modify this to return false
-    // maybe it's when the player runs out of moves, maybe it's when they get caught, it's up to you!
-    return true;
+    if (player.GetCurrentLives() <= 0) return false;
+    else return true;
 }
 
 //Load Tile functions
+
+void Game::SetupEnvironmentTiles()
+{
+    PushTiles_Safezone();
+    PushTiles_Road();
+    PushTiles_Aqua();
+    PushTiles_Goal();
+}
+void Game::SetupMoveableTiles()
+{
+    SetupTiles_Vehicle();
+}
+
+void Game::UpdateMoveableTiles()
+{
+    UpdateTiles_Vehicle();
+}
+
 void Game::PushTiles_Safezone()
 {
     for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 8)); }
@@ -164,4 +170,23 @@ void Game::PushTiles_Goal()
     for (int i = 1; i <= 15; i++) { goals.push_back(Goal(i, 1)); }
     for (int i = 1; i <= 15; i++) { goals.push_back(Goal(i, 2)); }
     for each (Goal g in goals) { tiles.push_back(g); }
+}
+
+void Game::SetupTiles_Vehicle()
+{
+    //create vehicles
+    cars.push_back(Car(15, 13, 30));
+
+    for each (Car car in cars)
+    {
+        Movable* ptr = &car;
+        vehicles.push_back(ptr);
+    }
+}
+void Game::UpdateTiles_Vehicle()
+{
+    for each (Movable* m in vehicles)
+    {
+        //m.CalculateMove();
+    }
 }

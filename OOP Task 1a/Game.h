@@ -5,6 +5,7 @@
 #include <vector>
 #include "Player.h"
 #include "Wall.h"
+#include <iostream>
 
 //Load Tile Librarys
 #include "Tile.h"
@@ -12,6 +13,10 @@
 #include "Road.h"
 #include "Aqua.h"
 #include "Goal.h"
+
+//Load Moveable Librarys
+#include "Movable.h"
+#include "Car.h"
 
 using namespace std;
 
@@ -26,11 +31,18 @@ class Game
       vector<Aqua> aquas;
       vector<Goal> goals;
 
+      vector<Movable*> vehicles;
+      vector<Car> cars;
+
       void Setup();
+      void UpdateMoveableTiles();
       void ProcessInput(int key);
       vector<vector<char>> PrepareGrid();
 
       bool IsRunning();
+
+      void SetupEnvironmentTiles();
+      void SetupMoveableTiles();
 
       //Check for specific tiles
       bool IsSafezoneAtPosition(int x, int y);
@@ -47,6 +59,9 @@ class Game
       void PushTiles_Road();
       void PushTiles_Aqua();
       void PushTiles_Goal();
+
+      void SetupTiles_Vehicle();
+      void UpdateTiles_Vehicle();
 
       //Player Functions
       void CheckForPlayerDeath();
