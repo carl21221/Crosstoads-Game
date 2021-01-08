@@ -5,14 +5,14 @@
 int main()
 {
     InitWindow(600, 600, "Frogger");
-    SetTargetFPS(30);
+    SetTargetFPS(60);
 
     Game game;
     game.Setup();
 
     while (!WindowShouldClose())
     {
-        BeginDrawing(); // Clears buffer for new stuff to be drawn
+        BeginDrawing();
         ClearBackground(DARKGRAY);
 
         if (game.IsRunning())
@@ -55,13 +55,11 @@ int main()
                     case VAN:       DrawRectangle(xPosition, yPosition, cellSize, cellSize, WHITE);     break;
                     default:        assert(false);
                 }
-
-                // draw lines around each tile, remove this if you don't like it!
                 //DrawRectangleLines(x * cellSize, y * cellSize, cellSize, cellSize, LIGHTGRAY);
 
             }
         }
-        EndDrawing(); // Draws all the stuff in the buffer
+        EndDrawing();
         game.CheckForPlayerDeath();
     }
     CloseWindow();

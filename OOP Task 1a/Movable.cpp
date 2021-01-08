@@ -13,9 +13,7 @@ void Movable::CalculateMove()
 	}
 	else
 	{
-		std::cout << "Vehicle was not ready to move\n";
 		UpdateMoveTimer(1);
-		std::cout << "Move timer is at " << this->moveTimer << "\n";
 	}
 }
 
@@ -41,6 +39,5 @@ void Movable::UpdateX(int value)
 	if(this->x <= 0) this->x = 15;
 
 	SetReadyToMove(false); //once moved, set bool to false
-	//std::cout << "Vehicle has moved to coordinate" << this->x << ":" << this->y << "\n";
 }
 

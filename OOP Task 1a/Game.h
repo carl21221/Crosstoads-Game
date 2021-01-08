@@ -31,7 +31,7 @@ class Game
       vector<Aqua> aquas;
       vector<Goal> goals;
 
-      vector<Movable*> vehicles;
+      vector<Movable> vehicles;
       vector<Car> cars;
 
       void Setup();

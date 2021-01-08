@@ -18,9 +18,13 @@
 #define CAR		  'C'
 #define VAN		  'V'
 
-// Others
+// Other Tiles
 #define GOAL      'G'
 #define WALL      'W' //not needed for our game, but keep it in to prevent errors during development
+
+//#define CAR_SPEED   30; 
+//#define VAN_SPEED   25;
+//#define TRUCK_SPEED 45;
 
 // the command letters to move the mouse on the maze
 #define KEY_RIGHT 262

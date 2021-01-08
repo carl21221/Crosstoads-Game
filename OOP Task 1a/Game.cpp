@@ -32,18 +32,15 @@ vector<vector<char>> Game::PrepareGrid()
             if (row == player.GetY() && col == player.GetX())   line.push_back(player.GetSymbol());
             else if (IsSafezoneAtPosition(col, row))            line.push_back(SAFEZONE);
             else if (IsAquaAtPosition(col, row))                line.push_back(AQUA);
-            else if (IsRoadAtPosition(col, row))
-            {
-                if (!IsCarAtPosition(col, row))                 line.push_back(ROAD);
-                else                                            line.push_back(CAR);
-            }
+            else if (IsRoadAtPosition(col, row))                line.push_back(ROAD);
             else if (IsGoalAtPosition(col, row))                line.push_back(GOAL);
             else                                                line.push_back(FLOOR);
+
+            if (IsCarAtPosition(col, row))                      line.insert(line.begin() + col, CAR);
         }
         // now that the row is full, add it to the 2D grid
         grid.push_back(line);
     }
-
     return grid;
 }
 
@@ -105,9 +102,9 @@ bool Game::IsGoalAtPosition(int x, int y)
 
 bool Game::IsCarAtPosition(int x, int y)
 {
-    for (size_t i = 0; i < cars.size(); ++i)
+    for (size_t i = 0; i < vehicles.size(); ++i)
     {
-        if (cars[i].IsAtPosition(x, y) && cars[i].GetSymbol() == CAR) return true;
+        if (vehicles[i].IsAtPosition(x, y) && vehicles[i].GetSymbol() == CAR) return true;
     }
     return false;
 }
@@ -174,19 +171,18 @@ void Game::PushTiles_Goal()
 
 void Game::SetupTiles_Vehicle()
 {
-    //create vehicles
     cars.push_back(Car(15, 13, 30));
 
-    for each (Car car in cars)
+    for (auto& car : cars)
     {
-        Movable* ptr = &car;
-        vehicles.push_back(ptr);
+        vehicles.push_back(car);
     }
 }
+
 void Game::UpdateTiles_Vehicle()
 {
-    for each (Movable* m in vehicles)
+    for (auto& v : vehicles)
     {
-        //m.CalculateMove();
+        v.CalculateMove();
     }
 }
