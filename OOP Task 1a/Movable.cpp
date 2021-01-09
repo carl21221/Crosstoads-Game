@@ -31,7 +31,7 @@ void Movable::UpdateMoveTimer(int amount)
 	}
 }
 
-void Movable::ResetMoveTimer() { this->moveTimer = 30; } // this->moveTimerMax; }
+void Movable::ResetMoveTimer() { this->moveTimer = this->moveTimerMax; }
 
 void Movable::UpdateX(int value)
 {

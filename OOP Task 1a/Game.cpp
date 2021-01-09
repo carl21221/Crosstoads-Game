@@ -36,7 +36,20 @@ vector<vector<char>> Game::PrepareGrid()
             else if (IsGoalAtPosition(col, row))                line.push_back(GOAL);
             else                                                line.push_back(FLOOR);
 
-            if (IsCarAtPosition(col, row))                      line.insert(line.begin() + col, CAR);
+            //Checks if theres a vehicle at the position, if there is, replace the current tile with a new one
+            if (IsCarAtPosition(col, row))                      line.insert(line.begin() + (col - 1), CAR);
+            if (IsVanAtPosition(col, row))
+            {
+                line.insert(line.begin() + (col - 1), VAN);
+                line.insert(line.begin() + col, VAN);
+            }
+
+            if (IsTruckAtPosition(col, row))
+            {
+                line.insert(line.begin() + (col-1), TRUCK);
+                line.insert(line.begin() + (col), TRUCK);
+                line.insert(line.begin() + (col+1), TRUCK);
+            }
         }
         // now that the row is full, add it to the 2D grid
         grid.push_back(line);
@@ -109,6 +122,24 @@ bool Game::IsCarAtPosition(int x, int y)
     return false;
 }
 
+bool Game::IsVanAtPosition(int x, int y)
+{
+    for (size_t i = 0; i < vehicles.size(); ++i)
+    {
+        if (vehicles[i].IsAtPosition(x, y) && vehicles[i].GetSymbol() == VAN) return true;
+    }
+    return false;
+}
+
+bool Game::IsTruckAtPosition(int x, int y)
+{
+    for (size_t i = 0; i < vehicles.size(); ++i)
+    {
+        if (vehicles[i].IsAtPosition(x, y) && vehicles[i].GetSymbol() == TRUCK) return true;
+    }
+    return false;
+}
+
 bool Game::IsRunning()
 {
     if (player.GetCurrentLives() <= 0) return false;
@@ -171,18 +202,20 @@ void Game::PushTiles_Goal()
 
 void Game::SetupTiles_Vehicle()
 {
-    cars.push_back(Car(15, 13, 30));
+    //Load vehicles into corresponsing vectors here
+    cars.push_back(Car(15, 13, 20));
+    cars.push_back(Car(2, 11, 20));
+    vans.push_back(Van(4, 12, 40));
+    trucks.push_back(Truck(10, 10, 50));
 
-    for (auto& car : cars)
-    {
-        vehicles.push_back(car);
-    }
+    //These loops put all vehicle types in the vehicles list
+    //DO NOT MODIFY
+    for (auto& car : cars) { vehicles.push_back(car); }
+    for (auto& van : vans) { vehicles.push_back(van); }
+    for (auto& truck : trucks) { vehicles.push_back(truck); }
 }
 
 void Game::UpdateTiles_Vehicle()
 {
-    for (auto& v : vehicles)
-    {
-        v.CalculateMove();
-    }
+    for (auto& v : vehicles) { v.CalculateMove(); }
 }

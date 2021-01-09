@@ -8,15 +8,17 @@
 #define PLAYER    'P'
 
 // Safe Tiles
-#define FLOOR     'F'
-#define LOG		  'L'
-#define SAFEZONE  'S'
 #define ROAD	  'R'
+#define SAFEZONE  'S'
+#define FLOOR     'F'
+
+#define LOG		  'L'
 
 // Death Tiles
 #define AQUA      'A'
 #define CAR		  'C'
 #define VAN		  'V'
+#define TRUCK     'T'
 
 // Other Tiles
 #define GOAL      'G'

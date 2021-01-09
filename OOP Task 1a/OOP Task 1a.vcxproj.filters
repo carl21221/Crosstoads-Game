@@ -14,6 +14,8 @@
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Road.cpp" />
     <ClCompile Include="Goal.cpp" />
+    <ClCompile Include="Van.cpp" />
+    <ClCompile Include="Truck.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h" />
@@ -29,5 +31,7 @@
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Road.h" />
     <ClInclude Include="Goal.h" />
+    <ClInclude Include="Van.h" />
+    <ClInclude Include="Truck.h" />
   </ItemGroup>
 </Project>

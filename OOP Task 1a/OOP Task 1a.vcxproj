@@ -148,6 +148,8 @@
     <ClCompile Include="Safezone.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="Truck.cpp" />
+    <ClCompile Include="Van.cpp" />
     <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +165,8 @@
     <ClInclude Include="Road.h" />
     <ClInclude Include="Safezone.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="Truck.h" />
+    <ClInclude Include="Van.h" />
     <ClInclude Include="Wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -53,6 +53,7 @@ int main()
                     case CAR:       DrawRectangle(xPosition, yPosition, cellSize, cellSize, RED);       break; 
                     case LOG:       DrawRectangle(xPosition, yPosition, cellSize, cellSize, BROWN);     break;
                     case VAN:       DrawRectangle(xPosition, yPosition, cellSize, cellSize, WHITE);     break;
+                    case TRUCK:     DrawRectangle(xPosition, yPosition, cellSize, cellSize, LIGHTGRAY); break;
                     default:        assert(false);
                 }
                 //DrawRectangleLines(x * cellSize, y * cellSize, cellSize, cellSize, LIGHTGRAY);

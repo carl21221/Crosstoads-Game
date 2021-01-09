@@ -17,6 +17,8 @@
 //Load Moveable Librarys
 #include "Movable.h"
 #include "Car.h"
+#include "Van.h"
+#include "Truck.h"
 
 using namespace std;
 
@@ -30,9 +32,11 @@ class Game
       vector<Road> roads;
       vector<Aqua> aquas;
       vector<Goal> goals;
-
+      
       vector<Movable> vehicles;
       vector<Car> cars;
+      vector<Van> vans;
+      vector<Truck> trucks;
 
       void Setup();
       void UpdateMoveableTiles();
@@ -52,6 +56,8 @@ class Game
 
       bool IsCarAtPosition(int x, int y);
       bool IsVanAtPosition(int x, int y);
+      bool IsTruckAtPosition(int x, int y);
+
       bool IsLogAtPosition(int x, int y);
 
       //Tile Load Functions
