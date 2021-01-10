@@ -35,13 +35,13 @@ vector<vector<char>> Game::PrepareGrid()
             else if (IsGoalAtPosition(col, row))                line.push_back(GOAL);
             else                                                line.push_back(FLOOR);
 
-            //Checks if theres a vehicle at the position, if there is, replace the current tile with a new one
+            //Checks if theres a special tile at the position
+            // If there is, replace the current tile with a new one
             if (IsCarAtPosition(col, row)) line.at(col - 1) = CAR;           
             if (IsVanAtPosition(col, row)) line.at(col - 1) = VAN;
             if (IsTruckAtPosition(col, row)) line.at(col - 1) = TRUCK;
-            if (IsPlayerAtPosition(col, row)) line.push_back(player.GetSymbol());
-
-            // if (row == player.GetY() && col == player.GetX())   line.push_back(player.GetSymbol());
+            if (IsLogAtPosition(col, row)) line.at(col - 1) = LOG;
+            if (IsPlayerAtPosition(col, row)) line.at(col - 1) = PLAYER;
 
         }
         // now that the row is full, add it to the 2D grid
@@ -50,17 +50,19 @@ vector<vector<char>> Game::PrepareGrid()
     return grid;
 }
 
-void Game::CheckForPlayerDeath()
+void Game::CheckForPlayerResponse()
 {
-    for each(Aqua a in aquas)
+    if (IsAquaAtPosition(player.GetX(), player.GetY()) && !IsLogAtPosition(player.GetX(), player.GetY()))
     {
-        if (player.GetX() == a.GetX() && player.GetY() == a.GetY())
-        {
-            player.Die();
-        }
+        player.Die();
+    }
+    for (auto& v : vehicles)
+    {
+        if (IsPlayerAtPosition(v.GetX(), v.GetY())) player.Die();
+
     }
 }
-als
+
 bool Game::IsPlayerAtPosition(int x, int y)
 {
     for (size_t i = 0; i < tiles.size(); ++i)
@@ -148,6 +150,15 @@ bool Game::IsTruckAtPosition(int x, int y)
     return false;
 }
 
+bool Game::IsLogAtPosition(int x, int y)
+{
+    for (size_t i = 0; i < logs.size(); ++i)
+    {
+        if (logs[i].IsAtPosition(x, y) && logs[i].GetSymbol() == LOG) return true;
+    }
+    return false;
+}
+
 bool Game::IsRunning()
 {
     if (player.GetCurrentLives() <= 0) return false;
@@ -166,11 +177,13 @@ void Game::SetupEnvironmentTiles()
 void Game::SetupMoveableTiles()
 {
     SetupTiles_Vehicle();
+    SetupTiles_Logs();
 }
 
 void Game::UpdateMoveableTiles()
 {
     UpdateTiles_Vehicle();
+    UpdateTiles_Log();
 }
 
 void Game::PushTiles_Safezone()
@@ -226,7 +239,39 @@ void Game::SetupTiles_Vehicle()
     for (auto& truck : trucks) { vehicles.push_back(truck); }
 }
 
+//Adds a log to the vector.
+void Game::CreateLog(int originX, int originY, int logLength, int moveDelay)
+{
+    for (int i = 0; i < logLength; i++)
+    {
+        if ((originX + i) < 15)
+        {
+            logs.push_back(Log(originX + i, originY, moveDelay));
+        }
+        else break;
+    }
+}
+
+void Game::SetupTiles_Logs()
+{
+    CreateLog(11, 3, 3, 50);
+    CreateLog(1, 4, 4, 30);
+    CreateLog(4, 5, 5, 20);
+    CreateLog(9, 6, 4, 30);
+    CreateLog(3, 7, 4, 10);
+
+    for (auto& log : logs) { logs.push_back(log); }
+}
+
 void Game::UpdateTiles_Vehicle()
 {
     for (auto& v : vehicles) { v.CalculateMove(); }
+}
+
+void Game::UpdateTiles_Log()
+{
+    for (auto& l : logs) 
+    { 
+        l.CalculateMove();
+    }
 }

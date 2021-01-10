@@ -27,6 +27,11 @@ bool Player::IsAtPosition(int x, int y)
     return this->x == x && this->y == y;
 }
 
+void Player::MoveX(int amt)
+{
+    this->x--;
+}
+
 void Player::Move(int key)
 {
     switch (key)

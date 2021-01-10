@@ -20,6 +20,8 @@
 #include "Van.h"
 #include "Truck.h"
 
+#include "Log.h"
+
 using namespace std;
 
 class Game
@@ -37,6 +39,8 @@ class Game
       vector<Car> cars;
       vector<Van> vans;
       vector<Truck> trucks;
+
+      vector<Log> logs;
 
       void Setup();
       void UpdateMoveableTiles();
@@ -67,9 +71,13 @@ class Game
       void PushTiles_Goal();
 
       void SetupTiles_Vehicle();
+      void CreateLog(int originX, int originY, int length, int moveDelay);
+      void SetupTiles_Logs();
       void UpdateTiles_Vehicle();
 
+      void UpdateTiles_Log();
+
       //Player Functions
-      void CheckForPlayerDeath();
+      void CheckForPlayerResponse();
       bool IsPlayerAtPosition(int x, int y);
 };

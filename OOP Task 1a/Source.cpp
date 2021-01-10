@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "Game.h"
 #include <iostream>
+#include "Constants.h"
 
 int main()
 {
@@ -61,7 +62,8 @@ int main()
             }
         }
         EndDrawing();
-        game.CheckForPlayerDeath();
+        game.CheckForPlayerResponse();
+        game.CheckForPlayerResponse();
     }
     CloseWindow();
     return 0;
