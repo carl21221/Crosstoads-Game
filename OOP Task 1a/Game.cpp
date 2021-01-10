@@ -29,27 +29,20 @@ vector<vector<char>> Game::PrepareGrid()
         // for each column, work out what's in that position and add the relevant char to the 2D grid
         for (int col = 1; col <= SIZE; ++col)
         {
-            if (row == player.GetY() && col == player.GetX())   line.push_back(player.GetSymbol());
-            else if (IsSafezoneAtPosition(col, row))            line.push_back(SAFEZONE);
+            if (IsSafezoneAtPosition(col, row))                 line.push_back(SAFEZONE);
             else if (IsAquaAtPosition(col, row))                line.push_back(AQUA);
             else if (IsRoadAtPosition(col, row))                line.push_back(ROAD);
             else if (IsGoalAtPosition(col, row))                line.push_back(GOAL);
             else                                                line.push_back(FLOOR);
 
             //Checks if theres a vehicle at the position, if there is, replace the current tile with a new one
-            if (IsCarAtPosition(col, row))                      line.insert(line.begin() + (col - 1), CAR);
-            if (IsVanAtPosition(col, row))
-            {
-                line.insert(line.begin() + (col - 1), VAN);
-                line.insert(line.begin() + col, VAN);
-            }
+            if (IsCarAtPosition(col, row)) line.at(col - 1) = CAR;           
+            if (IsVanAtPosition(col, row)) line.at(col - 1) = VAN;
+            if (IsTruckAtPosition(col, row)) line.at(col - 1) = TRUCK;
+            if (IsPlayerAtPosition(col, row)) line.push_back(player.GetSymbol());
 
-            if (IsTruckAtPosition(col, row))
-            {
-                line.insert(line.begin() + (col-1), TRUCK);
-                line.insert(line.begin() + (col), TRUCK);
-                line.insert(line.begin() + (col+1), TRUCK);
-            }
+            // if (row == player.GetY() && col == player.GetX())   line.push_back(player.GetSymbol());
+
         }
         // now that the row is full, add it to the 2D grid
         grid.push_back(line);
@@ -61,8 +54,23 @@ void Game::CheckForPlayerDeath()
 {
     for each(Aqua a in aquas)
     {
-        if (player.GetX() == a.GetX() && player.GetY() == a.GetY()) player.Die();
+        if (player.GetX() == a.GetX() && player.GetY() == a.GetY())
+        {
+            player.Die();
+        }
     }
+}
+als
+bool Game::IsPlayerAtPosition(int x, int y)
+{
+    for (size_t i = 0; i < tiles.size(); ++i)
+    {
+        if (player.IsAtPosition(x, y))
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool Game::IsSafezoneAtPosition(int x, int y)
@@ -206,7 +214,10 @@ void Game::SetupTiles_Vehicle()
     cars.push_back(Car(15, 13, 20));
     cars.push_back(Car(2, 11, 20));
     vans.push_back(Van(4, 12, 40));
+    vans.push_back(Van(5, 12, 40));
     trucks.push_back(Truck(10, 10, 50));
+    trucks.push_back(Truck(11, 10, 50));
+    trucks.push_back(Truck(12, 10, 50));
 
     //These loops put all vehicle types in the vehicles list
     //DO NOT MODIFY

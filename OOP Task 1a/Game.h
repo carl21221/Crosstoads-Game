@@ -71,4 +71,5 @@ class Game
 
       //Player Functions
       void CheckForPlayerDeath();
+      bool IsPlayerAtPosition(int x, int y);
 };
