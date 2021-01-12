@@ -71,7 +71,8 @@ class Game
       void PushTiles_Goal();
 
       void SetupTiles_Vehicle();
-      void CreateLog(int originX, int originY, int length, int moveDelay);
+      void CreateLog(int originX, int originY, int length, int moveDelay, std::string direction);
+      void CreateTruck(int originX, int originY, int truckLength, int moveDelay, std::string direction);
       void SetupTiles_Logs();
       void UpdateTiles_Vehicle();
 

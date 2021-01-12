@@ -61,9 +61,17 @@ int main()
 
             }
         }
+        game.CheckForPlayerResponse();
+        if (game.player.GetCurrentLives() == 0)
+        {
+            ClearBackground(BLANK);
+            BeginDrawing();
+            DrawText(("GAME OVER"), 200, 280, 40, RED);
+            EndDrawing();
+        }
         EndDrawing();
-        game.CheckForPlayerResponse();
-        game.CheckForPlayerResponse();
+
+
     }
     CloseWindow();
     return 0;

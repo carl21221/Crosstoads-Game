@@ -224,13 +224,18 @@ void Game::PushTiles_Goal()
 void Game::SetupTiles_Vehicle()
 {
     //Load vehicles into corresponsing vectors here
-    cars.push_back(Car(15, 13, 20));
-    cars.push_back(Car(2, 11, 20));
-    vans.push_back(Van(4, 12, 40));
-    vans.push_back(Van(5, 12, 40));
-    trucks.push_back(Truck(10, 10, 50));
-    trucks.push_back(Truck(11, 10, 50));
-    trucks.push_back(Truck(12, 10, 50));
+    cars.push_back(Car(15, 13, 20, "left"));
+    cars.push_back(Car(2, 13, 20, "left"));
+
+    cars.push_back(Car(2, 11, 20, "left"));
+    cars.push_back(Car(6, 11, 20, "left"));
+
+    vans.push_back(Van(4, 12, 40, "right"));
+    vans.push_back(Van(5, 12, 40, "right"));
+
+    trucks.push_back(Truck(10, 10, 50, "right"));
+    trucks.push_back(Truck(11, 10, 50, "right"));
+    trucks.push_back(Truck(12, 10, 50, "right"));
 
     //These loops put all vehicle types in the vehicles list
     //DO NOT MODIFY
@@ -239,14 +244,15 @@ void Game::SetupTiles_Vehicle()
     for (auto& truck : trucks) { vehicles.push_back(truck); }
 }
 
-//Adds a log to the vector.
-void Game::CreateLog(int originX, int originY, int logLength, int moveDelay)
+//Adds a log to the vector with a specified length. 
+//Truncates the logs if the logs length exceeds the grid width
+void Game::CreateLog(int originX, int originY, int logLength, int moveDelay, std::string direction)
 {
     for (int i = 0; i < logLength; i++)
     {
         if ((originX + i) < 15)
         {
-            logs.push_back(Log(originX + i, originY, moveDelay));
+            logs.push_back(Log(originX + i, originY, moveDelay, direction));
         }
         else break;
     }
@@ -254,13 +260,15 @@ void Game::CreateLog(int originX, int originY, int logLength, int moveDelay)
 
 void Game::SetupTiles_Logs()
 {
-    CreateLog(11, 3, 3, 50);
-    CreateLog(1, 4, 4, 30);
-    CreateLog(4, 5, 5, 20);
-    CreateLog(9, 6, 4, 30);
-    CreateLog(3, 7, 4, 10);
+    CreateLog(11, 3, 3, 50, "left");
+    CreateLog(1, 4, 4, 30, "right");
+    CreateLog(4, 5, 5, 20, "left");
+    CreateLog(9, 6, 4, 30, "right");
+    CreateLog(3, 7, 4, 10, "left");
 
-    for (auto& log : logs) { logs.push_back(log); }
+    // CreateLog function does this for you. 
+    // If creating individual tiles, use this below
+    //for (auto& log : logs) { logs.push_back(log); }
 }
 
 void Game::UpdateTiles_Vehicle()
