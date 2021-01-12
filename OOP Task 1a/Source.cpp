@@ -5,9 +5,10 @@
 
 int main()
 {
-    InitWindow(600, 600, "Frogger");
+    int windowSize = 600;
+    InitWindow(windowSize, windowSize, "Frogger");
     SetTargetFPS(60);
-
+    
     Game game;
     game.Setup();
 
@@ -62,16 +63,31 @@ int main()
             }
         }
         game.CheckForPlayerResponse();
-        if (game.player.GetCurrentLives() == 0)
-        {
-            ClearBackground(BLANK);
-            BeginDrawing();
-            DrawText(("GAME OVER"), 200, 280, 40, RED);
-            EndDrawing();
-        }
         EndDrawing();
+        if (game.player.GetCurrentLives() == 0) game.SetGameOver(true);
 
-
+        if (game.IsGameOver())
+        {
+            std::string gameOverText = GAMEOVER_TEXT;
+            int textLength = gameOverText.length();
+            int midLength = textLength / 2;
+            int calculatedLength = midLength * GAMEOVER_FONTSIZE;
+            int finalTextXPos = (windowSize / 2) - calculatedLength;
+            while (game.IsGameOver())
+            {
+                ClearBackground(BLANK);
+                BeginDrawing();
+                DrawText(("GAME OVER"), 180, 280, 40, RED);
+                DrawText(("| Press [SPACE] to restart | Press[ESC] to quit |"), 177, 320, 8, WHITE);
+                EndDrawing();
+                if (IsKeyPressed(SPACEBAR))
+                {
+                    game.SetGameOver(false);
+                    break;
+                }
+                else if (IsKeyPressed(SPACEBAR))  CloseWindow();
+            }
+        }
     }
     CloseWindow();
     return 0;

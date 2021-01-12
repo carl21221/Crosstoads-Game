@@ -42,7 +42,11 @@ class Game
 
       vector<Log> logs;
 
+      bool isGameOver = false;
+
       void Setup();
+      void SetGameOver(bool value);
+      bool IsGameOver();
       void UpdateMoveableTiles();
       void ProcessInput(int key);
       vector<vector<char>> PrepareGrid();
@@ -72,10 +76,8 @@ class Game
 
       void SetupTiles_Vehicle();
       void CreateLog(int originX, int originY, int length, int moveDelay, std::string direction);
-      void CreateTruck(int originX, int originY, int truckLength, int moveDelay, std::string direction);
       void SetupTiles_Logs();
       void UpdateTiles_Vehicle();
-
       void UpdateTiles_Log();
 
       //Player Functions

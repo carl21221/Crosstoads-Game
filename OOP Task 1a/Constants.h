@@ -34,3 +34,9 @@
 #define KEY_LEFT  263
 #define KEY_DOWN  264
 #define KEY_UP    265
+#define SPACEBAR  32
+#define ESCAPE    27
+
+//Size and Position values
+#define GAMEOVER_FONTSIZE 40;
+#define GAMEOVER_TEXT "Game Over"

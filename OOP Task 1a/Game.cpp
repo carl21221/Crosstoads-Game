@@ -4,7 +4,15 @@ void Game::Setup()
 {
     SetupEnvironmentTiles();
     SetupMoveableTiles();
+    this->player.ResetLives();
 }
+
+void Game::SetGameOver(bool value)
+{
+    this->isGameOver = value;
+}
+
+bool Game::IsGameOver() { return this->isGameOver; }
 
 void Game::ProcessInput(int key)
 {
@@ -42,7 +50,6 @@ vector<vector<char>> Game::PrepareGrid()
             if (IsTruckAtPosition(col, row)) line.at(col - 1) = TRUCK;
             if (IsLogAtPosition(col, row)) line.at(col - 1) = LOG;
             if (IsPlayerAtPosition(col, row)) line.at(col - 1) = PLAYER;
-
         }
         // now that the row is full, add it to the 2D grid
         grid.push_back(line);
