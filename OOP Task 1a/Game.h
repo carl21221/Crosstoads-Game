@@ -51,6 +51,8 @@ class Game
       void ProcessInput(int key);
       vector<vector<char>> PrepareGrid();
 
+      Log* GetLogInstance(int x, int y);
+
       bool IsRunning();
 
       void SetupEnvironmentTiles();

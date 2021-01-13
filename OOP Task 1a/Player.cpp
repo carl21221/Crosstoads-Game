@@ -27,9 +27,9 @@ bool Player::IsAtPosition(int x, int y)
     return this->x == x && this->y == y;
 }
 
-void Player::MoveX(int amt)
+void Player::MoveX(int amt) //
 {
-    this->x--;
+    this->x = this->x - amt;
 }
 
 void Player::Move(int key)
@@ -78,6 +78,9 @@ void Player::Die()
 int Player::GetCurrentLives() { return currentLives; }
 int Player::GetMaxLives() { return maxLives; }
 void Player::ResetLives() { this->currentLives = this->maxLives; }
+bool Player::IsOnLog() { return this->isOnLog; }
+void Player::IsOnLog(bool val) { this->isOnLog = val; }
+
 
 void Player::UpdatePosition(int dx, int dy)
 {

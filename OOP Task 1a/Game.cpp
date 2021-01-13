@@ -57,16 +57,37 @@ vector<vector<char>> Game::PrepareGrid()
     return grid;
 }
 
+Log* Game::GetLogInstance(int x, int y)
+{
+    for (Log& log : logs)
+    {
+        if (log.GetX() == x && log.GetY() == y) return &log;
+    }
+    return nullptr;
+}
+
 void Game::CheckForPlayerResponse()
 {
-    if (IsAquaAtPosition(player.GetX(), player.GetY()) && !IsLogAtPosition(player.GetX(), player.GetY()))
+    if (IsAquaAtPosition(player.GetX(), player.GetY()))
     {
-        player.Die();
+        if (!IsLogAtPosition(player.GetX(), player.GetY()))
+        {
+            player.Die();
+        }
+        else 
+        {
+            Log* thisLog = GetLogInstance(player.GetX(), player.GetY());
+            if (thisLog != nullptr)
+            {
+                thisLog->LinkPlayer(player);
+            }
+            else thisLog->UnlinkPlayer();
+        }
     }
+
     for (auto& v : vehicles)
     {
         if (IsPlayerAtPosition(v.GetX(), v.GetY())) player.Die();
-
     }
 }
 

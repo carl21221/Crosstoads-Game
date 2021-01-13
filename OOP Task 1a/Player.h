@@ -42,8 +42,12 @@ class Player
         int dy;
         char symbol;
         int  x, y;
+        bool isOnLog = false;
 
         // supporting functions 
+        bool IsOnLog();
+        void IsOnLog(bool val);
+
         void PositionAtStart();
         void UpdatePosition(int dx, int dy);
 };

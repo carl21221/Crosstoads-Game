@@ -68,15 +68,10 @@ int main()
 
         if (game.IsGameOver())
         {
-            std::string gameOverText = GAMEOVER_TEXT;
-            int textLength = gameOverText.length();
-            int midLength = textLength / 2;
-            int calculatedLength = midLength * GAMEOVER_FONTSIZE;
-            int finalTextXPos = (windowSize / 2) - calculatedLength;
             while (game.IsGameOver())
             {
-                ClearBackground(BLANK);
                 BeginDrawing();
+                ClearBackground(BLANK);
                 DrawText(("GAME OVER"), 180, 280, 40, RED);
                 DrawText(("| Press [SPACE] to restart | Press[ESC] to quit |"), 177, 320, 8, WHITE);
                 EndDrawing();
