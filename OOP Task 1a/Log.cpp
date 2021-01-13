@@ -37,7 +37,6 @@ void Log::UnlinkPlayer()
 { 
 	std::cout << "unlinked from log";
 	this->player = nullptr;
-
 }
 
 void Log::CalculateMove()

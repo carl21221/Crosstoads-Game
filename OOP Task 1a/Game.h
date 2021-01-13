@@ -47,6 +47,7 @@ class Game
       void Setup();
       void SetGameOver(bool value);
       bool IsGameOver();
+      Player* GetPlayer();
       void UpdateMoveableTiles();
       void ProcessInput(int key);
       vector<vector<char>> PrepareGrid();

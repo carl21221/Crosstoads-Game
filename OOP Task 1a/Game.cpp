@@ -7,23 +7,17 @@ void Game::Setup()
     this->player.ResetLives();
 }
 
-void Game::SetGameOver(bool value)
-{
-    this->isGameOver = value;
-}
-
+void Game::SetGameOver(bool value) { this->isGameOver = value; }
 bool Game::IsGameOver() { return this->isGameOver; }
 
-void Game::ProcessInput(int key)
-{
-    player.Move(key);
-}
+Player* Game::GetPlayer() { return &this->player; }
+
+void Game::ProcessInput(int key) { player.Move(key); }
 
 /// <summary>
 /// This function builds up a 2D grid of characters representing the current state of the game.
 /// The characters are later used to decide which colour sqaure to display, but you could display images instead.
 /// </summary>
-
 vector<vector<char>> Game::PrepareGrid() 
 {
     // create the 2D grid
@@ -70,25 +64,17 @@ void Game::CheckForPlayerResponse()
 {
     if (IsAquaAtPosition(player.GetX(), player.GetY()))
     {
-        if (!IsLogAtPosition(player.GetX(), player.GetY()))
-        {
-            player.Die();
-        }
+        if (!IsLogAtPosition(player.GetX(), player.GetY())) player.Die();
         else 
         {
             Log* thisLog = GetLogInstance(player.GetX(), player.GetY());
-            if (thisLog != nullptr)
-            {
-                thisLog->LinkPlayer(player);
-            }
+            if (thisLog != nullptr) thisLog->LinkPlayer(player);
             else thisLog->UnlinkPlayer();
         }
     }
+    //THIS IS WHERE TO CHECK FOR FINISHLINE
 
-    for (auto& v : vehicles)
-    {
-        if (IsPlayerAtPosition(v.GetX(), v.GetY())) player.Die();
-    }
+    for (auto& v : vehicles) { if (IsPlayerAtPosition(v.GetX(), v.GetY())) player.Die(); }
 }
 
 bool Game::IsPlayerAtPosition(int x, int y)

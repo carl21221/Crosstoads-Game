@@ -14,10 +14,10 @@ class Player
         char GetSymbol() const;
         bool IsAtPosition(int x, int y);
 
-        void MoveX(int amt);
 
         // mutators
         void Move(int key);
+        void MoveX(int amt);
 
         //other functions
         void Die();

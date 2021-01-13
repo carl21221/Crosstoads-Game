@@ -17,7 +17,7 @@ int main()
         BeginDrawing();
         ClearBackground(DARKGRAY);
 
-        if (game.IsRunning())
+        if (!game.IsGameOver())
         {
             if (IsKeyPressed(KEY_RIGHT))  game.ProcessInput(KEY_RIGHT);
             if (IsKeyPressed(KEY_LEFT))   game.ProcessInput(KEY_LEFT);
@@ -28,7 +28,21 @@ int main()
         }
         else
         {
-            DrawText("TODO: Why did the game end?", 610, 10, 20, LIGHTGRAY);
+            while (game.IsGameOver())
+            {
+                BeginDrawing();
+                ClearBackground(BLANK);
+                DrawText(("GAME OVER"), 180, 280, 40, RED);
+                DrawText(("| Press [SPACE] to restart | Press[ESC] to quit |"), 177, 320, 8, WHITE);
+                EndDrawing();
+                if (IsKeyPressed(SPACEBAR))
+                {
+                    game.SetGameOver(false);
+                    game.GetPlayer()->ResetLives();
+                    break;
+                }
+                else if (IsKeyPressed(ESCAPE))  CloseWindow();
+            }
         }
 
         const int cellSize = (int)((float)GetScreenHeight() / (float)(SIZE));
@@ -45,7 +59,7 @@ int main()
                 switch (grid[y][x])
                 {
                     case FLOOR:     DrawRectangle(xPosition, yPosition, cellSize, cellSize, DARKGRAY);  break;
-                    case WALL:      DrawRectangle(xPosition, yPosition, cellSize, cellSize, DARKGREEN); break;
+                    //case WALL:      DrawRectangle(xPosition, yPosition, cellSize, cellSize, DARKGREEN); break;
                     case PLAYER:    DrawRectangle(xPosition, yPosition, cellSize, cellSize, GREEN);     break;
                     case AQUA:      DrawRectangle(xPosition, yPosition, cellSize, cellSize, SKYBLUE);   break;
                     case SAFEZONE:  DrawRectangle(xPosition, yPosition, cellSize, cellSize, PINK);      break;
@@ -58,31 +72,12 @@ int main()
                     case TRUCK:     DrawRectangle(xPosition, yPosition, cellSize, cellSize, LIGHTGRAY); break;
                     default:        assert(false);
                 }
-                //DrawRectangleLines(x * cellSize, y * cellSize, cellSize, cellSize, LIGHTGRAY);
-
             }
         }
-        game.CheckForPlayerResponse();
         EndDrawing();
+        game.CheckForPlayerResponse();
         if (game.player.GetCurrentLives() == 0) game.SetGameOver(true);
 
-        if (game.IsGameOver())
-        {
-            while (game.IsGameOver())
-            {
-                BeginDrawing();
-                ClearBackground(BLANK);
-                DrawText(("GAME OVER"), 180, 280, 40, RED);
-                DrawText(("| Press [SPACE] to restart | Press[ESC] to quit |"), 177, 320, 8, WHITE);
-                EndDrawing();
-                if (IsKeyPressed(SPACEBAR))
-                {
-                    game.SetGameOver(false);
-                    break;
-                }
-                else if (IsKeyPressed(SPACEBAR))  CloseWindow();
-            }
-        }
     }
     CloseWindow();
     return 0;
