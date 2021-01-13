@@ -4,7 +4,14 @@ class Goal : public Tile
 {
 public:
 	Goal(int x, int y);
-private:
+	Goal(int x, int y, bool takenVal);
+
+	bool IsTaken();
+	void SetIsTaken(bool val);
+
+protected:
 	bool isTaken = false;
+
+private:
 };
 

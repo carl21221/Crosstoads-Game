@@ -28,6 +28,8 @@ class Player
 
         void ResetLives();
 
+        void PositionAtStart();
+
     protected:
         //data members
 
@@ -47,7 +49,5 @@ class Player
         // supporting functions 
         bool IsOnLog();
         void IsOnLog(bool val);
-
-        void PositionAtStart();
         void UpdatePosition(int dx, int dy);
 };

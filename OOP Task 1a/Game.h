@@ -53,6 +53,7 @@ class Game
       vector<vector<char>> PrepareGrid();
 
       Log* GetLogInstance(int x, int y);
+      Goal* GetGoalInstance(int x, int y);
 
       bool IsRunning();
 

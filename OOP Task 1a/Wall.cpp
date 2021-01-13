@@ -6,7 +6,7 @@ Wall::Wall()
 
 Wall::Wall(int x, int y)
 {
-    symbol = WALL;
+    symbol = 'X';
     this->x = x;
     this->y = y;
 }

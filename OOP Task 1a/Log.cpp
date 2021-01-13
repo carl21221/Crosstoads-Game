@@ -48,7 +48,6 @@ void Log::CalculateMove()
 		{
 			if (this->direction == "left") this->player->MoveX(1);
 			else if (this->direction == "right") this->player->MoveX(-1);
-			UnlinkPlayer();
 		}
 	}
 	else UpdateMoveTimer(1);

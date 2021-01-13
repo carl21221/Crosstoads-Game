@@ -22,7 +22,7 @@
 
 // Other Tiles
 #define GOAL      'G'
-#define WALL      'W' //not needed for our game, but keep it in to prevent errors during development
+#define GOALTAKEN 'W' //not needed for our game, but keep it in to prevent errors during development
 
 #define CAR_SPEED   30; 
 #define VAN_SPEED   25;

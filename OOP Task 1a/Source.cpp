@@ -59,12 +59,13 @@ int main()
                 switch (grid[y][x])
                 {
                     case FLOOR:     DrawRectangle(xPosition, yPosition, cellSize, cellSize, DARKGRAY);  break;
-                    //case WALL:      DrawRectangle(xPosition, yPosition, cellSize, cellSize, DARKGREEN); break;
                     case PLAYER:    DrawRectangle(xPosition, yPosition, cellSize, cellSize, GREEN);     break;
                     case AQUA:      DrawRectangle(xPosition, yPosition, cellSize, cellSize, SKYBLUE);   break;
                     case SAFEZONE:  DrawRectangle(xPosition, yPosition, cellSize, cellSize, PINK);      break;
                     case ROAD:      DrawRectangle(xPosition, yPosition, cellSize, cellSize, BLACK);     break;
-                    case GOAL:      DrawRectangle(xPosition, yPosition, cellSize, cellSize, GOLD);      break;
+                    case GOAL:      
+                        DrawRectangle(xPosition, yPosition, cellSize, cellSize, DARKGREEN);
+                        break;
 
                     case CAR:       DrawRectangle(xPosition, yPosition, cellSize, cellSize, RED);       break; 
                     case LOG:       DrawRectangle(xPosition, yPosition, cellSize, cellSize, BROWN);     break;
