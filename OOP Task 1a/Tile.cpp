@@ -25,3 +25,8 @@ bool Tile::IsAtPosition(int x, int y) const
 {
     return this->x == x && this->y == y;
 }
+
+string Tile::GetTexturePath()
+{
+    return this->texturePath;
+}

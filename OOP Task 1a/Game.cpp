@@ -19,11 +19,10 @@ void Game::ProcessInput(int key) { player.Move(key); }
 /// This function builds up a 2D grid of characters representing the current state of the game.
 /// The characters are later used to decide which colour sqaure to display, but you could display images instead.
 /// </summary>
-vector<vector<char>> Game::PrepareGrid() 
+vector<vector<char>> Game::PrepareEnvGrid() 
 {
     // create the 2D grid
-    vector<vector<char>> grid;
-
+    vector<vector<char>> envGrid;
     // for each row
     for (int row = 1; row <= SIZE; ++row)
     {
@@ -35,26 +34,33 @@ vector<vector<char>> Game::PrepareGrid()
             else if (IsRoadAtPosition(col, row))    line.push_back(ROAD);
             else if (IsGoalAtPosition(col, row))    line.push_back(GOAL);
             else                                    line.push_back(FLOOR);
-
-            //Checks if theres a special tile at the position
-            //Currently replaces the environment tile underneath. 
-            // However, we will later use these checks
-            // to add images on top of the grid underneath
-            if (IsCarAtPosition(col, row)) line.at(col - 1) = CAR;           
-            if (IsVanAtPosition(col, row)) line.at(col - 1) = VAN;
-            if (IsTruckAtPosition(col, row)) line.at(col - 1) = TRUCK;
-            if (IsLogAtPosition(col, row)) line.at(col - 1) = LOG;
-            if (IsPlayerAtPosition(col, row)) line.at(col - 1) = PLAYER;
         }
         // now that the row is full, add it to the 2D grid
-        grid.push_back(line);
+        envGrid.push_back(line);
     }
-    return grid;
+    return envGrid;
 }
 
-/// <summary>
-/// Gets a reference to a log instance at a specific location
-/// </summary>
+vector<vector<char>> Game::PrepareMovGrid()
+{
+    vector<vector<char>> movGrid;
+    for (int row = 1; row <= SIZE; ++row)
+    {
+        vector<char> line;
+        for (int col = 1; col <= SIZE; ++col)
+        {
+            if (IsCarAtPosition(col, row)) line.push_back(CAR);
+            else if (IsVanAtPosition(col, row)) line.push_back(VAN);
+            else if (IsTruckAtPosition(col, row)) line.push_back(TRUCK);
+            else if (IsLogAtPosition(col, row)) line.push_back(LOG);
+            else if (IsPlayerAtPosition(col, row)) line.push_back(PLAYER);
+            else     line.push_back('x');
+        }
+        movGrid.push_back(line);
+    }
+    return movGrid;
+}
+
 Log* Game::GetLogInstance(int x, int y)
 {
     for (Log& log : logs)
@@ -63,10 +69,6 @@ Log* Game::GetLogInstance(int x, int y)
     }
     return nullptr;
 }
-
-/// <summary>
-/// Gets a reference to a goal instance at a specific location
-/// </summary>
 Goal* Game::GetGoalInstance(int x, int y)
 {
     for (Goal& goal : goals) 
@@ -75,6 +77,18 @@ Goal* Game::GetGoalInstance(int x, int y)
     }
     return nullptr;
 }
+
+//Loops through all movables, can be quite slow
+Movable* Game::GetMovableInstance(int x, int y)
+{
+    for (Movable m : vehicles)
+    {
+        if (m.GetX() == x && m.GetY() == y) return &m;
+    }
+    return nullptr;
+}
+
+
 
 void Game::CheckForPlayerResponse()
 {
@@ -302,9 +316,7 @@ void Game::SetupTiles_Vehicle()
     vans.push_back(Van(4, 12, 40, "right"));
     vans.push_back(Van(5, 12, 40, "right"));
 
-    trucks.push_back(Truck(10, 10, 50, "right"));
-    trucks.push_back(Truck(11, 10, 50, "right"));
-    trucks.push_back(Truck(12, 10, 50, "right"));
+    CreateTruck(1, 10, 1, 20, "right");
 
     //These loops put all vehicle types in the vehicles list
     //DO NOT MODIFY
@@ -317,7 +329,7 @@ void Game::SetupTiles_Vehicle()
 
 /// <summary>
 /// Adds a log to the vector with a specified length. 
-/// Truncates the logs if the logs length exceeds the grid width
+/// Truncates the logs if the log's length exceeds the grid width
 /// </summary>
 void Game::CreateLog(int originX, int originY, int logLength, int moveDelay, std::string direction)
 {
@@ -328,6 +340,19 @@ void Game::CreateLog(int originX, int originY, int logLength, int moveDelay, std
             logs.push_back(Log(originX + i, originY, moveDelay, direction));
         }
         else break;
+    }
+}
+
+void Game::CreateTruck(int originX, int originY, int truckLength, int moveDelay, std::string direction)
+{
+    for (int i = 0; i < truckLength; i++)
+    {
+        int newX = originX + i;
+        if (newX < 15)
+        {
+            newX = newX - 15;
+            trucks.push_back(Truck(newX, originY, moveDelay, direction));
+        }
     }
 }
 

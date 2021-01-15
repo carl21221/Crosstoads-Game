@@ -9,10 +9,11 @@ class Player
         Player();
 
         // assessors
-        int GetX();
-        int GetY();
+        int GetX() const;
+        int GetY() const;
         char GetSymbol() const;
-        bool IsAtPosition(int x, int y);
+        char GetDirection() const;
+        bool IsAtPosition(int x, int y) const;
 
 
         // mutators
@@ -30,6 +31,7 @@ class Player
 
         void PositionAtStart();
 
+
     protected:
         //data members
 
@@ -45,6 +47,7 @@ class Player
         char symbol;
         int  x, y;
         bool isOnLog = false;
+        char direction = 'U';
 
         // supporting functions 
         bool IsOnLog();

@@ -50,10 +50,14 @@ class Game
       Player* GetPlayer();
       void UpdateMoveableTiles();
       void ProcessInput(int key);
-      vector<vector<char>> PrepareGrid();
+      vector<vector<char>> PrepareEnvGrid();
+
+      vector<vector<char>> PrepareMovGrid();
 
       Log* GetLogInstance(int x, int y);
       Goal* GetGoalInstance(int x, int y);
+
+      Movable* GetMovableInstance(int x, int y);
 
       bool IsRunning();
 
@@ -80,6 +84,7 @@ class Game
 
       void SetupTiles_Vehicle();
       void CreateLog(int originX, int originY, int length, int moveDelay, std::string direction);
+      void CreateTruck(int originX, int originY, int truckLength, int moveDelay, std::string direction);
       void SetupTiles_Logs();
       void UpdateTiles_Vehicle();
       void UpdateTiles_Log();

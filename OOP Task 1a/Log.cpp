@@ -27,7 +27,6 @@ void Log::LinkPlayer(Player& p)
 {
 	if (p.GetX() == this->x && p.GetY() == this->y)
 	{
-		std::cout << "Player linked to log";
 		this->player = &p;
 	}
 	else this->player = nullptr;
@@ -35,7 +34,6 @@ void Log::LinkPlayer(Player& p)
 
 void Log::UnlinkPlayer() 
 { 
-	std::cout << "unlinked from log";
 	this->player = nullptr;
 }
 
