@@ -43,6 +43,7 @@ int main()
     Game game;
     game.Setup();
 
+    //game.GetPlayer().GetDirection();
 
     while (!WindowShouldClose())
     {
@@ -52,7 +53,7 @@ int main()
         {
             if (!IsSoundPlaying(sound_ambient))
             {
-                SetSoundVolume(sound_ambient, 0.5);
+                SetSoundVolume(sound_ambient, 0.2);
                 PlaySound(sound_ambient);
             }
 
@@ -82,9 +83,8 @@ int main()
             }
         }
 
-        const auto envGrid = game.PrepareEnvGrid();
-
         //Renders Environment. DO NOT ALTER
+        const auto envGrid = game.PrepareEnvGrid();
         for (int x = 0; x < SIZE; x++)
         {
             for (int y = 0; y < SIZE; y++)
@@ -102,7 +102,7 @@ int main()
             }
         }
 
-        //Renders movables (incl. player for now)
+        //TODO: 
         const auto movGrid = game.PrepareMovGrid();
         for (int x = 0; x < SIZE; x++)
         {
@@ -119,15 +119,19 @@ int main()
 
                 switch (movGrid[y][x])
                 {
+                    //TODO: PLAYER IMAGE ROTATION ON MOVEMENT
                 case PLAYER:    DrawTexture(texture_player, xPosition, yPosition, WHITE);                   break;
 
                 case CAR:       DrawTexture(texture_vehicle_car, xPosition, yPosition, WHITE);              break;
+
                 case VAN:
                     if (movGrid[y][leftTile] == VAN)
                         DrawTexture(texture_vehicle_van_back, xPosition, yPosition, WHITE);
                     else 
                         DrawTexture(texture_vehicle_van_front, xPosition, yPosition, WHITE);
                     break;
+
+                    //TODO: FIX TRUCK RENDERING. DOESN'T SHOW TRAILING TILES
                 case TRUCK:  
                     if (movGrid[y][leftTile] == TRUCK && (movGrid[y][rightTile] == TRUCK)) 
                         DrawTexture(texture_vehicle_truck_left_mid, xPosition, yPosition, WHITE);
@@ -158,8 +162,10 @@ int main()
         }
 
         EndDrawing();
+        //CODE
         game.CheckForPlayerResponse();
         if (game.player.GetCurrentLives() == 0) game.SetGameOver(true);
+        //TODO: SORT ACCESSING GAME.PLAYER OBJECT AS FUNCTION 
 
     }
     UnloadSound(sound_ambient);

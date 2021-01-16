@@ -1,5 +1,6 @@
 #include "Game.h"
 
+//TODO: IMPLEMENT LEVELS
 void Game::Setup()
 {
     SetupEnvironmentTiles();
@@ -90,6 +91,7 @@ Movable* Game::GetMovableInstance(int x, int y)
 
 
 
+//TODO: ADD FINISHLINE FUNCTIONALITY <- PRIORITY!!!
 void Game::CheckForPlayerResponse()
 {
     int playerX = player.GetX();
@@ -313,6 +315,7 @@ void Game::SetupTiles_Vehicle()
     cars.push_back(Car(2, 11, 20, "left"));
     cars.push_back(Car(6, 11, 20, "left"));
 
+    //TODO: ADD VAN GENERATION
     vans.push_back(Van(4, 12, 40, "right"));
     vans.push_back(Van(5, 12, 40, "right"));
 
@@ -343,16 +346,17 @@ void Game::CreateLog(int originX, int originY, int logLength, int moveDelay, std
     }
 }
 
+//TODO: FIX TRUCK GENERATION
 void Game::CreateTruck(int originX, int originY, int truckLength, int moveDelay, std::string direction)
 {
     for (int i = 0; i < truckLength; i++)
     {
         int newX = originX + i;
-        if (newX < 15)
+        if (newX > 15)
         {
             newX = newX - 15;
-            trucks.push_back(Truck(newX, originY, moveDelay, direction));
         }
+        trucks.push_back(Truck(newX, originY, moveDelay, direction));
     }
 }
 
