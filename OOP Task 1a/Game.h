@@ -51,16 +51,14 @@ class Game
       void UpdateMoveableTiles();
       void ProcessInput(int key);
       vector<vector<char>> PrepareEnvGrid();
-
       vector<vector<char>> PrepareMovGrid();
-
       Log* GetLogInstance(int x, int y);
       Goal* GetGoalInstance(int x, int y);
-
       Movable* GetMovableInstance(int x, int y);
-
+      bool CheckForPlayerDeathByVehicle();
+      bool CheckForPlayerDeathByAqua();
+      bool CheckForPlayerWin();
       bool IsRunning();
-
       void SetupEnvironmentTiles();
       void SetupMoveableTiles();
 
@@ -85,11 +83,13 @@ class Game
       void SetupTiles_Vehicle();
       void CreateLog(int originX, int originY, int length, int moveDelay, std::string direction);
       void CreateTruck(int originX, int originY, int truckLength, int moveDelay, std::string direction);
+      void CreateVan(int originX, int originY, int truckLength, int moveDelay, std::string direction);
       void SetupTiles_Logs();
       void UpdateTiles_Vehicle();
       void UpdateTiles_Log();
 
       //Player Functions
       void CheckForPlayerResponse();
+      bool Game::CheckForPlayerOnLog();
       bool IsPlayerAtPosition(int x, int y);
 };

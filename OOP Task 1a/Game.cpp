@@ -90,37 +90,75 @@ Movable* Game::GetMovableInstance(int x, int y)
 }
 
 
+bool Game::CheckForPlayerDeathByVehicle()
+{
+    int playerX = player.GetX();
+    int playerY = player.GetY();
+
+    for (auto& v : vehicles)
+    {
+        if (IsPlayerAtPosition(v.GetX(), v.GetY()))
+        {
+            player.Die();
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Game::CheckForPlayerDeathByAqua()
+{
+    int playerX = player.GetX();
+    int playerY = player.GetY();
+
+    // AQUA TILE CHECK
+    if (IsAquaAtPosition(playerX, playerY))
+    {
+        if (!IsLogAtPosition(playerX, playerY)) 
+        {
+            player.Die();
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Game::CheckForPlayerWin()
+{
+    int playerX = player.GetX();
+    int playerY = player.GetY();
+
+    if (IsGoalAtPosition(playerX, playerY))
+    {
+        Goal* thisGoal = GetGoalInstance(playerX, playerY);
+        if (thisGoal != nullptr)
+        {
+            thisGoal->SetIsTaken(true);
+            this->player.PositionAtStart();
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Game::CheckForPlayerOnLog()
+{
+    int playerX = player.GetX();
+    int playerY = player.GetY();
+
+    if (IsLogAtPosition(playerX, playerY))
+    {
+        Log* thisLog = GetLogInstance(playerX, playerY);             // Get a reference to a particular log instance
+        if (thisLog != nullptr) thisLog->LinkPlayer(player);         // If there is a log at the player position link the player to it
+        return true;
+    }
+    return false;
+}
 
 //TODO: ADD FINISHLINE FUNCTIONALITY <- PRIORITY!!!
 void Game::CheckForPlayerResponse()
 {
-    int playerX = player.GetX();
-    int playerY = player.GetY();
-      
-    // AQUA TILE CHECK
-    if (IsAquaAtPosition(playerX, playerY))
-    {
-        if (!IsLogAtPosition(playerX, playerY)) player.Die();
-        else 
-        {
-            Log* thisLog = GetLogInstance(playerX, playerY);             // Get a reference to a particular log instance
-            if (thisLog != nullptr) thisLog->LinkPlayer(player);         // If there is a log at the player position link the player to it
-        }
-    }
 
-    // GOAL TILE CHECK
-    if (IsGoalAtPosition(playerX, playerY))
-    {
-        Goal* thisGoal = GetGoalInstance(playerX, playerY);
-        if(thisGoal != nullptr)
-        {
-            thisGoal->SetIsTaken(true);
-            this->player.PositionAtStart();
-        }
-    }
-
-    // VEHICLE CHECK 
-    for (auto& v : vehicles) { if (IsPlayerAtPosition(v.GetX(), v.GetY())) player.Die(); }
 }
 
 bool Game::IsPlayerAtPosition(int x, int y)
@@ -314,12 +352,10 @@ void Game::SetupTiles_Vehicle()
 
     cars.push_back(Car(2, 11, 20, "left"));
     cars.push_back(Car(6, 11, 20, "left"));
+    cars.push_back(Car(6, 11, 20, "left"));
 
-    //TODO: ADD VAN GENERATION
-    vans.push_back(Van(4, 12, 40, "right"));
-    vans.push_back(Van(5, 12, 40, "right"));
-
-    CreateTruck(1, 10, 1, 20, "right");
+    CreateVan(4, 12, 2,40,"right");
+    CreateTruck(1, 10, 3, 20, "right");
 
     //These loops put all vehicle types in the vehicles list
     //DO NOT MODIFY
@@ -327,8 +363,6 @@ void Game::SetupTiles_Vehicle()
     for (auto& van : vans) { vehicles.push_back(van); }
     for (auto& truck : trucks) { vehicles.push_back(truck); }
 }
-
-
 
 /// <summary>
 /// Adds a log to the vector with a specified length. 
@@ -346,18 +380,34 @@ void Game::CreateLog(int originX, int originY, int logLength, int moveDelay, std
     }
 }
 
-//TODO: FIX TRUCK GENERATION
 void Game::CreateTruck(int originX, int originY, int truckLength, int moveDelay, std::string direction)
 {
-    for (int i = 0; i < truckLength; i++)
+    int lengthCounter = 0;
+    for (int i = 0; i < truckLength; i++) // for however long the truck is
     {
         int newX = originX + i;
-        if (newX > 15)
-        {
-            newX = newX - 15;
-        }
+
+        if (newX >= 15) newX -= 15;
+
         trucks.push_back(Truck(newX, originY, moveDelay, direction));
+        lengthCounter++;
     }
+    std::cout << "A truck of length " << lengthCounter << " was created";
+}
+
+void Game::CreateVan(int originX, int originY, int vanLength, int moveDelay, std::string direction)
+{
+    int lengthCounter = 0;
+    for (int i = 0; i < vanLength; i++) // for however long the van is
+    {
+        int newX = originX + i;
+
+        if (newX >= 15) newX -= 15;
+
+        vans.push_back(Van(newX, originY, moveDelay, direction));
+        lengthCounter++;
+    }
+    std::cout << "A van of length " << lengthCounter << " was created";
 }
 
 void Game::SetupTiles_Logs()

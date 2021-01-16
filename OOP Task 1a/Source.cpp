@@ -3,8 +3,9 @@
 #include <iostream>
 #include "Constants.h"
 
-
+//Function Declarations
 Texture2D GetTextureFromImagePath(const char* path, int cellSizeX, int cellSizeY);
+
 
 using namespace std;
 
@@ -16,7 +17,6 @@ int main()
     SetTargetFPS(60);
     InitAudioDevice();
     const int cellSize = (int)((float)GetScreenHeight() / (float)(SIZE));
-
 
     // Precache textures
     Texture2D texture_env_road = GetTextureFromImagePath("images/frogger_env_road.png", cellSize, cellSize);
@@ -39,11 +39,15 @@ int main()
     //Precache Sound 
     Sound sound_ambient = LoadSound("sound/frogger_streetnoise.mp3");
     Sound sound_splat = LoadSound("sound/frogger_splat.wav");
+    //TODO: FIX MISSING SOUND ISSUES
+    Sound sound_splash = LoadSound("sound/frogger_splash.wav");
+    Sound sound_jump1 = LoadSound("frogger_jump.wav");
+    SetSoundVolume(sound_jump1, 0.5);
+    Sound sound_jump2 = LoadSound("frogger_8bitjump.wav");
+    SetMasterVolume(0.5);
 
     Game game;
     game.Setup();
-
-    //game.GetPlayer().GetDirection();
 
     while (!WindowShouldClose())
     {
@@ -53,14 +57,18 @@ int main()
         {
             if (!IsSoundPlaying(sound_ambient))
             {
-                SetSoundVolume(sound_ambient, 0.2);
+                SetSoundVolume(sound_ambient, 0.05);
                 PlaySound(sound_ambient);
             }
 
             if (IsKeyPressed(KEY_RIGHT))  game.ProcessInput(KEY_RIGHT);
+            PlaySound(sound_jump1);
             if (IsKeyPressed(KEY_LEFT))   game.ProcessInput(KEY_LEFT);
+            PlaySound(sound_jump1);
             if (IsKeyPressed(KEY_UP))     game.ProcessInput(KEY_UP);
-            if (IsKeyPressed(KEY_DOWN))   game.ProcessInput(KEY_DOWN);
+            PlaySound(sound_jump1);
+            if (IsKeyPressed(KEY_DOWN))   game.ProcessInput(KEY_DOWN); 
+            PlaySound(sound_jump1);
 
             game.UpdateMoveableTiles();
         }
@@ -93,7 +101,6 @@ int main()
                 int yPosition = y * cellSize;
                 switch (envGrid[y][x])
                 {
-                 //environment render
                 case AQUA:      DrawTexture(texture_env_aqua, xPosition, yPosition, WHITE);         break;
                 case SAFEZONE:  DrawTexture(texture_env_grass, xPosition, yPosition, WHITE);        break;
                 case ROAD:      DrawTexture(texture_env_road, xPosition, yPosition, WHITE);         break;
@@ -131,7 +138,6 @@ int main()
                         DrawTexture(texture_vehicle_van_front, xPosition, yPosition, WHITE);
                     break;
 
-                    //TODO: FIX TRUCK RENDERING. DOESN'T SHOW TRAILING TILES
                 case TRUCK:  
                     if (movGrid[y][leftTile] == TRUCK && (movGrid[y][rightTile] == TRUCK)) 
                         DrawTexture(texture_vehicle_truck_left_mid, xPosition, yPosition, WHITE);
@@ -154,7 +160,6 @@ int main()
                         DrawTexture(texture_vehicle_truck_left_front, xPosition, yPosition, WHITE); break;
                     break;
 
-
                 case 'x': break;
                 default:        assert(false);
                 }
@@ -162,10 +167,30 @@ int main()
         }
 
         EndDrawing();
-        //CODE
-        game.CheckForPlayerResponse();
+ 
+        // --- game position checks ---
+
+        if (game.CheckForPlayerDeathByVehicle())
+        {
+            if (!IsSoundPlaying(sound_splat))
+            {
+                SetSoundVolume(sound_splat, 1);
+                PlaySound(sound_splat);
+            }
+        }
+        if (game.CheckForPlayerDeathByAqua())
+        {
+            if (!IsSoundPlaying(sound_splash))
+            {
+                SetSoundVolume(sound_splash, 1);
+                PlaySound(sound_splash);
+            }
+        }
+        game.CheckForPlayerWin();
+        game.CheckForPlayerOnLog();
+
+        //---------------------------------
         if (game.player.GetCurrentLives() == 0) game.SetGameOver(true);
-        //TODO: SORT ACCESSING GAME.PLAYER OBJECT AS FUNCTION 
 
     }
     UnloadSound(sound_ambient);
@@ -173,9 +198,13 @@ int main()
     return 0;
 }
 
+/// <summary>
+/// Loads a file into an Image object, resizes it and outputs a Texture2D object
+/// </summary>
 Texture2D GetTextureFromImagePath(const char* path, int cellSizeX, int cellSizeY)
 {
     Image newImage = LoadImage(path);
     ImageResize(&newImage, cellSizeX, cellSizeY);
     return LoadTextureFromImage(newImage);
 }
+
