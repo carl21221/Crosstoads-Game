@@ -1,17 +1,12 @@
 #pragma once
-#include "Movable.h"
+#include "MovableSticky.h"
 #include "Player.h"
 #include <iostream>
 
-class Log : public Movable
+class Log : public MovableSticky
 {
 public:
 	Log(int newX, int newY, int moveDelay);
 	Log(int newX, int newY, int moveDelay, std::string direction);
-	void LinkPlayer(Player& p);
-	void UnlinkPlayer();
-	void CalculateMove();
-private:
-	Player* player;
 };
 

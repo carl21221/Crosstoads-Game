@@ -6,7 +6,6 @@
 //Function Declarations
 Texture2D GetTextureFromImagePath(const char* path, int cellSizeX, int cellSizeY);
 
-
 using namespace std;
 
 int main()
@@ -15,8 +14,8 @@ int main()
     int windowSize = 600;
     InitWindow(windowSize, windowSize, "Frogger");
     SetTargetFPS(60);
-    InitAudioDevice();
     const int cellSize = (int)((float)GetScreenHeight() / (float)(SIZE));
+
 
     // Precache textures
     Texture2D texture_env_road = GetTextureFromImagePath("images/frogger_env_road.png", cellSize, cellSize);
@@ -34,16 +33,25 @@ int main()
     Texture2D texture_log_rightcap = GetTextureFromImagePath("images/frogger_log_right_cap.png", cellSize, cellSize);
     Texture2D texture_log_mid = GetTextureFromImagePath("images/frogger_log_mid.png", cellSize, cellSize);
 
-    Texture2D texture_player = GetTextureFromImagePath("images/frogger_frog_up.png", cellSize, cellSize);
+    Texture2D texture_lillypad = GetTextureFromImagePath("images/frogger_lillypad.png", cellSize, cellSize);
+
+    Texture2D texture_player_up = GetTextureFromImagePath("images/frogger_frog_up.png", cellSize, cellSize);
+    Texture2D texture_player_down = GetTextureFromImagePath("images/frogger_frog_down.png", cellSize, cellSize);
+    Texture2D texture_player_left = GetTextureFromImagePath("images/frogger_frog_left.png", cellSize, cellSize);
+    Texture2D texture_player_right = GetTextureFromImagePath("images/frogger_frog_right.png", cellSize, cellSize);
+
 
     //Precache Sound 
+    InitAudioDevice();
+    Sound sound_splash = LoadSound("sound/frogger_splash.wav");
+    Sound sound_jump1 = LoadSound("frogger_jump.wav");
+    Sound sound_jump2 = LoadSound("frogger_jump2.wav");
     Sound sound_ambient = LoadSound("sound/frogger_streetnoise.mp3");
     Sound sound_splat = LoadSound("sound/frogger_splat.wav");
     //TODO: FIX MISSING SOUND ISSUES
-    Sound sound_splash = LoadSound("sound/frogger_splash.wav");
-    Sound sound_jump1 = LoadSound("frogger_jump.wav");
+
     SetSoundVolume(sound_jump1, 0.5);
-    Sound sound_jump2 = LoadSound("frogger_8bitjump.wav");
+
     SetMasterVolume(0.5);
 
     Game game;
@@ -62,13 +70,13 @@ int main()
             }
 
             if (IsKeyPressed(KEY_RIGHT))  game.ProcessInput(KEY_RIGHT);
-            PlaySound(sound_jump1);
+            PlaySound(sound_jump2);
             if (IsKeyPressed(KEY_LEFT))   game.ProcessInput(KEY_LEFT);
-            PlaySound(sound_jump1);
+            PlaySound(sound_jump2);
             if (IsKeyPressed(KEY_UP))     game.ProcessInput(KEY_UP);
-            PlaySound(sound_jump1);
+            PlaySound(sound_jump2);
             if (IsKeyPressed(KEY_DOWN))   game.ProcessInput(KEY_DOWN); 
-            PlaySound(sound_jump1);
+            PlaySound(sound_jump2);
 
             game.UpdateMoveableTiles();
         }
@@ -91,7 +99,7 @@ int main()
             }
         }
 
-        //Renders Environment. DO NOT ALTER
+        //Draw Environment
         const auto envGrid = game.PrepareEnvGrid();
         for (int x = 0; x < SIZE; x++)
         {
@@ -109,7 +117,7 @@ int main()
             }
         }
 
-        //TODO: 
+        //Draw Moveables
         const auto movGrid = game.PrepareMovGrid();
         for (int x = 0; x < SIZE; x++)
         {
@@ -126,10 +134,7 @@ int main()
 
                 switch (movGrid[y][x])
                 {
-                    //TODO: PLAYER IMAGE ROTATION ON MOVEMENT
-                case PLAYER:    DrawTexture(texture_player, xPosition, yPosition, WHITE);                   break;
-
-                case CAR:       DrawTexture(texture_vehicle_car, xPosition, yPosition, WHITE);              break;
+                case CAR:  DrawTexture(texture_vehicle_car, xPosition, yPosition, WHITE); break;
 
                 case VAN:
                     if (movGrid[y][leftTile] == VAN)
@@ -160,11 +165,24 @@ int main()
                         DrawTexture(texture_vehicle_truck_left_front, xPosition, yPosition, WHITE); break;
                     break;
 
+                case LILLYPAD:
+                    DrawTexture(texture_lillypad, xPosition, yPosition, WHITE);
+
                 case 'x': break;
                 default:        assert(false);
                 }
             }
         }
+
+        //Draw Player
+        if(game.GetPlayer()->GetDirection() == 'U')
+            DrawTexture(texture_player_up, (game.GetPlayer()->GetX() - 1) * cellSize, (game.GetPlayer()->GetY() - 1) * cellSize, WHITE);
+        else if (game.GetPlayer()->GetDirection() == 'D')
+            DrawTexture(texture_player_down, (game.GetPlayer()->GetX() - 1) * cellSize, (game.GetPlayer()->GetY() - 1) * cellSize, WHITE);
+        else if (game.GetPlayer()->GetDirection() == 'L')
+            DrawTexture(texture_player_left, (game.GetPlayer()->GetX() - 1) * cellSize, (game.GetPlayer()->GetY() - 1) * cellSize, WHITE);
+        else
+            DrawTexture(texture_player_right, (game.GetPlayer()->GetX() - 1)* cellSize, (game.GetPlayer()->GetY() - 1)* cellSize, WHITE);
 
         EndDrawing();
  
@@ -180,11 +198,11 @@ int main()
         }
         if (game.CheckForPlayerDeathByAqua())
         {
-            if (!IsSoundPlaying(sound_splash))
-            {
-                SetSoundVolume(sound_splash, 1);
-                PlaySound(sound_splash);
-            }
+            //if (!IsSoundPlaying(sound_splash))
+            //{
+            //    SetSoundVolume(sound_splash, 1);
+            //    PlaySound(sound_splash);
+            //}
         }
         game.CheckForPlayerWin();
         game.CheckForPlayerOnLog();

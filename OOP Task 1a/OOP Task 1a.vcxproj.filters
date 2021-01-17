@@ -17,6 +17,8 @@
     <ClCompile Include="Van.cpp" />
     <ClCompile Include="Truck.cpp" />
     <ClCompile Include="Log.cpp" />
+    <ClCompile Include="Lillypad.cpp" />
+    <ClCompile Include="MovableSticky.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h" />
@@ -35,5 +37,7 @@
     <ClInclude Include="Van.h" />
     <ClInclude Include="Truck.h" />
     <ClInclude Include="Log.h" />
+    <ClInclude Include="Lillypad.h" />
+    <ClInclude Include="MovableSticky.h" />
   </ItemGroup>
 </Project>

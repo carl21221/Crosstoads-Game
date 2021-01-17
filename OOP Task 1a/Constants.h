@@ -5,7 +5,7 @@
 
 // symbols used for storing where things are
 //Player piece
-#define PLAYER    'P'
+//#define PLAYER    'P'
 
 // Safe Tiles
 #define ROAD	  'R'
@@ -28,6 +28,7 @@
 #define VAN_SPEED   25;
 #define TRUCK_SPEED 45;
 #define LOG_SPEED 25;
+#define LILLYPAD    'P'
 
 // the command letters to move the mouse on the maze
 #define KEY_RIGHT 262

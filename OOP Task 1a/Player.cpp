@@ -2,22 +2,30 @@
 #include <iostream>
 
 Player::Player()
-    : symbol(PLAYER), x(0), y(0), alive(true), escaped(false), dx(0), dy(0), currentLives(5), maxLives(5), direction('U')
+    : x(0), y(0), alive(true), escaped(false), dx(0), dy(0), currentLives(5), maxLives(5), direction('U')
 {
     PositionAtStart();
 }
 
 int Player::GetX() const {  return x; }
+
 int Player::GetY() const { return y; }
+
 char Player::GetSymbol() const { return symbol; }
+
 char Player::GetDirection() const { return this->direction; }
+
 bool Player::IsAtPosition(int x, int y) const {  return this->x == x && this->y == y; }
+
 int Player::GetCurrentLives() { return currentLives; }
+
 int Player::GetMaxLives() { return maxLives; }
 
 void Player::MoveX(int amt) // Positive number for Left, Negative for Right
 {
     this->x = this->x - amt;
+    if (this->x < 1) { this->x = 1; }
+    else if (this->x > 15) this->x = 15;
 }
 
 void Player::Move(int key)

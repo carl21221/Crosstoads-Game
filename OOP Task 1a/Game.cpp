@@ -54,7 +54,6 @@ vector<vector<char>> Game::PrepareMovGrid()
             else if (IsVanAtPosition(col, row)) line.push_back(VAN);
             else if (IsTruckAtPosition(col, row)) line.push_back(TRUCK);
             else if (IsLogAtPosition(col, row)) line.push_back(LOG);
-            else if (IsPlayerAtPosition(col, row)) line.push_back(PLAYER);
             else     line.push_back('x');
         }
         movGrid.push_back(line);
@@ -88,7 +87,6 @@ Movable* Game::GetMovableInstance(int x, int y)
     }
     return nullptr;
 }
-
 
 bool Game::CheckForPlayerDeathByVehicle()
 {
@@ -257,6 +255,15 @@ bool Game::IsLogAtPosition(int x, int y)
     return false;
 }
 
+bool Game::IsLillypadAtPosition(int x, int y)
+{
+    for (size_t i = 0; i < lillypads.size(); ++i)
+    {
+        if (lillypads[i].IsAtPosition(x, y) && lillypads[i].GetSymbol() == LILLYPAD) return true;
+    }
+    return false;
+}
+
 bool Game::IsRunning()
 {
     if (player.GetCurrentLives() <= 0) return false;
@@ -274,12 +281,12 @@ void Game::SetupEnvironmentTiles()
 void Game::SetupMoveableTiles()
 {
     SetupTiles_Vehicle();
-    SetupTiles_Logs();
+    SetupTiles_MoveableStickies();
 }
 void Game::UpdateMoveableTiles()
 {
     UpdateTiles_Vehicle();
-    UpdateTiles_Log();
+    UpdateTiles_MovSticky();
 }
 void Game::PushTiles_Safezone()
 {
@@ -410,7 +417,7 @@ void Game::CreateVan(int originX, int originY, int vanLength, int moveDelay, std
     std::cout << "A van of length " << lengthCounter << " was created";
 }
 
-void Game::SetupTiles_Logs()
+void Game::SetupTiles_MoveableStickies()
 {
     CreateLog(11, 3, 3, 50, "left");
     CreateLog(1, 4, 4, 30, "right");
@@ -418,9 +425,10 @@ void Game::SetupTiles_Logs()
     CreateLog(9, 6, 4, 30, "right");
     CreateLog(3, 7, 4, 10, "left");
 
-    // CreateLog function does this for you. 
-    // If creating individual tiles, use this below
-    //for (auto& log : logs) { logs.push_back(log); }
+    lillypads.push_back(Lillypad(2, 5, 20, "left"));
+
+    for (auto& log : logs) { movStickies.push_back(&log); }
+    for (auto& lillypad : lillypads) { movStickies.push_back(&lillypad); }
 }
 
 void Game::UpdateTiles_Vehicle()
@@ -428,11 +436,11 @@ void Game::UpdateTiles_Vehicle()
     for (auto& v : vehicles) { v.CalculateMove(); }
 }
 
-void Game::UpdateTiles_Log()
+void Game::UpdateTiles_MovSticky()
 {
-    for (auto& l : logs) 
+    for (MovableSticky* s : movStickies) 
     { 
-        l.CalculateMove();
-        l.UnlinkPlayer();
+        s->CalculateMove();
+        s->UnlinkPlayer();
     }
 }

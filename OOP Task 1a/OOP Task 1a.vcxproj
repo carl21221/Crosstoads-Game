@@ -141,8 +141,10 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Goal.cpp" />
     <ClCompile Include="Level.cpp" />
+    <ClCompile Include="Lillypad.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Movable.cpp" />
+    <ClCompile Include="MovableSticky.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RandomNumberGenerator.cpp" />
     <ClCompile Include="Road.cpp" />
@@ -160,8 +162,10 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Goal.h" />
     <ClInclude Include="Level.h" />
+    <ClInclude Include="Lillypad.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Movable.h" />
+    <ClInclude Include="MovableSticky.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RandomNumberGenerator.h" />
     <ClInclude Include="Road.h" />
