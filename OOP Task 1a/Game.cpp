@@ -292,13 +292,13 @@ void Game::PushTiles_Safezone()
 {
     for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 1)); }
     for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 8)); }
-    for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 9)); }
     for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 14)); }
     for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 15)); }
     for each (Safezone sz in safezones) { tiles.push_back(sz); }
 }
 void Game::PushTiles_Road()
 {
+    for (int i = 1; i <= 15; i++) { roads.push_back(Road(i, 9)); }
     for (int i = 1; i <= 15; i++) { roads.push_back(Road(i, 10)); }
     for (int i = 1; i <= 15; i++) { roads.push_back(Road(i, 11)); }
     for (int i = 1; i <= 15; i++) { roads.push_back(Road(i, 12)); }
@@ -344,6 +344,10 @@ void Game::SetupTiles_Vehicle()
     cars.push_back(Car(2, 11, 20, "left"));
     cars.push_back(Car(6, 11, 20, "left"));
     cars.push_back(Car(6, 11, 20, "left"));
+
+    cars.push_back(Car(1, 9, 5, "right"));
+    cars.push_back(Car(7, 9, 5, "right"));
+    cars.push_back(Car(12, 9, 5, "right"));
 
     CreateVan(4, 12, 2,40,"right");
     CreateTruck(1, 10, 3, 20, "right");
