@@ -11,10 +11,11 @@ using namespace std;
 int main()
 {
 
-    int windowSize = 600;
-    InitWindow(windowSize, windowSize, "Frogger");
+    const int gameSizeX = 600;
+    const int gameSizeY = 640;
+    InitWindow(gameSizeX, gameSizeY, "Frogger");
     SetTargetFPS(60);
-    const int cellSize = (int)((float)GetScreenHeight() / (float)(SIZE));
+    const int cellSize = (int)((float)GetScreenWidth() / (float)(SIZE));
 
 
     // Precache textures
@@ -112,7 +113,18 @@ int main()
                 case AQUA:      DrawTexture(texture_env_aqua, xPosition, yPosition, WHITE);         break;
                 case SAFEZONE:  DrawTexture(texture_env_grass, xPosition, yPosition, WHITE);        break;
                 case ROAD:      DrawTexture(texture_env_road, xPosition, yPosition, WHITE);         break;
-                case GOAL:      DrawTexture(texture_env_grass, xPosition, yPosition, WHITE);        break;
+                case GOAL:      
+                    Goal* thisGoal = game.GetGoalInstance(x+1, y+1);
+                    if (thisGoal != nullptr)
+                    {
+                        if (thisGoal->IsTaken())
+                        {
+                            DrawTexture(texture_env_grass, xPosition, yPosition, WHITE); 
+                            DrawTexture(texture_player_up, xPosition, yPosition, WHITE);
+                        }
+                        else  DrawTexture(texture_env_grass, xPosition, yPosition, WHITE);
+                    }
+                    break;
                 }
             }
         }
@@ -174,7 +186,7 @@ int main()
             }
         }
 
-        //Draw Player
+        //Draw Player wih orientation
         if(game.GetPlayer()->GetDirection() == 'U')
             DrawTexture(texture_player_up, (game.GetPlayer()->GetX() - 1) * cellSize, (game.GetPlayer()->GetY() - 1) * cellSize, WHITE);
         else if (game.GetPlayer()->GetDirection() == 'D')
@@ -183,6 +195,15 @@ int main()
             DrawTexture(texture_player_left, (game.GetPlayer()->GetX() - 1) * cellSize, (game.GetPlayer()->GetY() - 1) * cellSize, WHITE);
         else
             DrawTexture(texture_player_right, (game.GetPlayer()->GetX() - 1)* cellSize, (game.GetPlayer()->GetY() - 1)* cellSize, WHITE);
+
+        // Draw HUD
+        const int fontSize = 20;
+        int currentLives = game.GetPlayer()->GetCurrentLives();
+
+        DrawRectangle(0, gameSizeX, gameSizeX, gameSizeY - gameSizeX, BLACK);
+        DrawText(TextFormat("Lives: %1i", currentLives), gameSizeX * 0.05, gameSizeX + (fontSize / 2), fontSize, GREEN);
+        DrawText(TextFormat("Goals Taken: %1i / 5", game.GetGoalTakenCount()), gameSizeX * 0.5, gameSizeX + (fontSize / 2), fontSize, GREEN);
+
 
         EndDrawing();
  
@@ -208,7 +229,7 @@ int main()
         game.CheckForPlayerOnLog();
 
         //---------------------------------
-        if (game.player.GetCurrentLives() == 0) game.SetGameOver(true);
+        if (game.GetPlayer()->GetCurrentLives() == 0) game.SetGameOver(true);
 
     }
     UnloadSound(sound_ambient);
@@ -216,9 +237,14 @@ int main()
     return 0;
 }
 
+
 /// <summary>
 /// Loads a file into an Image object, resizes it and outputs a Texture2D object
 /// </summary>
+/// <param name="path"></param>
+/// <param name="cellSizeX"></param>
+/// <param name="cellSizeY"></param>
+/// <returns>Texture2D</returns>
 Texture2D GetTextureFromImagePath(const char* path, int cellSizeX, int cellSizeY)
 {
     Image newImage = LoadImage(path);

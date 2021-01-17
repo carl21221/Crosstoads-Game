@@ -18,7 +18,10 @@ Goal::Goal(int x, int y, bool takenVal)
 }
 
 //Get
-bool Goal::IsTaken() { return this->isTaken; }
+bool Goal::IsTaken()
+{
+	return this->isTaken;
+}
 
 //Set
 void Goal::SetIsTaken(bool val) { this->isTaken = val; }

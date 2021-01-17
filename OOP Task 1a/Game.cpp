@@ -290,6 +290,7 @@ void Game::UpdateMoveableTiles()
 }
 void Game::PushTiles_Safezone()
 {
+    for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 1)); }
     for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 8)); }
     for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 9)); }
     for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 14)); }
@@ -311,18 +312,6 @@ void Game::PushTiles_Aqua()
     for (int i = 1; i <= 15; i++) { aquas.push_back(Aqua(i, 5)); }
     for (int i = 1; i <= 15; i++) { aquas.push_back(Aqua(i, 6)); }
     for (int i = 1; i <= 15; i++) { aquas.push_back(Aqua(i, 7)); }
-
-    aquas.push_back(Aqua(1, 1));
-    aquas.push_back(Aqua(2, 1));
-    aquas.push_back(Aqua(4, 1));
-    aquas.push_back(Aqua(5, 1));
-    aquas.push_back(Aqua(7, 1));
-    aquas.push_back(Aqua(8, 1));
-    aquas.push_back(Aqua(10, 1));
-    aquas.push_back(Aqua(11, 1));
-    aquas.push_back(Aqua(13, 1));
-    aquas.push_back(Aqua(14, 1));
-
     aquas.push_back(Aqua(1, 2));
     aquas.push_back(Aqua(2, 2));
     aquas.push_back(Aqua(4, 2));
@@ -338,11 +327,6 @@ void Game::PushTiles_Aqua()
 }
 void Game::PushTiles_Goal()
 {
-    goals.push_back(Goal(3, 1));
-    goals.push_back(Goal(6, 1));
-    goals.push_back(Goal(9, 1));
-    goals.push_back(Goal(12, 1));
-    goals.push_back(Goal(15, 1));
     goals.push_back(Goal(3, 2));
     goals.push_back(Goal(6, 2));
     goals.push_back(Goal(9, 2));
@@ -443,4 +427,19 @@ void Game::UpdateTiles_MovSticky()
         s->CalculateMove();
         s->UnlinkPlayer();
     }
+}
+
+int Game::GetGoalTakenCount()
+{
+    int goalCount = 0;
+    for (auto& g : goals)
+    {
+        if (g.IsTaken()) goalCount++;
+    }
+    return goalCount;
+}
+
+int Game::GetGoalTotalCount()
+{
+    return goals.size();
 }

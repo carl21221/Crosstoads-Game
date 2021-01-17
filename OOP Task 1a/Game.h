@@ -66,6 +66,9 @@ class Game
       void SetupEnvironmentTiles();
       void SetupMoveableTiles();
 
+      int GetGoalTakenCount();
+      int GetGoalTotalCount();
+
       //Check for specific tiles
       bool IsSafezoneAtPosition(int x, int y);
       bool IsRoadAtPosition(int x, int y);
@@ -93,6 +96,8 @@ class Game
       void SetupTiles_MoveableStickies();
       void UpdateTiles_Vehicle();
       void UpdateTiles_MovSticky();
+
+
 
       //Player Functions
       void CheckForPlayerResponse();
