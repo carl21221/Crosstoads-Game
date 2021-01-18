@@ -1,12 +1,12 @@
 #pragma once
 #include "MovableSticky.h"
 #include "Player.h"
+#include <iostream>
 
 class Lillypad : public MovableSticky
 {
 public:
-	Lillypad::Lillypad(int newX, int newY, int moveDelay, std::string direction);
-private:
-	Player* player;
+	Lillypad(int newX, int newY, int moveDelay);
+	Lillypad(int newX, int newY, int moveDelay, std::string direction);
 };
 

@@ -57,6 +57,7 @@ class Game
       vector<vector<char>> PrepareEnvGrid();
       vector<vector<char>> PrepareMovGrid();
       Log* GetLogInstance(int x, int y);
+      Lillypad* GetLillypadInstance(int x, int y);
       Goal* GetGoalInstance(int x, int y);
       Movable* GetMovableInstance(int x, int y);
       bool CheckForPlayerDeathByVehicle();
@@ -83,6 +84,8 @@ class Game
 
       bool IsLillypadAtPosition(int x, int y);
 
+      bool IsStickyAtPosition(int x, int y);
+
       //Tile Load Functions
       void PushTiles_Safezone();
       void PushTiles_Road();
@@ -101,6 +104,6 @@ class Game
 
       //Player Functions
       void CheckForPlayerResponse();
-      bool CheckForPlayerOnLog();
+      bool CheckForPlayerOnSticky();
       bool IsPlayerAtPosition(int x, int y);
 };

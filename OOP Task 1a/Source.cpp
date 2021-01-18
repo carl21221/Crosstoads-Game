@@ -226,7 +226,7 @@ int main()
             //}
         }
         game.CheckForPlayerWin();
-        game.CheckForPlayerOnLog();
+        game.CheckForPlayerOnSticky();
 
         //---------------------------------
         if (game.GetPlayer()->GetCurrentLives() == 0) game.SetGameOver(true);

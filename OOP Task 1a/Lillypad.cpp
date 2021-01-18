@@ -1,12 +1,25 @@
 #include "Lillypad.h"
 
-Lillypad::Lillypad(int newX, int newY, int moveDelay, std::string direction)
+Lillypad::Lillypad(int newX, int newY, int moveDelay)
 {
-	this->x = x;
-	this->y = y;
-	this->symbol = 'P';
+	this->x = newX;
+	this->y = newY;
+	this->symbol = LILLYPAD;
 	this->moveTimerMax = moveDelay;
 	this->moveTimer = moveTimerMax;
 	this->direction = "left";
 	this->player = nullptr;
+}
+
+Lillypad::Lillypad(int newX, int newY, int moveDelay, std::string direction)
+{
+	this->x = newX;
+	this->y = newY;
+	this->symbol = LILLYPAD;
+	this->moveTimerMax = moveDelay;
+	this->moveTimer = moveTimerMax;
+	this->player = nullptr;
+
+	if (IsDirectionValid(direction)) this->direction = direction;
+	else this->direction = "left";
 }

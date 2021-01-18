@@ -50,11 +50,12 @@ vector<vector<char>> Game::PrepareMovGrid()
         vector<char> line;
         for (int col = 1; col <= SIZE; ++col)
         {
-            if (IsCarAtPosition(col, row)) line.push_back(CAR);
-            else if (IsVanAtPosition(col, row)) line.push_back(VAN);
-            else if (IsTruckAtPosition(col, row)) line.push_back(TRUCK);
-            else if (IsLogAtPosition(col, row)) line.push_back(LOG);
-            else     line.push_back('x');
+            if (IsCarAtPosition(col, row))              line.push_back(CAR);
+            else if (IsVanAtPosition(col, row))         line.push_back(VAN);
+            else if (IsTruckAtPosition(col, row))       line.push_back(TRUCK);
+            else if (IsLogAtPosition(col, row))         line.push_back(LOG);
+            else if (IsLillypadAtPosition(col, row)) {  line.push_back(LILLYPAD); std::cout << "DEBUG: Lillypad has been added to the grid at " << col << ":" << row << ".\n"; }
+            else                                        line.push_back('x');
         }
         movGrid.push_back(line);
     }
@@ -69,6 +70,16 @@ Log* Game::GetLogInstance(int x, int y)
     }
     return nullptr;
 }
+
+Lillypad* Game::GetLillypadInstance(int x, int y)
+{
+    for (Lillypad& lp : lillypads)
+    {
+        if (lp.GetX() == x && lp.GetY() == y) return &lp;
+    }
+    return nullptr;
+}
+
 Goal* Game::GetGoalInstance(int x, int y)
 {
     for (Goal& goal : goals) 
@@ -112,7 +123,7 @@ bool Game::CheckForPlayerDeathByAqua()
     // AQUA TILE CHECK
     if (IsAquaAtPosition(playerX, playerY))
     {
-        if (!IsLogAtPosition(playerX, playerY)) 
+        if (!IsLogAtPosition(playerX, playerY) && (!IsLillypadAtPosition(playerX, playerY)))
         {
             player.Die();
             return true;
@@ -139,7 +150,7 @@ bool Game::CheckForPlayerWin()
     return false;
 }
 
-bool Game::CheckForPlayerOnLog()
+bool Game::CheckForPlayerOnSticky()
 {
     int playerX = player.GetX();
     int playerY = player.GetY();
@@ -147,17 +158,28 @@ bool Game::CheckForPlayerOnLog()
     if (IsLogAtPosition(playerX, playerY))
     {
         Log* thisLog = GetLogInstance(playerX, playerY);             // Get a reference to a particular log instance
-        if (thisLog != nullptr) thisLog->LinkPlayer(player);         // If there is a log at the player position link the player to it
-        return true;
+        if (thisLog != nullptr)
+        {
+            thisLog->LinkPlayer(player);         // If there is a log at the player position link the player to it
+            return true;
+        }
+    }
+    else if (IsLillypadAtPosition(playerX, playerY))
+    {
+        Lillypad* thisLillyPad = GetLillypadInstance(playerX, playerY);             // Get a reference to a particular lillypad instance
+        if (thisLillyPad != nullptr)
+        {
+            thisLillyPad->LinkPlayer(player);         // If there is a lillypad at the player position link the player to it
+            return true;
+        }
     }
     return false;
 }
 
-//TODO: ADD FINISHLINE FUNCTIONALITY <- PRIORITY!!!
-void Game::CheckForPlayerResponse()
-{
-
-}
+//void Game::CheckForPlayerResponse()
+//{
+//
+//}
 
 bool Game::IsPlayerAtPosition(int x, int y)
 {
@@ -264,6 +286,15 @@ bool Game::IsLillypadAtPosition(int x, int y)
     return false;
 }
 
+bool Game::IsStickyAtPosition(int x, int y)
+{
+    for (size_t i = 0; i < movStickies.size(); ++i)
+    {
+        if (movStickies[i]->IsAtPosition(x, y) && (movStickies[i]->GetSymbol() == LILLYPAD || movStickies[i]->GetSymbol() == LOG)) return true;
+    }
+    return false;
+}
+
 bool Game::IsRunning()
 {
     if (player.GetCurrentLives() <= 0) return false;
@@ -360,21 +391,25 @@ void Game::SetupTiles_Vehicle()
 }
 
 /// <summary>
-/// Adds a log to the vector with a specified length. 
-/// Truncates the logs if the log's length exceeds the grid width
+/// Adds a log to the vector with a specified length (with wrapping)
 /// </summary>
 void Game::CreateLog(int originX, int originY, int logLength, int moveDelay, std::string direction)
 {
+    int lengthCounter = 0;
     for (int i = 0; i < logLength; i++)
     {
-        if ((originX + i) < 15)
-        {
-            logs.push_back(Log(originX + i, originY, moveDelay, direction));
-        }
-        else break;
+        int newX = originX + i;
+
+        if (newX >= 15) newX -= 15;
+        logs.push_back(Log(newX, originY, moveDelay, direction));
+        lengthCounter++;
     }
+    std::cout << "DEBUG: A Log of length " << lengthCounter << " was created. \n";
 }
 
+/// <summary>
+/// Adds a truck to the vector with a specified length (with wrapping)
+/// </summary>
 void Game::CreateTruck(int originX, int originY, int truckLength, int moveDelay, std::string direction)
 {
     int lengthCounter = 0;
@@ -387,7 +422,7 @@ void Game::CreateTruck(int originX, int originY, int truckLength, int moveDelay,
         trucks.push_back(Truck(newX, originY, moveDelay, direction));
         lengthCounter++;
     }
-    std::cout << "A truck of length " << lengthCounter << " was created";
+    std::cout << "DEBUG: A Truck of length " << lengthCounter << " was created. \n";
 }
 
 void Game::CreateVan(int originX, int originY, int vanLength, int moveDelay, std::string direction)
@@ -407,16 +442,39 @@ void Game::CreateVan(int originX, int originY, int vanLength, int moveDelay, std
 
 void Game::SetupTiles_MoveableStickies()
 {
+    //Create logs here using the "CreateLog" function
     CreateLog(11, 3, 3, 50, "left");
     CreateLog(1, 4, 4, 30, "right");
     CreateLog(4, 5, 5, 20, "left");
     CreateLog(9, 6, 4, 30, "right");
     CreateLog(3, 7, 4, 10, "left");
 
-    lillypads.push_back(Lillypad(2, 5, 20, "left"));
+    //Add lillypads here.
+    lillypads.push_back(Lillypad(1, 5, 20, "left"));
+
+    // DEBUG ---
+    std::cout << "DEBUG: There are currently " << lillypads.size() << " lillypads in the scene.\n";
+    for (Lillypad& lP : lillypads)
+    {
+        std::cout << "DEBUG: Lillypad - X: " << lP.GetX() << " - Y: " << lP.GetY() << " (on instantiation).\n";
+    }
+
+    // ---------
 
     for (auto& log : logs) { movStickies.push_back(&log); }
     for (auto& lillypad : lillypads) { movStickies.push_back(&lillypad); }
+
+    for (auto mS : movStickies)
+    {
+        if (mS->GetSymbol() == LOG)
+        {
+            std::cout << "DEBUG: Log - X: " << mS->GetX() << " - Y: " << mS->GetY() << ".\n";
+        }
+        else if (mS->GetSymbol() == LILLYPAD)
+        {
+            std::cout << "DEBUG: Lillypad - X: " << mS->GetX() << " - Y: " << mS->GetY() << ".\n";
+        }
+    }
 }
 
 void Game::UpdateTiles_Vehicle()
