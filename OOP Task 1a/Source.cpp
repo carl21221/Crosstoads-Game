@@ -55,17 +55,23 @@ int main()
 
 
     //Precache Sound 
-    InitAudioDevice();
-    Sound sound_splash = LoadSound("sound/frogger_splash.wav");
-    Sound sound_jump1 = LoadSound("frogger_jump.wav");
-    Sound sound_jump2 = LoadSound("frogger_jump2.wav");
-    Sound sound_ambient = LoadSound("sound/frogger_streetnoise.mp3");
+
+    Sound sound_splash = LoadSound("sound/frogger_splash.mp3");
+    Sound sound_jump1 = LoadSound("frogger_jump1.mp3");
+    Sound sound_jump2 = LoadSound("frogger_jump2.mp3");
+    Sound sound_jump3 = LoadSound("frogger_jump3.mp3");
+    Sound sound_ambient = LoadSound("sound/frogger_streetnoise_fix.mp3");
     Sound sound_splat = LoadSound("sound/frogger_splat.wav");
+    Sound sound_bgmusic = LoadSound("sound/frogger_menutheme.mp3");
+    Sound sound_victory = LoadSound("sound/frogger_victory.mp3");
+    Sound sound_goaltaken = LoadSound("sound/frogger_goaltaken.mp3");
     //TODO: FIX MISSING SOUND ISSUES
 
-    SetSoundVolume(sound_jump1, 0.5);
 
     SetMasterVolume(0.5);
+    SetSoundVolume(sound_jump1, 0.5);
+
+    InitAudioDevice();
 
     Game game;
     game.Setup();
@@ -77,37 +83,47 @@ int main()
         ClearBackground(DARKGRAY);
         if (!game.IsGameOver())
         {
-            if (!IsSoundPlaying(sound_ambient))
+            if (!IsSoundPlaying(sound_bgmusic))
             {
-                SetSoundVolume(sound_ambient, 0.05);
-                PlaySound(sound_ambient);
+                SetSoundVolume(sound_bgmusic, 0.5);
+                PlaySound(sound_bgmusic);
             }
 
             if (IsKeyPressed(KEY_RIGHT))  game.ProcessInput(KEY_RIGHT);
-            PlaySound(sound_jump2);
+            PlaySound(sound_jump1);
             if (IsKeyPressed(KEY_LEFT))   game.ProcessInput(KEY_LEFT);
-            PlaySound(sound_jump2);
+            PlaySound(sound_jump1);
             if (IsKeyPressed(KEY_UP))     game.ProcessInput(KEY_UP);
-            PlaySound(sound_jump2);
+            PlaySound(sound_jump1);
             if (IsKeyPressed(KEY_DOWN))   game.ProcessInput(KEY_DOWN); 
-            PlaySound(sound_jump2);
+            PlaySound(sound_jump1);
 
             game.UpdateMoveableTiles();
-
-            while (game.GetGoalTakenCount() == 5)
+            if (game.GetGoalTakenCount() == 5)
             {
-                BeginDrawing();
-                ClearBackground(GREEN);
-                DrawText(("YOU WON!"), 180, 280, 40, WHITE);
-                DrawText(("| Press [SPACE] to play again | Press[ESC] to quit |"), 177, 320, 8, WHITE);
-                EndDrawing();
-                if (IsKeyPressed(SPACEBAR))
+                bool victorySoundPlayed = false;
+                while (game.GetGoalTakenCount() == 5)
                 {
-                    game.Setup();
-                    break;
+                    if (!victorySoundPlayed)
+                    {
+                        StopSound(sound_bgmusic);
+                        PlaySound(sound_victory);
+                        victorySoundPlayed = true;
+                    }
+                    BeginDrawing();
+                    ClearBackground(GREEN);
+                    DrawText(("YOU WON!"), 180, 280, 40, WHITE);
+                    DrawText(("| Press [SPACE] to play again | Press[ESC] to quit |"), 177, 320, 8, WHITE);
+                    EndDrawing();
+                    if (IsKeyPressed(SPACEBAR))
+                    {
+                        game.Setup();
+                        break;
+                    }
+                    else if (IsKeyPressed(ESCAPE))  CloseWindow();
                 }
-                else if (IsKeyPressed(ESCAPE))  CloseWindow();
             }
+
         }
         else
         {  // gameover screen
@@ -250,13 +266,19 @@ int main()
         }
         if (game.CheckForPlayerDeathByAqua())
         {
-            //if (!IsSoundPlaying(sound_splash))
-            //{
-            //    SetSoundVolume(sound_splash, 1);
-            //    PlaySound(sound_splash);
-            //}
+            if (!IsSoundPlaying(sound_splash))
+            {
+                SetSoundVolume(sound_splash, 1);
+                PlaySound(sound_splash);
+            }
         }
-        game.CheckForPlayerWin();
+        if (game.CheckForPlayerWin())
+        {
+            if (!IsSoundPlaying(sound_goaltaken))
+            {
+                PlaySound(sound_goaltaken);
+            }
+        }
         game.CheckForPlayerOnSticky();
 
         //---------------------------------
