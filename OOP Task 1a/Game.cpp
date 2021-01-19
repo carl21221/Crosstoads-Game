@@ -16,6 +16,11 @@ Player* Game::GetPlayer() { return &this->player; }
 
 void Game::ProcessInput(int key) { player.Move(key); }
 
+Timer* Game::GetTimer()
+{
+    return &mainTimer;
+}
+
 /// <summary>
 /// This function builds up a 2D grid of characters representing the current state of the game.
 /// The characters are later used to decide which colour sqaure to display, but you could display images instead.
@@ -54,7 +59,7 @@ vector<vector<char>> Game::PrepareMovGrid()
             else if (IsVanAtPosition(col, row))         line.push_back(VAN);
             else if (IsTruckAtPosition(col, row))       line.push_back(TRUCK);
             else if (IsLogAtPosition(col, row))         line.push_back(LOG);
-            else if (IsLillypadAtPosition(col, row)) {  line.push_back(LILLYPAD); std::cout << "DEBUG: Lillypad has been added to the grid at " << col << ":" << row << ".\n"; }
+            else if (IsLillypadAtPosition(col, row)) {  line.push_back(LILLYPAD);}
             else                                        line.push_back('x');
         }
         movGrid.push_back(line);
@@ -175,11 +180,6 @@ bool Game::CheckForPlayerOnSticky()
     }
     return false;
 }
-
-//void Game::CheckForPlayerResponse()
-//{
-//
-//}
 
 bool Game::IsPlayerAtPosition(int x, int y)
 {
@@ -437,7 +437,7 @@ void Game::CreateVan(int originX, int originY, int vanLength, int moveDelay, std
         vans.push_back(Van(newX, originY, moveDelay, direction));
         lengthCounter++;
     }
-    std::cout << "A van of length " << lengthCounter << " was created";
+    std::cout << "A van of length " << lengthCounter << " was created\n";
 }
 
 void Game::SetupTiles_MoveableStickies()
@@ -452,29 +452,8 @@ void Game::SetupTiles_MoveableStickies()
     //Add lillypads here.
     lillypads.push_back(Lillypad(1, 5, 20, "left"));
 
-    // DEBUG ---
-    std::cout << "DEBUG: There are currently " << lillypads.size() << " lillypads in the scene.\n";
-    for (Lillypad& lP : lillypads)
-    {
-        std::cout << "DEBUG: Lillypad - X: " << lP.GetX() << " - Y: " << lP.GetY() << " (on instantiation).\n";
-    }
-
-    // ---------
-
     for (auto& log : logs) { movStickies.push_back(&log); }
     for (auto& lillypad : lillypads) { movStickies.push_back(&lillypad); }
-
-    for (auto mS : movStickies)
-    {
-        if (mS->GetSymbol() == LOG)
-        {
-            std::cout << "DEBUG: Log - X: " << mS->GetX() << " - Y: " << mS->GetY() << ".\n";
-        }
-        else if (mS->GetSymbol() == LILLYPAD)
-        {
-            std::cout << "DEBUG: Lillypad - X: " << mS->GetX() << " - Y: " << mS->GetY() << ".\n";
-        }
-    }
 }
 
 void Game::UpdateTiles_Vehicle()

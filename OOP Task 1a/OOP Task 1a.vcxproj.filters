@@ -19,6 +19,7 @@
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Lillypad.cpp" />
     <ClCompile Include="MovableSticky.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h" />
@@ -39,5 +40,6 @@
     <ClInclude Include="Log.h" />
     <ClInclude Include="Lillypad.h" />
     <ClInclude Include="MovableSticky.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
 </Project>

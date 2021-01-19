@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Wall.h"
 #include <iostream>
+#include "Timer.h"
 
 //Load Tile Librarys
 #include "Tile.h"
@@ -35,7 +36,6 @@ class Game
       vector<Road> roads;
       vector<Aqua> aquas;
       vector<Goal> goals;
-      
 
       vector<Car> cars;
       vector<Van> vans;
@@ -46,6 +46,7 @@ class Game
       vector<Lillypad> lillypads;
       vector<MovableSticky*> movStickies;
 
+      Timer mainTimer;
       bool isGameOver = false;
 
       void Setup();
@@ -54,15 +55,15 @@ class Game
       Player* GetPlayer();
       void UpdateMoveableTiles();
       void ProcessInput(int key);
+      Timer* GetTimer();
+
       vector<vector<char>> PrepareEnvGrid();
       vector<vector<char>> PrepareMovGrid();
       Log* GetLogInstance(int x, int y);
       Lillypad* GetLillypadInstance(int x, int y);
       Goal* GetGoalInstance(int x, int y);
       Movable* GetMovableInstance(int x, int y);
-      bool CheckForPlayerDeathByVehicle();
-      bool CheckForPlayerDeathByAqua();
-      bool CheckForPlayerWin();
+
       bool IsRunning();
       void SetupEnvironmentTiles();
       void SetupMoveableTiles();
@@ -75,15 +76,11 @@ class Game
       bool IsRoadAtPosition(int x, int y);
       bool IsAquaAtPosition(int x, int y);
       bool IsGoalAtPosition(int x, int y);
-
       bool IsCarAtPosition(int x, int y);
       bool IsVanAtPosition(int x, int y);
       bool IsTruckAtPosition(int x, int y);
-
       bool IsLogAtPosition(int x, int y);
-
       bool IsLillypadAtPosition(int x, int y);
-
       bool IsStickyAtPosition(int x, int y);
 
       //Tile Load Functions
@@ -101,9 +98,11 @@ class Game
       void UpdateTiles_MovSticky();
 
 
-
       //Player Functions
       void CheckForPlayerResponse();
+      bool CheckForPlayerDeathByVehicle();
+      bool CheckForPlayerDeathByAqua();
+      bool CheckForPlayerWin();
       bool CheckForPlayerOnSticky();
       bool IsPlayerAtPosition(int x, int y);
 };
