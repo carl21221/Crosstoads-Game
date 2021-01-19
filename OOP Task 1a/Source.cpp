@@ -3,6 +3,18 @@
 #include "Game.h"
 #include "Constants.h"
 
+////////////////////////////////////////////////////
+
+//TODO: 1 - IMPLEMENT WIN SCREEN
+//TODO: 2 - IMPLEMENT POSTING TO HIGHSCORE FILE ON WIN
+//TODO: 3 - CODE CLEANUP (ADDING CONST AND MOVING VISIBILITY IN CLASSES)
+
+////////////////////////////////////////////////////
+
+
+
+
+
 //Function Declarations
 Texture2D GetTextureFromImagePath(const char* path, int cellSizeX, int cellSizeY);
 
@@ -81,9 +93,24 @@ int main()
             PlaySound(sound_jump2);
 
             game.UpdateMoveableTiles();
+
+            while (game.GetGoalTakenCount() == 5)
+            {
+                BeginDrawing();
+                ClearBackground(GREEN);
+                DrawText(("YOU WON!"), 180, 280, 40, WHITE);
+                DrawText(("| Press [SPACE] to play again | Press[ESC] to quit |"), 177, 320, 8, WHITE);
+                EndDrawing();
+                if (IsKeyPressed(SPACEBAR))
+                {
+                    game.Setup();
+                    break;
+                }
+                else if (IsKeyPressed(ESCAPE))  CloseWindow();
+            }
         }
         else
-        {
+        {  // gameover screen
             while (game.IsGameOver())
             {
                 BeginDrawing();
@@ -95,6 +122,7 @@ int main()
                 {
                     game.SetGameOver(false);
                     game.GetPlayer()->ResetLives();
+                    game.GetTimer()->Reset();
                     break;
                 }
                 else if (IsKeyPressed(ESCAPE))  CloseWindow();
@@ -198,13 +226,13 @@ int main()
             DrawTexture(texture_player_right, (game.GetPlayer()->GetX() - 1) * cellSize, (game.GetPlayer()->GetY() - 1) * cellSize, WHITE);
 
         // Draw HUD
-        const int fontSize = 10;
+        const int fontSize = 20;
         int currentLives = game.GetPlayer()->GetCurrentLives();
         Timer* mainTimer = game.GetTimer();
         std::cout << mainTimer->GetTimeAsString();
         DrawRectangle(0, gameSizeX, gameSizeX, gameSizeY - gameSizeX, BLACK);
         DrawText(TextFormat("Lives: %i", currentLives), (double)gameSizeX * 0.05, (double)gameSizeX + (fontSize / 2), fontSize, GREEN);
-        DrawText(TextFormat("Goals Taken: %i/5", game.GetGoalTakenCount()), (double)gameSizeX * 0.5, (double)gameSizeX + (fontSize / 2), fontSize, GREEN);
+        //DrawText(TextFormat("Goals Taken: %i/5", game.GetGoalTakenCount()), (double)gameSizeX * 0.5, (double)gameSizeX + (fontSize / 2), fontSize, GREEN);
         DrawText(TextFormat("Timer: %i:%i", game.GetTimer()->GetSeconds(), game.GetTimer()->GetMinutes()),
             (double)gameSizeX * 0.75, (double)gameSizeX + (fontSize / 2), fontSize, GREEN);
 
