@@ -55,6 +55,7 @@ class Game
       Player* GetPlayer();
       void UpdateMoveableTiles();
       void ProcessInput(int key);
+
       Timer* GetTimer();
 
       vector<vector<char>> PrepareEnvGrid();

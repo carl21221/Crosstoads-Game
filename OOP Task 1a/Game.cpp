@@ -18,7 +18,7 @@ void Game::ProcessInput(int key) { player.Move(key); }
 
 Timer* Game::GetTimer()
 {
-    return &mainTimer;
+    return &this->mainTimer;
 }
 
 /// <summary>

@@ -61,7 +61,6 @@ int main()
     while (!WindowShouldClose())
     {
         game.GetTimer()->Tick();
-
         BeginDrawing();
         ClearBackground(DARKGRAY);
         if (!game.IsGameOver())
@@ -196,18 +195,18 @@ int main()
         else if (game.GetPlayer()->GetDirection() == 'L')
             DrawTexture(texture_player_left, (game.GetPlayer()->GetX() - 1) * cellSize, (game.GetPlayer()->GetY() - 1) * cellSize, WHITE);
         else
-            DrawTexture(texture_player_right, (game.GetPlayer()->GetX() - 1)* cellSize, (game.GetPlayer()->GetY() - 1)* cellSize, WHITE);
+            DrawTexture(texture_player_right, (game.GetPlayer()->GetX() - 1) * cellSize, (game.GetPlayer()->GetY() - 1) * cellSize, WHITE);
 
         // Draw HUD
         const int fontSize = 10;
         int currentLives = game.GetPlayer()->GetCurrentLives();
-        std::cout << game.GetTimer()->GetTimeAsString();
-
+        Timer* mainTimer = game.GetTimer();
+        std::cout << mainTimer->GetTimeAsString();
         DrawRectangle(0, gameSizeX, gameSizeX, gameSizeY - gameSizeX, BLACK);
-        DrawText(TextFormat("Lives: %1i", currentLives), gameSizeX * 0.05, gameSizeX + (fontSize / 2), fontSize, GREEN);
-        DrawText(TextFormat("Goals Taken: %1i / 5", game.GetGoalTakenCount()), gameSizeX * 0.5, gameSizeX + (fontSize / 2), fontSize, GREEN);
-        DrawText(TextFormat("Time: %1i", game.GetTimer()->GetTimeAsString()), gameSizeX * 0.75, gameSizeX + (fontSize / 2), fontSize, GREEN);
-
+        DrawText(TextFormat("Lives: %i", currentLives), (double)gameSizeX * 0.05, (double)gameSizeX + (fontSize / 2), fontSize, GREEN);
+        DrawText(TextFormat("Goals Taken: %i/5", game.GetGoalTakenCount()), (double)gameSizeX * 0.5, (double)gameSizeX + (fontSize / 2), fontSize, GREEN);
+        DrawText(TextFormat("Timer: %i:%i", game.GetTimer()->GetSeconds(), game.GetTimer()->GetMinutes()),
+            (double)gameSizeX * 0.75, (double)gameSizeX + (fontSize / 2), fontSize, GREEN);
 
         EndDrawing();
  

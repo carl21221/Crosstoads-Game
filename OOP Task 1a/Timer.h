@@ -1,6 +1,5 @@
 #pragma once
 
-#include <chrono>
 #include <string>
 
 class Timer
@@ -12,6 +11,7 @@ public:
 	int GetSeconds();
 	int GetMinutes();
 	int GetHours();
+	int GetTimeInSeconds();
 	std::string GetTimeAsString();
 
 	void Tick();
@@ -26,12 +26,9 @@ private:
 	int seconds = 0;
 	int minutes = 0;
 	int hours = 0;
-
 	int frameCounter = 0;
 
-	bool isPaused = true;
-
-	void FormatTimeRollover();
+	bool isPaused = false;
 
 };
 
