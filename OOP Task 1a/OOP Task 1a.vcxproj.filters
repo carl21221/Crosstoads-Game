@@ -3,9 +3,7 @@
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="RandomNumberGenerator.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="Wall.cpp" />
     <ClCompile Include="Aqua.cpp" />
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="Level.cpp" />
@@ -25,8 +23,6 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="RandomNumberGenerator.h" />
-    <ClInclude Include="Wall.h" />
     <ClInclude Include="Aqua.h" />
     <ClInclude Include="Car.h" />
     <ClInclude Include="Level.h" />

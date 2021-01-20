@@ -1,18 +1,20 @@
 #pragma once
+//Load inbuilt Libraries
 #include <assert.h>	
 #include <string>		
 #include <vector>
-#include "Player.h"
-#include "Wall.h"
 #include <iostream>
+#include "Player.h"
 #include "Timer.h"
-//Load Tile Librarys
+
+//Load Tile Libraries
 #include "Tile.h"
 #include "Safezone.h"
 #include "Road.h"
 #include "Aqua.h"
 #include "Goal.h"
-//Load Moveable Librarys
+
+//Load Moveable Libraries
 #include "Movable.h"
 #include "Car.h"
 #include "Van.h"

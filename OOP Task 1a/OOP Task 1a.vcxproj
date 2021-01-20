@@ -146,7 +146,6 @@
     <ClCompile Include="Movable.cpp" />
     <ClCompile Include="MovableSticky.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="RandomNumberGenerator.cpp" />
     <ClCompile Include="Road.cpp" />
     <ClCompile Include="Safezone.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -154,7 +153,6 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Truck.cpp" />
     <ClCompile Include="Van.cpp" />
-    <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Aqua.h" />
@@ -168,14 +166,12 @@
     <ClInclude Include="Movable.h" />
     <ClInclude Include="MovableSticky.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="RandomNumberGenerator.h" />
     <ClInclude Include="Road.h" />
     <ClInclude Include="Safezone.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Truck.h" />
     <ClInclude Include="Van.h" />
-    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
