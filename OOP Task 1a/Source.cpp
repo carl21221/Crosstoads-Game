@@ -244,12 +244,14 @@ int main()
         // Draw HUD
         const int fontSize = 20;
         int currentLives = game.GetPlayer()->GetCurrentLives();
-        Timer* mainTimer = game.GetTimer();
-        std::cout << mainTimer->GetTimeAsString();
+        std::string minString = std::to_string(game.GetTimer()->GetMinutes());
+        std::string secString = std::to_string(game.GetTimer()->GetSeconds());
+
         DrawRectangle(0, gameSizeX, gameSizeX, gameSizeY - gameSizeX, BLACK);
-        DrawText(TextFormat("Lives: %i", currentLives), (double)gameSizeX * 0.05, (double)gameSizeX + (fontSize / 2), fontSize, GREEN);
-        //DrawText(TextFormat("Goals Taken: %i/5", game.GetGoalTakenCount()), (double)gameSizeX * 0.5, (double)gameSizeX + (fontSize / 2), fontSize, GREEN);
-        DrawText(TextFormat("Timer: %i:%i", game.GetTimer()->GetSeconds(), game.GetTimer()->GetMinutes()),
+        DrawText(TextFormat("Lives: %i", currentLives), 
+            (double)gameSizeX * 0.05, (double)gameSizeX + (fontSize / 2), fontSize, GREEN);
+
+        DrawText(TextFormat("Timer: %02i:%02i", game.GetTimer()->GetMinutes(), game.GetTimer()->GetSeconds()),
             (double)gameSizeX * 0.75, (double)gameSizeX + (fontSize / 2), fontSize, GREEN);
 
         EndDrawing();
