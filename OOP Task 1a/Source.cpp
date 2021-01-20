@@ -5,10 +5,9 @@
 #include "Constants.h"
 
 ////////////////////////////////////////////////////
-
-//TODO: 2 - IMPLEMENT POSTING TO HIGHSCORE FILE ON WIN [ ]
+//
 //TODO: 3 - CODE CLEANUP (ADDING CONST AND MOVING VISIBILITY IN CLASSES) [ ]
-
+//
 ////////////////////////////////////////////////////
 
 //Function Declarations
@@ -23,7 +22,7 @@ int main()
 {
     const int gameSizeX = 600;
     const int gameSizeY = 640;
-    InitWindow(gameSizeX, gameSizeY, "Frogger");
+    InitWindow(gameSizeX, gameSizeY, "Crosstoads");
     SetTargetFPS(60);
     const int cellSize = (int)((float)GetScreenWidth() / (float)(SIZE));
 

@@ -1,25 +1,24 @@
 #include "Player.h"
-#include <iostream>
 
 Player::Player()
-    : x(0), y(0), alive(true), escaped(false), dx(0), dy(0), currentLives(5), maxLives(5), direction('U')
+    : x(0), y(0), dx(0), dy(0), currentLives(5), maxLives(5), direction('U')
 {
     PositionAtStart();
 }
 
-int Player::GetX() const {  return x; }
+const int Player::GetX() const {  return x; }
 
-int Player::GetY() const { return y; }
+const int Player::GetY() const { return y; }
 
-char Player::GetSymbol() const { return symbol; }
+const char Player::GetSymbol() const { return symbol; }
 
-char Player::GetDirection() const { return this->direction; }
+const char Player::GetDirection() const { return this->direction; }
 
-bool Player::IsAtPosition(int x, int y) const {  return this->x == x && this->y == y; }
+const bool Player::IsAtPosition(int x, int y) const {  return this->x == x && this->y == y; }
 
-int Player::GetCurrentLives() { return currentLives; }
+int Player::GetCurrentLives() const { return currentLives; }
 
-int Player::GetMaxLives() { return maxLives; }
+int Player::GetMaxLives() const { return maxLives; }
 
 void Player::MoveX(int amt) // Positive number for Left, Negative for Right
 {
@@ -53,7 +52,6 @@ void Player::Move(int key)
         this->direction = 'D';
         break;
     default:
-        // not a key we care about, so do nothing
         break;
     }
 
@@ -67,15 +65,14 @@ void Player::Move(int key)
 
 void Player::Die()
 {
-    //lose life
     this->currentLives--;
     PositionAtStart();
-    std::cout << "Player Died\n";
-    std::cout << "Current Lives:" << this->currentLives << "\n";
 }
 
 void Player::ResetLives() { this->currentLives = this->maxLives; }
-bool Player::IsOnLog() { return this->isOnLog; }
+
+bool Player::IsOnLog() const { return this->isOnLog; }
+
 void Player::IsOnLog(bool val) { this->isOnLog = val; }
 
 void Player::UpdatePosition(int dx, int dy)

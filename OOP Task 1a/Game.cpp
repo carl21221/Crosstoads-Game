@@ -1,31 +1,23 @@
 #include "Game.h"
 
-//TODO: IMPLEMENT LEVELS
-void Game::Setup()
+const void Game::Setup()
 {
     SetupEnvironmentTiles();
     SetupMoveableTiles();
     this->player.ResetLives();
 }
 
-void Game::SetGameOver(bool value) { this->isGameOver = value; }
+const void Game::SetGameOver(const bool& value) { this->isGameOver = value; }
 
-bool Game::IsGameOver() { return this->isGameOver; }
+const bool Game::IsGameOver() const { return this->isGameOver; }
 
 Player* Game::GetPlayer() { return &this->player; }
 
-void Game::ProcessInput(int key) { player.Move(key); }
+const void Game::ProcessInput(const int& key) { player.Move(key); }
 
-Timer* Game::GetTimer()
-{
-    return &this->mainTimer;
-}
+Timer* Game::GetTimer() { return &mainTimer; }
 
-/// <summary>
-/// This function builds up a 2D grid of characters representing the current state of the game.
-/// The characters are later used to decide which colour sqaure to display, but you could display images instead.
-/// </summary>
-vector<vector<char>> Game::PrepareEnvGrid() 
+const vector<vector<char>> Game::PrepareEnvGrid()
 {
     // create the 2D grid
     vector<vector<char>> envGrid;
@@ -47,7 +39,7 @@ vector<vector<char>> Game::PrepareEnvGrid()
     return envGrid;
 }
 
-vector<vector<char>> Game::PrepareMovGrid()
+const vector<vector<char>> Game::PrepareMovGrid()
 {
     vector<vector<char>> movGrid;
     for (int row = 1; row <= SIZE; ++row)
@@ -94,7 +86,6 @@ Goal* Game::GetGoalInstance(int x, int y)
     return nullptr;
 }
 
-//Loops through all movables, can be quite slow
 Movable* Game::GetMovableInstance(int x, int y)
 {
     for (Movable m : vehicles)
@@ -181,7 +172,7 @@ bool Game::CheckForPlayerOnSticky()
     return false;
 }
 
-bool Game::IsPlayerAtPosition(int x, int y)
+const bool Game::IsPlayerAtPosition(const int& x, const int& y) const
 {
     for (size_t i = 0; i < tiles.size(); ++i)
     {
@@ -193,7 +184,7 @@ bool Game::IsPlayerAtPosition(int x, int y)
     return false;
 }
 
-bool Game::IsSafezoneAtPosition(int x, int y)
+const bool Game::IsSafezoneAtPosition(const int& x, const int& y) const
 {
     for (size_t i = 0; i < tiles.size(); ++i)
     {
@@ -205,7 +196,7 @@ bool Game::IsSafezoneAtPosition(int x, int y)
     return false;
 }
 
-bool Game::IsAquaAtPosition(int x, int y)
+const bool Game::IsAquaAtPosition(const int& x, const int& y) const
 {
     for (size_t i = 0; i < tiles.size(); ++i)
     {
@@ -217,7 +208,7 @@ bool Game::IsAquaAtPosition(int x, int y)
     return false;
 }
 
-bool Game::IsRoadAtPosition(int x, int y)
+const bool Game::IsRoadAtPosition(const int& x, const int& y) const
 {
     for (size_t i = 0; i < tiles.size(); ++i)
     {
@@ -229,7 +220,7 @@ bool Game::IsRoadAtPosition(int x, int y)
     return false;
 }
 
-bool Game::IsGoalAtPosition(int x, int y)
+const bool Game::IsGoalAtPosition(const int& x, const int& y) const
 {
     for (size_t i = 0; i < tiles.size(); ++i)
     {
@@ -241,7 +232,7 @@ bool Game::IsGoalAtPosition(int x, int y)
     return false;
 }
 
-bool Game::IsCarAtPosition(int x, int y)
+const bool Game::IsCarAtPosition(const int& x, const int& y) const
 {
     for (size_t i = 0; i < vehicles.size(); ++i)
     {
@@ -250,7 +241,7 @@ bool Game::IsCarAtPosition(int x, int y)
     return false;
 }
 
-bool Game::IsVanAtPosition(int x, int y)
+const bool Game::IsVanAtPosition(const int& x, const int& y) const
 {
     for (size_t i = 0; i < vehicles.size(); ++i)
     {
@@ -259,7 +250,7 @@ bool Game::IsVanAtPosition(int x, int y)
     return false;
 }
 
-bool Game::IsTruckAtPosition(int x, int y)
+const bool Game::IsTruckAtPosition(const int& x, const int& y) const
 {
     for (size_t i = 0; i < vehicles.size(); ++i)
     {
@@ -268,7 +259,7 @@ bool Game::IsTruckAtPosition(int x, int y)
     return false;
 }
 
-bool Game::IsLogAtPosition(int x, int y)
+const bool Game::IsLogAtPosition(const int& x, const int& y) const
 {
     for (size_t i = 0; i < logs.size(); ++i)
     {
@@ -277,7 +268,7 @@ bool Game::IsLogAtPosition(int x, int y)
     return false;
 }
 
-bool Game::IsLillypadAtPosition(int x, int y)
+const bool Game::IsLillypadAtPosition(const int& x, const int& y) const
 {
     for (size_t i = 0; i < lillypads.size(); ++i)
     {
@@ -286,7 +277,7 @@ bool Game::IsLillypadAtPosition(int x, int y)
     return false;
 }
 
-bool Game::IsStickyAtPosition(int x, int y)
+const bool Game::IsStickyAtPosition(const int& x, const int& y) const
 {
     for (size_t i = 0; i < movStickies.size(); ++i)
     {
@@ -295,31 +286,34 @@ bool Game::IsStickyAtPosition(int x, int y)
     return false;
 }
 
-bool Game::IsRunning()
+bool Game::IsRunning() const
 {
     if (player.GetCurrentLives() <= 0) return false;
     else return true;
 }
 
 //Load Tile functions
-void Game::SetupEnvironmentTiles()
+const void Game::SetupEnvironmentTiles()
 {
     PushTiles_Safezone();
     PushTiles_Road();
     PushTiles_Aqua();
     PushTiles_Goal();
 }
-void Game::SetupMoveableTiles()
+
+const void Game::SetupMoveableTiles()
 {
     SetupTiles_Vehicle();
     SetupTiles_MoveableStickies();
 }
-void Game::UpdateMoveableTiles()
+
+const void Game::UpdateMoveableTiles()
 {
     UpdateTiles_Vehicle();
     UpdateTiles_MovSticky();
 }
-void Game::PushTiles_Safezone()
+
+const void Game::PushTiles_Safezone()
 {
     for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 1)); }
     for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 8)); }
@@ -327,7 +321,8 @@ void Game::PushTiles_Safezone()
     for (int i = 1; i <= 15; i++) { safezones.push_back(Safezone(i, 15)); }
     for each (Safezone sz in safezones) { tiles.push_back(sz); }
 }
-void Game::PushTiles_Road()
+
+const void Game::PushTiles_Road()
 {
     for (int i = 1; i <= 15; i++) { roads.push_back(Road(i, 9)); }
     for (int i = 1; i <= 15; i++) { roads.push_back(Road(i, 10)); }
@@ -336,7 +331,8 @@ void Game::PushTiles_Road()
     for (int i = 1; i <= 15; i++) { roads.push_back(Road(i, 13)); }
     for each (Road r in roads) { tiles.push_back(r); }
 }
-void Game::PushTiles_Aqua()
+
+const void Game::PushTiles_Aqua()
 {
     for (int i = 1; i <= 15; i++) { aquas.push_back(Aqua(i, 3)); }
     for (int i = 1; i <= 15; i++) { aquas.push_back(Aqua(i, 4)); }
@@ -356,7 +352,8 @@ void Game::PushTiles_Aqua()
 
     for each (Aqua a in aquas) { tiles.push_back(a); }
 }
-void Game::PushTiles_Goal()
+
+const void Game::PushTiles_Goal()
 {
     goals.push_back(Goal(3, 2));
     goals.push_back(Goal(6, 2));
@@ -366,7 +363,8 @@ void Game::PushTiles_Goal()
 
     for each (Goal g in goals) { tiles.push_back(g); }
 }
-void Game::SetupTiles_Vehicle()
+
+const void Game::SetupTiles_Vehicle()
 {
     //Load vehicles into corresponsing vectors here
     cars.push_back(Car(15, 13, 20, "left"));
@@ -390,10 +388,7 @@ void Game::SetupTiles_Vehicle()
     for (auto& truck : trucks) { vehicles.push_back(truck); }
 }
 
-/// <summary>
-/// Adds a log to the vector with a specified length (with wrapping)
-/// </summary>
-void Game::CreateLog(int originX, int originY, int logLength, int moveDelay, std::string direction)
+const void Game::CreateLog(const int& originX, const int& originY, const int& logLength, const int& moveDelay, const std::string& direction)
 {
     int lengthCounter = 0;
     for (int i = 0; i < logLength; i++)
@@ -410,7 +405,7 @@ void Game::CreateLog(int originX, int originY, int logLength, int moveDelay, std
 /// <summary>
 /// Adds a truck to the vector with a specified length (with wrapping)
 /// </summary>
-void Game::CreateTruck(int originX, int originY, int truckLength, int moveDelay, std::string direction)
+const void Game::CreateTruck(const int& originX, const int& originY, const int& truckLength, const int& moveDelay, const std::string& direction)
 {
     int lengthCounter = 0;
     for (int i = 0; i < truckLength; i++) // for however long the truck is
@@ -425,7 +420,7 @@ void Game::CreateTruck(int originX, int originY, int truckLength, int moveDelay,
     std::cout << "DEBUG: A Truck of length " << lengthCounter << " was created. \n";
 }
 
-void Game::CreateVan(int originX, int originY, int vanLength, int moveDelay, std::string direction)
+const void Game::CreateVan(const int& originX, const int& originY, const int& vanLength, const int& moveDelay, const std::string& direction)
 {
     int lengthCounter = 0;
     for (int i = 0; i < vanLength; i++) // for however long the van is
@@ -440,7 +435,7 @@ void Game::CreateVan(int originX, int originY, int vanLength, int moveDelay, std
     std::cout << "A van of length " << lengthCounter << " was created\n";
 }
 
-void Game::SetupTiles_MoveableStickies()
+const void Game::SetupTiles_MoveableStickies()
 {
     //Create logs here using the "CreateLog" function
     CreateLog(11, 3, 3, 50, "left");
@@ -456,12 +451,12 @@ void Game::SetupTiles_MoveableStickies()
     for (auto& lillypad : lillypads) { movStickies.push_back(&lillypad); }
 }
 
-void Game::UpdateTiles_Vehicle()
+const void Game::UpdateTiles_Vehicle()
 {
     for (auto& v : vehicles) { v.CalculateMove(); }
 }
 
-void Game::UpdateTiles_MovSticky()
+const void Game::UpdateTiles_MovSticky()
 {
     for (MovableSticky* s : movStickies) 
     { 
@@ -470,17 +465,17 @@ void Game::UpdateTiles_MovSticky()
     }
 }
 
-int Game::GetGoalTakenCount()
+const int Game::GetGoalTakenCount() const
 {
     int goalCount = 0;
-    for (auto& g : goals)
+    for (Goal g : goals)
     {
         if (g.IsTaken()) goalCount++;
     }
     return goalCount;
 }
 
-int Game::GetGoalTotalCount()
+const int Game::GetGoalTotalCount() const
 {
     return goals.size();
 }
