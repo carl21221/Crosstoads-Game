@@ -4,8 +4,16 @@
 #include "Game.h"
 #include "Constants.h"
 
+
+// -----------------------------------------------------------
+//
+//          FIX PLAYER RESPONSE TO WIN AND DEATH SCREENS
+//
+// -----------------------------------------------------------
+
+
 //Source Header - Function Declarations
-Texture2D GetTextureFromImagePath(const char* path, int cellSizeX, int cellSizeY);
+const Texture2D GetTextureFromImagePath(const char* path, const int& cellSizeX, const int& cellSizeY);
 int GetHighscoreFromFile();
 int CalculateHighscore(const int& time, const int& livesLeft);
 void SaveScoreToFile(const int& score);
@@ -22,39 +30,33 @@ int main()
 
 
     // Precache textures
-    Texture2D texture_env_road = GetTextureFromImagePath("images/frogger_env_road.png", cellSize, cellSize);
-    Texture2D texture_env_grass = GetTextureFromImagePath("images/frogger_env_grass.png", cellSize, cellSize);
-    Texture2D texture_env_aqua = GetTextureFromImagePath("images/frogger_env_aqua.png", cellSize, cellSize);
-
-    Texture2D texture_vehicle_car = GetTextureFromImagePath("images/frogger_car_left.png", cellSize, cellSize);
-    Texture2D texture_vehicle_van_front = GetTextureFromImagePath("images/frogger_van_left_front.png", cellSize, cellSize);
-    Texture2D texture_vehicle_van_back = GetTextureFromImagePath("images/frogger_van_left_back.png", cellSize, cellSize);
-    Texture2D texture_vehicle_truck_left_front = GetTextureFromImagePath("images/frogger_truck_left_front.png", cellSize, cellSize);
-    Texture2D texture_vehicle_truck_left_mid = GetTextureFromImagePath("images/frogger_truck_left_mid.png", cellSize, cellSize);
-    Texture2D texture_vehicle_truck_left_back = GetTextureFromImagePath("images/frogger_truck_left_back.png", cellSize, cellSize);
-
-    Texture2D texture_log_leftcap = GetTextureFromImagePath("images/frogger_log_left_cap.png", cellSize, cellSize);
-    Texture2D texture_log_rightcap = GetTextureFromImagePath("images/frogger_log_right_cap.png", cellSize, cellSize);
-    Texture2D texture_log_mid = GetTextureFromImagePath("images/frogger_log_mid.png", cellSize, cellSize);
-
-    Texture2D texture_lillypad = GetTextureFromImagePath("images/frogger_lillypad.png", cellSize, cellSize);
-
-    Texture2D texture_player_up = GetTextureFromImagePath("images/frogger_frog_up.png", cellSize, cellSize);
-    Texture2D texture_player_down = GetTextureFromImagePath("images/frogger_frog_down.png", cellSize, cellSize);
-    Texture2D texture_player_left = GetTextureFromImagePath("images/frogger_frog_left.png", cellSize, cellSize);
-    Texture2D texture_player_right = GetTextureFromImagePath("images/frogger_frog_right.png", cellSize, cellSize);
-
+    const Texture2D texture_env_road = GetTextureFromImagePath("images/frogger_env_road.png", cellSize, cellSize);
+    const Texture2D texture_env_grass = GetTextureFromImagePath("images/frogger_env_grass.png", cellSize, cellSize);
+    const Texture2D texture_env_aqua = GetTextureFromImagePath("images/frogger_env_aqua.png", cellSize, cellSize);
+    const Texture2D texture_vehicle_car = GetTextureFromImagePath("images/frogger_car_left.png", cellSize, cellSize);
+    const Texture2D texture_vehicle_van_front = GetTextureFromImagePath("images/frogger_van_left_front.png", cellSize, cellSize);
+    const Texture2D texture_vehicle_van_back = GetTextureFromImagePath("images/frogger_van_left_back.png", cellSize, cellSize);
+    const Texture2D texture_vehicle_truck_left_front = GetTextureFromImagePath("images/frogger_truck_left_front.png", cellSize, cellSize);
+    const Texture2D texture_vehicle_truck_left_mid = GetTextureFromImagePath("images/frogger_truck_left_mid.png", cellSize, cellSize);
+    const Texture2D texture_vehicle_truck_left_back = GetTextureFromImagePath("images/frogger_truck_left_back.png", cellSize, cellSize);
+    const Texture2D texture_log_leftcap = GetTextureFromImagePath("images/frogger_log_left_cap.png", cellSize, cellSize);
+    const Texture2D texture_log_rightcap = GetTextureFromImagePath("images/frogger_log_right_cap.png", cellSize, cellSize);
+    const Texture2D texture_log_mid = GetTextureFromImagePath("images/frogger_log_mid.png", cellSize, cellSize);
+    const Texture2D texture_lillypad = GetTextureFromImagePath("images/frogger_lillypad.png", cellSize, cellSize);
+    const Texture2D texture_player_up = GetTextureFromImagePath("images/frogger_frog_up.png", cellSize, cellSize);
+    const Texture2D texture_player_down = GetTextureFromImagePath("images/frogger_frog_down.png", cellSize, cellSize);
+    const Texture2D texture_player_left = GetTextureFromImagePath("images/frogger_frog_left.png", cellSize, cellSize);
+    const Texture2D texture_player_right = GetTextureFromImagePath("images/frogger_frog_right.png", cellSize, cellSize);
     //Precache Sound 
-    Sound sound_splash = LoadSound("sound/frogger_splash.mp3");
-    Sound sound_ambient = LoadSound("sound/frogger_streetnoise_fix.mp3");
-    Sound sound_splat = LoadSound("sound/frogger_splat.wav");
-    Sound sound_bgmusic = LoadSound("sound/frogger_menutheme.mp3");
-    Sound sound_victory = LoadSound("sound/frogger_victory.mp3");
-    Sound sound_goaltaken = LoadSound("sound/frogger_goaltaken.mp3");
-
-    SetMasterVolume(0.5);
+    const Sound sound_splash = LoadSound("sound/frogger_splash.mp3");
+    const Sound sound_ambient = LoadSound("sound/frogger_streetnoise_fix.mp3");
+    const Sound sound_splat = LoadSound("sound/frogger_splat.wav");
+    const Sound sound_bgmusic = LoadSound("sound/frogger_menutheme.mp3");
+    const Sound sound_victory = LoadSound("sound/frogger_victory.mp3");
+    const Sound sound_goaltaken = LoadSound("sound/frogger_goaltaken.mp3");
 
     InitAudioDevice();
+    SetMasterVolume(0.5);
 
     Game game;
     game.Setup();
@@ -80,6 +82,7 @@ int main()
             if (IsKeyPressed(KEY_DOWN))   game.ProcessInput(KEY_DOWN);
 
             game.UpdateMoveableTiles();
+
             if (game.GetGoalTakenCount() == 5)
             {
                 bool scoreWritten = false;
@@ -111,7 +114,6 @@ int main()
                     else if (IsKeyPressed(ESCAPE))  CloseWindow();
                 }
             }
-
         }
         else
         {  // gameover screen
@@ -289,14 +291,7 @@ int main()
 }
 
 
-/// <summary>
-/// Loads a file into an Image object, resizes it and outputs a Texture2D object
-/// </summary>
-/// <param name="path"></param>
-/// <param name="cellSizeX"></param>
-/// <param name="cellSizeY"></param>
-/// <returns>Texture2D</returns>
-Texture2D GetTextureFromImagePath(const char* path, int cellSizeX, int cellSizeY)
+const Texture2D GetTextureFromImagePath(const char* path, const int& cellSizeX, const int& cellSizeY)
 {
     Image newImage = LoadImage(path);
     ImageResize(&newImage, cellSizeX, cellSizeY);
@@ -323,10 +318,7 @@ int GetHighscoreFromFile()
 int CalculateHighscore(const int& seconds, const int& livesLeft)
 {
     int score = 0;
-    if (seconds != 0 && livesLeft != 0)
-    {
-        return (livesLeft * 1000) - seconds;
-    }
+    if (seconds != 0 && livesLeft != 0) return (livesLeft * 1000) - seconds;
     return 0;
 }
 
