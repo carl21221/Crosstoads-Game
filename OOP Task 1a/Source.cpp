@@ -1,28 +1,26 @@
 #include <iostream>
+#include <fstream>
 #include "raylib.h"
 #include "Game.h"
 #include "Constants.h"
 
 ////////////////////////////////////////////////////
 
-//TODO: 1 - IMPLEMENT WIN SCREEN
-//TODO: 2 - IMPLEMENT POSTING TO HIGHSCORE FILE ON WIN
-//TODO: 3 - CODE CLEANUP (ADDING CONST AND MOVING VISIBILITY IN CLASSES)
+//TODO: 2 - IMPLEMENT POSTING TO HIGHSCORE FILE ON WIN [ ]
+//TODO: 3 - CODE CLEANUP (ADDING CONST AND MOVING VISIBILITY IN CLASSES) [ ]
 
 ////////////////////////////////////////////////////
 
-
-
-
-
 //Function Declarations
 Texture2D GetTextureFromImagePath(const char* path, int cellSizeX, int cellSizeY);
+int GetHighscoreFromFile();
+int CalculateHighscore(const int& time, const int& livesLeft);
+void SaveScoreToFile(const int& score);
 
 using namespace std;
 
 int main()
 {
-
     const int gameSizeX = 600;
     const int gameSizeY = 640;
     InitWindow(gameSizeX, gameSizeY, "Frogger");
@@ -53,28 +51,22 @@ int main()
     Texture2D texture_player_left = GetTextureFromImagePath("images/frogger_frog_left.png", cellSize, cellSize);
     Texture2D texture_player_right = GetTextureFromImagePath("images/frogger_frog_right.png", cellSize, cellSize);
 
-
     //Precache Sound 
-
     Sound sound_splash = LoadSound("sound/frogger_splash.mp3");
-    Sound sound_jump1 = LoadSound("frogger_jump1.mp3");
-    Sound sound_jump2 = LoadSound("frogger_jump2.mp3");
-    Sound sound_jump3 = LoadSound("frogger_jump3.mp3");
     Sound sound_ambient = LoadSound("sound/frogger_streetnoise_fix.mp3");
     Sound sound_splat = LoadSound("sound/frogger_splat.wav");
     Sound sound_bgmusic = LoadSound("sound/frogger_menutheme.mp3");
     Sound sound_victory = LoadSound("sound/frogger_victory.mp3");
     Sound sound_goaltaken = LoadSound("sound/frogger_goaltaken.mp3");
-    //TODO: FIX MISSING SOUND ISSUES
-
 
     SetMasterVolume(0.5);
-    SetSoundVolume(sound_jump1, 0.5);
 
     InitAudioDevice();
 
     Game game;
     game.Setup();
+
+    int currentHighscore = GetHighscoreFromFile();
 
     while (!WindowShouldClose())
     {
@@ -90,17 +82,14 @@ int main()
             }
 
             if (IsKeyPressed(KEY_RIGHT))  game.ProcessInput(KEY_RIGHT);
-            PlaySound(sound_jump1);
             if (IsKeyPressed(KEY_LEFT))   game.ProcessInput(KEY_LEFT);
-            PlaySound(sound_jump1);
             if (IsKeyPressed(KEY_UP))     game.ProcessInput(KEY_UP);
-            PlaySound(sound_jump1);
-            if (IsKeyPressed(KEY_DOWN))   game.ProcessInput(KEY_DOWN); 
-            PlaySound(sound_jump1);
+            if (IsKeyPressed(KEY_DOWN))   game.ProcessInput(KEY_DOWN);
 
             game.UpdateMoveableTiles();
             if (game.GetGoalTakenCount() == 5)
             {
+                bool scoreWritten = false;
                 bool victorySoundPlayed = false;
                 while (game.GetGoalTakenCount() == 5)
                 {
@@ -109,6 +98,12 @@ int main()
                         StopSound(sound_bgmusic);
                         PlaySound(sound_victory);
                         victorySoundPlayed = true;
+                    }
+                    if (!scoreWritten)
+                    {
+                        SaveScoreToFile(CalculateHighscore( game.GetTimer()->GetTimeInSeconds(),
+                                                            game.GetPlayer()->GetCurrentLives()));
+                        scoreWritten = true;
                     }
                     BeginDrawing();
                     ClearBackground(GREEN);
@@ -129,6 +124,10 @@ int main()
         {  // gameover screen
             while (game.IsGameOver())
             {
+                if (IsSoundPlaying(sound_bgmusic))
+                {
+                    StopSound(sound_bgmusic);
+                }
                 BeginDrawing();
                 ClearBackground(BLANK);
                 DrawText(("GAME OVER"), 180, 280, 40, RED);
@@ -243,9 +242,10 @@ int main()
 
         // Draw HUD
         const int fontSize = 20;
-        int currentLives = game.GetPlayer()->GetCurrentLives();
+        int currentLives = game.GetPlayer()->GetCurrentLives(); //loads the highscore here
         std::string minString = std::to_string(game.GetTimer()->GetMinutes());
         std::string secString = std::to_string(game.GetTimer()->GetSeconds());
+
 
         DrawRectangle(0, gameSizeX, gameSizeX, gameSizeY - gameSizeX, BLACK);
         DrawText(TextFormat("Lives: %i", currentLives), 
@@ -253,6 +253,9 @@ int main()
 
         DrawText(TextFormat("Timer: %02i:%02i", game.GetTimer()->GetMinutes(), game.GetTimer()->GetSeconds()),
             (double)gameSizeX * 0.75, (double)gameSizeX + (fontSize / 2), fontSize, GREEN);
+
+        DrawText(TextFormat("Highscore: %i", currentHighscore),
+            (double)gameSizeX * 0.30, (double)gameSizeX + (fontSize / 2), fontSize, GREEN);
 
         EndDrawing();
  
@@ -307,3 +310,36 @@ Texture2D GetTextureFromImagePath(const char* path, int cellSizeX, int cellSizeY
     return LoadTextureFromImage(newImage);
 }
 
+int GetHighscoreFromFile()
+{
+    int currentHighscore = 0;
+    ifstream highscoresFile;
+    highscoresFile.open("stats/highscores.txt");
+    if (highscoresFile.is_open())
+    {
+        std::string line = "";
+        while (std::getline(highscoresFile, line))
+        {
+            int highscore = atoi(line.c_str());
+            if (highscore > currentHighscore) currentHighscore = highscore;
+        }
+    }
+    return currentHighscore;
+}
+
+int CalculateHighscore(const int& seconds, const int& livesLeft)
+{
+    int score = 0;
+    if (seconds != 0 && livesLeft != 0)
+    {
+        return (livesLeft * 1000) - seconds;
+    }
+    return 0;
+}
+
+void SaveScoreToFile(const int& score)
+{
+    std::ofstream ofile;
+    ofile.open("stats/highscores.txt", std::ofstream::app);
+    ofile << endl << score;
+}
