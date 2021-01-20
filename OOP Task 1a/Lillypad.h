@@ -6,7 +6,6 @@
 class Lillypad : public MovableSticky
 {
 public:
-	Lillypad(int newX, int newY, int moveDelay);
 	Lillypad(int newX, int newY, int moveDelay, std::string direction);
 };
 

@@ -1,11 +1,8 @@
 #include "MovableSticky.h"
 
-void MovableSticky::LinkPlayer(Player& p) //this allows the log to access the player's member functions
+void MovableSticky::LinkPlayer(Player& p)
 {
-	if (p.GetX() == this->x && p.GetY() == this->y)
-	{
-		this->player = &p;
-	}
+	if (p.GetX() == this->x && p.GetY() == this->y)	this->player = &p;
 	else this->player = nullptr;
 }
 

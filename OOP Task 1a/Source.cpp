@@ -4,13 +4,7 @@
 #include "Game.h"
 #include "Constants.h"
 
-////////////////////////////////////////////////////
-//
-//TODO: 3 - CODE CLEANUP (ADDING CONST AND MOVING VISIBILITY IN CLASSES) [ ]
-//
-////////////////////////////////////////////////////
-
-//Function Declarations
+//Source Header - Function Declarations
 Texture2D GetTextureFromImagePath(const char* path, int cellSizeX, int cellSizeY);
 int GetHighscoreFromFile();
 int CalculateHighscore(const int& time, const int& livesLeft);

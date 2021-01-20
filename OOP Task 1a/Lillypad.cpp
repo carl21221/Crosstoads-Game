@@ -1,16 +1,5 @@
 #include "Lillypad.h"
 
-Lillypad::Lillypad(int newX, int newY, int moveDelay)
-{
-	this->x = newX;
-	this->y = newY;
-	this->symbol = LILLYPAD;
-	this->moveTimerMax = moveDelay;
-	this->moveTimer = moveTimerMax;
-	this->direction = "left";
-	this->player = nullptr;
-}
-
 Lillypad::Lillypad(int newX, int newY, int moveDelay, std::string direction)
 {
 	this->x = newX;

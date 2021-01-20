@@ -6,7 +6,6 @@
 class Log : public MovableSticky
 {
 public:
-	Log(int newX, int newY, int moveDelay);
 	Log(int newX, int newY, int moveDelay, std::string direction);
 };
 

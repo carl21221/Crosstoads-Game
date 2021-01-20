@@ -18,7 +18,7 @@ Goal::Goal(int x, int y, bool takenVal)
 }
 
 //Get
-bool Goal::IsTaken()
+const bool Goal::IsTaken() const
 {
 	return this->isTaken;
 }

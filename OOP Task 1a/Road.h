@@ -6,7 +6,6 @@
 class Road : public Tile
 {
 public:
-	Road();
 	Road(int x, int y);
 };
 

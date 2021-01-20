@@ -28,9 +28,9 @@ void Movable::SetDirection(std::string direction)
 	else this->direction = "left";
 }
 
-std::string Movable::GetDirection() { return this->direction; }
+std::string Movable::GetDirection() const { return this->direction; }
 
-bool Movable::IsDirectionValid(std::string direction)
+const bool Movable::IsDirectionValid(const std::string& direction) const
 {
 	if (direction == "left") return true;
 	if (direction == "right") return true;

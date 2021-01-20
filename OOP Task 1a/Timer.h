@@ -6,21 +6,17 @@ class Timer
 {
 public:
 	Timer();
-	Timer(int seconds, int minutes, int newHours);
 
-	int GetSeconds();
-	int GetMinutes();
-	int GetHours();
-	int GetTimeInSeconds();
-	std::string GetTimeAsString();
+	const const int GetSeconds() const;
+	const int GetMinutes() const;
+	const int GetHours() const;
+	const int GetTimeInSeconds() const;
+	const std::string GetTimeAsString() const;
 
 	void Tick();
 	void Reset();
 	void Pause();
 	void Stop();
-
-protected:
-	
 
 private:
 	int seconds = 0;

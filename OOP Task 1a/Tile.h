@@ -9,20 +9,16 @@ class Tile
 public:
     // constructors
     Tile();
-    Tile(int x, int y);
 
     // assessors
-    int GetX() const;
-    int GetY() const;
-    char GetSymbol() const;
-    bool IsAtPosition(int x, int y) const;
+    const int GetX() const;
+    const int GetY() const;
+    const char GetSymbol() const;
+    const bool IsAtPosition(int x, int y) const;
 
 protected:
     char symbol;
     int x = 0;
     int y = 0;
-
-private:
-
 };
 

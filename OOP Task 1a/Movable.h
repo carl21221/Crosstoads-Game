@@ -8,24 +8,18 @@ public:
 	// constructors
 	Movable();
 
-	void CalculateMove();
-
 	//Getters
-	bool IsReadyToMove() const; // Returns whether the tile is ready to move or not
+	bool IsReadyToMove() const;
+	std::string GetDirection() const;
 
 	//Setters
-	void SetReadyToMove(bool value); // sets whether the tile is ready to move to a specific boolean value
-
+	void SetReadyToMove(bool value); 
 	void SetDirection(std::string direction);
 
-	std::string GetDirection();
-
-	bool IsDirectionValid(std::string direction);
-
-	//Other Functions
-	void UpdateMoveTimer(int amount); // Decrements the move cooldown timer of the tile. If the hits 0, the timer resets
-	void UpdateX(int value); //Moves the tile a specified amount of spaces horizontally
-	void ResetMoveTimer();
+	//Mutators
+	void CalculateMove();
+	void UpdateMoveTimer(int amount);
+	void UpdateX(int value);
 
 protected:
 	int moveTimerMax = 60;
@@ -33,6 +27,7 @@ protected:
 	bool isReadyToMove = false;
 	std::string direction = "left";
 
-private:
+	void ResetMoveTimer();
+	const bool IsDirectionValid(const std::string& direction) const;
 };
 

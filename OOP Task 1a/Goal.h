@@ -6,12 +6,10 @@ public:
 	Goal(int x, int y);
 	Goal(int x, int y, bool takenVal);
 
-	bool IsTaken();
+	const bool IsTaken() const;
 	void SetIsTaken(bool val);
 
-protected:
-	bool isTaken = false;
-
 private:
+	bool isTaken = false;
 };
 

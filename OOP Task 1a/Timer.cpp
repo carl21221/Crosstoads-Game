@@ -10,21 +10,18 @@ Timer::Timer()
 	this->isPaused = false;
 }
 
-int Timer::GetSeconds() { return this->seconds; }
+const int Timer::GetSeconds() const { return this->seconds; }
 
-int Timer::GetMinutes() { return this->minutes; }
+const int Timer::GetMinutes() const { return this->minutes; }
 
-int Timer::GetHours() { return this->hours; }
+const int Timer::GetHours() const { return this->hours; }
 
-int Timer::GetTimeInSeconds()
+const int Timer::GetTimeInSeconds() const
 {
-	int total = this->seconds;
-	this->minutes += (hours * 60);
-	total += (this->minutes * 60);
-	return total;
+	return this->seconds + ((this->minutes + (this->hours * 60)) * 60);
 }
 
-std::string Timer::GetTimeAsString()
+const std::string Timer::GetTimeAsString() const
 {
 	return std::to_string(GetSeconds()) + " : " + std::to_string(GetMinutes());
 }
@@ -39,7 +36,7 @@ void Timer::Tick()
 		this->frameCounter++;
 		if (frameCounter >= 60)
 		{
-			std::cout << "Timer has increased to " << GetTimeAsString() << "\n";
+			//std::cout << "Debug: Timer has increased to " << GetTimeAsString() << "\n";
 			this->seconds++;
 			this->frameCounter = 0;
 		}
