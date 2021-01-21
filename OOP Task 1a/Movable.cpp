@@ -1,10 +1,11 @@
 #include "Movable.h"
-#include <iostream>
 
 Movable::Movable()
 {
 }
 
+// Moves if the object is ready to move, otherwise decrement the move timer
+// by 1. Should be called every frame.
 void Movable::CalculateMove()
 {
 	if (this->isReadyToMove == true)
@@ -30,6 +31,8 @@ void Movable::SetDirection(std::string direction)
 
 std::string Movable::GetDirection() const { return this->direction; }
 
+// A support function used to ensure the direction string passed in to
+// the constructor is valid.
 const bool Movable::IsDirectionValid(const std::string& direction) const
 {
 	if (direction == "left") return true;
@@ -47,8 +50,10 @@ void Movable::UpdateMoveTimer(int amount)
 	}
 }
 
+//Called when the object has moved
 void Movable::ResetMoveTimer() { this->moveTimer = this->moveTimerMax; }
 
+// Called when we are wanting to move the object in a specific direction
 void Movable::UpdateX(int value)
 {
 	if (this->direction == "left")

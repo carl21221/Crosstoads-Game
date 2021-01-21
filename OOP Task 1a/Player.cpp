@@ -20,13 +20,16 @@ int Player::GetCurrentLives() const { return currentLives; }
 
 int Player::GetMaxLives() const { return maxLives; }
 
-void Player::MoveX(int amt) // Positive number for Left, Negative for Right
+// Move player along the X axis. Used when linked to a MovableSticky object
+// Positive number for Left, Negative for Right
+void Player::MoveX(int amt) 
 {
     this->x = this->x - amt;
     if (this->x < 1) { this->x = 1; }
     else if (this->x > 15) this->x = 15;
 }
 
+// Move player dependant on the keycode passed in
 void Player::Move(int key)
 {
     switch (key)

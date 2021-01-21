@@ -23,11 +23,10 @@ using namespace std;
 int main()
 {
     const int gameSizeX = 600;
-    const int gameSizeY = 640;
+    const int gameSizeY = 640; // Allow for HUD underneath at the very bottom
     InitWindow(gameSizeX, gameSizeY, "Crosstoads");
     SetTargetFPS(60);
     const int cellSize = (int)((float)GetScreenWidth() / (float)(SIZE));
-
 
     // Precache textures
     const Texture2D texture_env_road = GetTextureFromImagePath("images/frogger_env_road.png", cellSize, cellSize);
@@ -61,14 +60,22 @@ int main()
     Game game;
     game.Setup();
 
-    int currentHighscore = GetHighscoreFromFile();
+    bool scoreLoaded = false;
+    int currentHighscore = 0;
 
     while (!WindowShouldClose())
     {
+        //Uses a bool to load the score ONCE per game. Saves CPU cycles (however miniscule).
+        if (!scoreLoaded)
+        {
+            currentHighscore = GetHighscoreFromFile();
+            scoreLoaded = true;
+        }
+
         game.GetTimer()->Tick();
         BeginDrawing();
         ClearBackground(DARKGRAY);
-        if (!game.IsGameOver())
+        if (!game.IsGameOver() && !game.IsGameWon())
         {
             if (!IsSoundPlaying(sound_bgmusic))
             {
@@ -82,62 +89,67 @@ int main()
             if (IsKeyPressed(KEY_DOWN))   game.ProcessInput(KEY_DOWN);
 
             game.UpdateMoveableTiles();
+        }
 
-            if (game.GetGoalTakenCount() == 5)
+        while (game.IsGameOver())
+        {
+            if (IsSoundPlaying(sound_bgmusic))
             {
-                bool scoreWritten = false;
-                bool victorySoundPlayed = false;
-                while (game.GetGoalTakenCount() == 5)
-                {
-                    if (!victorySoundPlayed)
-                    {
-                        StopSound(sound_bgmusic);
-                        PlaySound(sound_victory);
-                        victorySoundPlayed = true;
-                    }
-                    if (!scoreWritten)
-                    {
-                        SaveScoreToFile(CalculateHighscore( game.GetTimer()->GetTimeInSeconds(),
-                                                            game.GetPlayer()->GetCurrentLives()));
-                        scoreWritten = true;
-                    }
-                    BeginDrawing();
-                    ClearBackground(GREEN);
-                    DrawText(("YOU WON!"), 180, 280, 40, WHITE);
-                    DrawText(("| Press [SPACE] to play again | Press[ESC] to quit |"), 177, 320, 8, WHITE);
-                    EndDrawing();
-                    if (IsKeyPressed(SPACEBAR))
-                    {
-                        game.Setup();
-                        break;
-                    }
-                    else if (IsKeyPressed(ESCAPE))  CloseWindow();
-                }
+                StopSound(sound_bgmusic);
+            }
+            // Draw HUD elements
+            BeginDrawing();
+            ClearBackground(BLANK);
+            DrawText(("GAME OVER"), 180, 280, 40, RED);
+            DrawText(("| Press [SPACE] to restart | Press[ESC] to quit |"), 177, 320, 8, WHITE);
+            EndDrawing();
+
+            //check for key presses
+            if (IsKeyPressed(SPACEBAR))
+            {
+                game.Setup();
+                game.SetGameWon(false);
+                scoreLoaded = false;
+                break;
+            }
+            if (IsKeyDown(ESCAPE))
+            {
+                game.SetGameOver(false);
+                CloseWindow();
             }
         }
-        else
-        {  // gameover screen
-            while (game.IsGameOver())
+
+        bool firstWinLoop = true;
+        while (game.IsGameWon())
+        {
+            if (firstWinLoop)
             {
-                if (IsSoundPlaying(sound_bgmusic))
-                {
-                    StopSound(sound_bgmusic);
-                }
-                BeginDrawing();
-                ClearBackground(BLANK);
-                DrawText(("GAME OVER"), 180, 280, 40, RED);
-                DrawText(("| Press [SPACE] to restart | Press[ESC] to quit |"), 177, 320, 8, WHITE);
-                EndDrawing();
-                if (IsKeyPressed(SPACEBAR))
-                {
-                    game.SetGameOver(false);
-                    game.GetPlayer()->ResetLives();
-                    game.GetTimer()->Reset();
-                    break;
-                }
-                else if (IsKeyPressed(ESCAPE))  CloseWindow();
+                StopSound(sound_bgmusic);
+                PlaySound(sound_victory);
+                SaveScoreToFile(CalculateHighscore(game.GetTimer()->GetTimeInSeconds(), game.GetPlayer()->GetCurrentLives()));
+                firstWinLoop = false;
+            }
+            // Draw HUD elements
+            BeginDrawing();
+            ClearBackground(DARKGREEN);
+            DrawText(("YOU WON!"), 180, 280, 40, WHITE);
+            DrawText(("| Press [SPACE] to play again | Press[ESC] to quit |"), 177, 320, 8, WHITE);
+            EndDrawing();
+            //check for key presses
+            if (IsKeyPressed(SPACEBAR))
+            {
+                game.Setup();
+                game.SetGameWon(false);
+                scoreLoaded = false; //When the game restarts, ensures that the highscore reloads
+                break;
+            }
+            if (IsKeyPressed(ESCAPE))
+            {
+                game.SetGameWon(false);
+                CloseWindow();
             }
         }
+        
 
         //Draw Environment
         const auto envGrid = game.PrepareEnvGrid();
@@ -235,12 +247,9 @@ int main()
         else
             DrawTexture(texture_player_right, (game.GetPlayer()->GetX() - 1) * cellSize, (game.GetPlayer()->GetY() - 1) * cellSize, WHITE);
 
-        // Draw HUD
+        // Draw HUD on bottom of the screen
         const int fontSize = 20;
-        int currentLives = game.GetPlayer()->GetCurrentLives(); //loads the highscore here
-        std::string minString = std::to_string(game.GetTimer()->GetMinutes());
-        std::string secString = std::to_string(game.GetTimer()->GetSeconds());
-
+        int currentLives = game.GetPlayer()->GetCurrentLives();
 
         DrawRectangle(0, gameSizeX, gameSizeX, gameSizeY - gameSizeX, BLACK);
         DrawText(TextFormat("Lives: %i", currentLives), 
@@ -254,8 +263,7 @@ int main()
 
         EndDrawing();
  
-        // --- game position checks ---
-
+        // --- Player Position Checks ---
         if (game.CheckForPlayerDeathByVehicle())
         {
             if (!IsSoundPlaying(sound_splat))
@@ -272,7 +280,7 @@ int main()
                 PlaySound(sound_splash);
             }
         }
-        if (game.CheckForPlayerWin())
+        if (game.CheckForPlayerOnGoal())
         {
             if (!IsSoundPlaying(sound_goaltaken))
             {
@@ -282,15 +290,21 @@ int main()
         game.CheckForPlayerOnSticky();
 
         //---------------------------------
-        if (game.GetPlayer()->GetCurrentLives() == 0) game.SetGameOver(true);
 
+        //Check to see if the player has any lives left
+        if (game.GetPlayer()->GetCurrentLives() == 0) game.SetGameOver(true);
+        else game.SetGameOver(false);
+
+        //Final check to see if the player has any lives left
+        if (game.CheckForPlayerWin())  game.SetGameWon(true);
+        else game.SetGameWon(false);
     }
     UnloadSound(sound_ambient);
     CloseWindow();
     return 0;
 }
 
-
+// Performs all the loading and resizing of an image to return a single Texture2D object for raylib
 const Texture2D GetTextureFromImagePath(const char* path, const int& cellSizeX, const int& cellSizeY)
 {
     Image newImage = LoadImage(path);
@@ -298,6 +312,7 @@ const Texture2D GetTextureFromImagePath(const char* path, const int& cellSizeX, 
     return LoadTextureFromImage(newImage);
 }
 
+//Opens the highscore file, reads every line and returns the largest number.
 int GetHighscoreFromFile()
 {
     int currentHighscore = 0;
@@ -315,6 +330,7 @@ int GetHighscoreFromFile()
     return currentHighscore;
 }
 
+//Performs an algorithm which computes an integer based on lives left and seconds taken
 int CalculateHighscore(const int& seconds, const int& livesLeft)
 {
     int score = 0;
@@ -322,6 +338,7 @@ int CalculateHighscore(const int& seconds, const int& livesLeft)
     return 0;
 }
 
+//Opens the high score file and appends the players current score to the end
 void SaveScoreToFile(const int& score)
 {
     std::ofstream ofile;

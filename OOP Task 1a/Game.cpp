@@ -1,15 +1,25 @@
 #include "Game.h"
 
-const void Game::Setup()
+void Game::Setup()
 {
+    this->isGameWon == false;
+    this->isGameOver == false;
+    this->player.ResetLives();
+    this->mainTimer.Reset();
     SetupEnvironmentTiles();
     SetupMoveableTiles();
-    this->player.ResetLives();
+    ResetGoals();
+
+
 }
 
 const void Game::SetGameOver(const bool& value) { this->isGameOver = value; }
 
 const bool Game::IsGameOver() const { return this->isGameOver; }
+
+const void Game::SetGameWon(const bool& value) { this->isGameWon = value; }
+
+const bool Game::IsGameWon() const { return this->isGameWon; }
 
 Player* Game::GetPlayer() { return &this->player; }
 
@@ -59,6 +69,9 @@ const vector<vector<char>> Game::PrepareMovGrid()
     return movGrid;
 }
 
+
+// Stores a pointer to a specific instance in the game's vectors. 
+// Allows me to link the player so the log can move the player.
 Log* Game::GetLogInstance(int x, int y)
 {
     for (Log& log : logs)
@@ -68,6 +81,7 @@ Log* Game::GetLogInstance(int x, int y)
     return nullptr;
 }
 
+// Same as GetLogInstance above, but for Lillypad objects
 Lillypad* Game::GetLillypadInstance(int x, int y)
 {
     for (Lillypad& lp : lillypads)
@@ -77,6 +91,8 @@ Lillypad* Game::GetLillypadInstance(int x, int y)
     return nullptr;
 }
 
+// Stores a pointer to a specific goal in the game's vector "goals"
+// This allows me to change the goal's state to "Taken" once the player steps on it
 Goal* Game::GetGoalInstance(int x, int y)
 {
     for (Goal& goal : goals) 
@@ -86,6 +102,7 @@ Goal* Game::GetGoalInstance(int x, int y)
     return nullptr;
 }
 
+// Gets specific instance to a movable object.
 Movable* Game::GetMovableInstance(int x, int y)
 {
     for (Movable m : vehicles)
@@ -95,6 +112,7 @@ Movable* Game::GetMovableInstance(int x, int y)
     return nullptr;
 }
 
+// Specific player checks -----
 bool Game::CheckForPlayerDeathByVehicle()
 {
     int playerX = player.GetX();
@@ -128,7 +146,7 @@ bool Game::CheckForPlayerDeathByAqua()
     return false;
 }
 
-bool Game::CheckForPlayerWin()
+bool Game::CheckForPlayerOnGoal()
 {
     int playerX = player.GetX();
     int playerY = player.GetY();
@@ -144,6 +162,12 @@ bool Game::CheckForPlayerWin()
         }
     }
     return false;
+}
+
+bool Game::CheckForPlayerWin()
+{
+    if (GetGoalTakenCount() == GetGoalTotalCount()) return true;
+    else return false;
 }
 
 bool Game::CheckForPlayerOnSticky()
@@ -171,6 +195,10 @@ bool Game::CheckForPlayerOnSticky()
     }
     return false;
 }
+
+// ----------------------------
+
+// Checks to see if a specific element is at a specified position.
 
 const bool Game::IsPlayerAtPosition(const int& x, const int& y) const
 {
@@ -286,6 +314,10 @@ const bool Game::IsStickyAtPosition(const int& x, const int& y) const
     return false;
 }
 
+
+// -------------------------------------------------------------------
+
+
 bool Game::IsRunning() const
 {
     if (player.GetCurrentLives() <= 0) return false;
@@ -295,9 +327,13 @@ bool Game::IsRunning() const
 //Load Tile functions
 const void Game::SetupEnvironmentTiles()
 {
+    safezones.clear();
     PushTiles_Safezone();
+    roads.clear();
     PushTiles_Road();
+    aquas.clear();
     PushTiles_Aqua();
+    goals.clear();
     PushTiles_Goal();
 }
 
@@ -366,6 +402,9 @@ const void Game::PushTiles_Goal()
 
 const void Game::SetupTiles_Vehicle()
 {
+    //Flush the vectors in case of a game restart
+    cars.clear(); vans.clear(); trucks.clear(); vehicles.clear();
+
     //Load vehicles into corresponsing vectors here
     cars.push_back(Car(15, 13, 20, "left"));
     cars.push_back(Car(2, 13, 20, "left"));
@@ -383,11 +422,13 @@ const void Game::SetupTiles_Vehicle()
 
     //These loops put all vehicle types in the vehicles list
     //DO NOT MODIFY
+
     for (auto& car : cars) { vehicles.push_back(car); }
     for (auto& van : vans) { vehicles.push_back(van); }
     for (auto& truck : trucks) { vehicles.push_back(truck); }
 }
 
+// Handles the creation of logs with a specified length. Makes it more efficient to add logs to the level
 const void Game::CreateLog(const int& originX, const int& originY, const int& logLength, const int& moveDelay, const std::string& direction)
 {
     int lengthCounter = 0;
@@ -402,9 +443,7 @@ const void Game::CreateLog(const int& originX, const int& originY, const int& lo
     std::cout << "DEBUG: A Log of length " << lengthCounter << " was created. \n";
 }
 
-/// <summary>
-/// Adds a truck to the vector with a specified length (with wrapping)
-/// </summary>
+// Handles the creation of trucks with a specified length. Makes it more efficient to add trucks to the level
 const void Game::CreateTruck(const int& originX, const int& originY, const int& truckLength, const int& moveDelay, const std::string& direction)
 {
     int lengthCounter = 0;
@@ -420,6 +459,8 @@ const void Game::CreateTruck(const int& originX, const int& originY, const int& 
     std::cout << "DEBUG: A Truck of length " << lengthCounter << " was created. \n";
 }
 
+// Handles the creation of vans with a specified length. Makes it more efficient to add vans to the level. 
+// This one is purely for flexibility. Vans SHOULD only be 2 tiles wide
 const void Game::CreateVan(const int& originX, const int& originY, const int& vanLength, const int& moveDelay, const std::string& direction)
 {
     int lengthCounter = 0;
@@ -437,6 +478,9 @@ const void Game::CreateVan(const int& originX, const int& originY, const int& va
 
 const void Game::SetupTiles_MoveableStickies()
 {
+    //Flush vectors in case game has been restarted
+    logs.clear(); lillypads.clear(); movStickies.clear();
+
     //Create logs here using the "CreateLog" function
     CreateLog(11, 3, 3, 50, "left");
     CreateLog(1, 4, 4, 30, "right");
@@ -447,9 +491,12 @@ const void Game::SetupTiles_MoveableStickies()
     //Add lillypads here.
     lillypads.push_back(Lillypad(1, 5, 20, "left"));
 
+    //loop through both log and lillypad vectors and pass pointers to each object to the movStickies vector
     for (auto& log : logs) { movStickies.push_back(&log); }
     for (auto& lillypad : lillypads) { movStickies.push_back(&lillypad); }
 }
+
+// Functions to calculate movements of tiles
 
 const void Game::UpdateTiles_Vehicle()
 {
@@ -465,6 +512,8 @@ const void Game::UpdateTiles_MovSticky()
     }
 }
 
+// ------------------------------------------
+
 const int Game::GetGoalTakenCount() const
 {
     int goalCount = 0;
@@ -478,4 +527,12 @@ const int Game::GetGoalTakenCount() const
 const int Game::GetGoalTotalCount() const
 {
     return goals.size();
+}
+
+void Game::ResetGoals()
+{
+    for (Goal &g : goals)
+    {
+        g.SetIsTaken(false);
+    }
 }

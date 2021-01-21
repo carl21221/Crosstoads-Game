@@ -1,6 +1,4 @@
 #include "Timer.h"
-#include <iostream>
-#include <stdio.h>
 
 Timer::Timer()
 {
@@ -26,9 +24,7 @@ const std::string Timer::GetTimeAsString() const
 	return std::to_string(GetSeconds()) + " : " + std::to_string(GetMinutes());
 }
 
-/// <summary>
-/// Should be called every frame to roughly calculate the time elapsed.
-/// </summary>
+// Should be called every frame and only increment seconds ever 60 frames (game is set to 60 fps)
 void Timer::Tick()
 {
 	if (!this->isPaused)
@@ -36,7 +32,6 @@ void Timer::Tick()
 		this->frameCounter++;
 		if (frameCounter >= 60)
 		{
-			//std::cout << "Debug: Timer has increased to " << GetTimeAsString() << "\n";
 			this->seconds++;
 			this->frameCounter = 0;
 		}

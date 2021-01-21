@@ -3,10 +3,6 @@
 // the size of the grid
 #define SIZE      15
 
-// symbols used for storing where things are
-//Player piece
-//#define PLAYER    'P'
-
 // Safe Tiles
 #define ROAD	  'R'
 #define SAFEZONE  'S'
@@ -22,16 +18,12 @@
 
 // Other Tiles
 #define GOAL      'G'
-#define LILLYPAD    'P'
+#define LILLYPAD  'P'
 
-// the command letters to move the mouse on the maze
+// The command letters to move the mouse on the maze
 #define KEY_RIGHT 262
 #define KEY_LEFT  263
 #define KEY_DOWN  264
 #define KEY_UP    265
 #define SPACEBAR  32
-#define ESCAPE    27
-
-//Size and Position values
-#define GAMEOVER_FONTSIZE 40;
-#define GAMEOVER_TEXT "Game Over"
+#define ESCAPE    13
