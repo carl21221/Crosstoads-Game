@@ -143,6 +143,8 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Lillypad.cpp" />
     <ClCompile Include="Log.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="MenuItem.cpp" />
     <ClCompile Include="Movable.cpp" />
     <ClCompile Include="MovableSticky.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -163,6 +165,8 @@
     <ClInclude Include="Level.h" />
     <ClInclude Include="Lillypad.h" />
     <ClInclude Include="Log.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="MenuItem.h" />
     <ClInclude Include="Movable.h" />
     <ClInclude Include="MovableSticky.h" />
     <ClInclude Include="Player.h" />

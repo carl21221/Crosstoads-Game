@@ -18,6 +18,8 @@
     <ClCompile Include="Lillypad.cpp" />
     <ClCompile Include="MovableSticky.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="MenuItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h" />
@@ -37,5 +39,7 @@
     <ClInclude Include="Lillypad.h" />
     <ClInclude Include="MovableSticky.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="MenuItem.h" />
   </ItemGroup>
 </Project>

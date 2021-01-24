@@ -42,9 +42,11 @@ public:
     vector<Lillypad> lillypads;
     vector<MovableSticky*> movStickies;
 
-    //Getters
-    bool IsRunning() const;
+    void SetActive();
+    void SetInactive();
+    bool IsGameActive() const;
     const bool IsGameOver() const;
+    const void SetGameToWon();
     const bool IsGameWon() const;
     const int GetGoalTakenCount() const;
     const int GetGoalTotalCount() const;
@@ -75,6 +77,8 @@ public:
     bool CheckForPlayerWin();
     bool CheckForPlayerOnSticky();
 
+    const void SetGameToOver();
+
     //Setters
     const void SetGameOver(const bool& value);
     const void SetGameWon(const bool& value);
@@ -87,6 +91,7 @@ public:
 private:
     // Member Variables
     Player player;
+    bool isGameActive = false;
     bool isGameOver = false;
     bool isGameWon = false;
 

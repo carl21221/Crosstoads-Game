@@ -2,6 +2,7 @@
 
 void Game::Setup()
 {
+    this->isGameActive = true;
     this->isGameWon == false;
     this->isGameOver == false;
     this->player.ResetLives();
@@ -9,13 +10,42 @@ void Game::Setup()
     SetupEnvironmentTiles();
     SetupMoveableTiles();
     ResetGoals();
-
-
 }
 
-const void Game::SetGameOver(const bool& value) { this->isGameOver = value; }
+void Game::SetActive() 
+{
+    isGameActive = true; 
+    isGameOver = false;
+    isGameWon = false;
+}
+
+void Game::SetInactive()
+{
+    isGameActive = false;
+}
+
+bool Game::IsGameActive() const { return isGameActive; }
+
+const void Game::SetGameToOver() 
+{ 
+    this->isGameActive = false;
+    this->isGameWon == false;
+    this->isGameOver == true;
+}
+
+const void Game::SetGameOver(const bool& value)
+{
+    this->isGameOver = value;
+}
 
 const bool Game::IsGameOver() const { return this->isGameOver; }
+
+const void Game::SetGameToWon()
+{
+    this->isGameActive = false;
+    this->isGameWon == true;
+    this->isGameOver == false;
+}
 
 const void Game::SetGameWon(const bool& value) { this->isGameWon = value; }
 
@@ -318,11 +348,6 @@ const bool Game::IsStickyAtPosition(const int& x, const int& y) const
 // -------------------------------------------------------------------
 
 
-bool Game::IsRunning() const
-{
-    if (player.GetCurrentLives() <= 0) return false;
-    else return true;
-}
 
 //Load Tile functions
 const void Game::SetupEnvironmentTiles()
