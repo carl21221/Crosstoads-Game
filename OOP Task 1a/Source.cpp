@@ -40,30 +40,35 @@ int main()
         mainMenu.SetActive(true);
 
         //Menu Section
+        int waitTimer = 60;
         while (mainMenu.IsActive())
         {
-            if (IsKeyPressed (KEY_UP)) mainMenu.DecrementSelectedMenuItem();
-            if (IsKeyPressed (KEY_DOWN)) mainMenu.IncrementSelectedMenuItem();
-            if (IsKeyPressed (SPACEBAR)) 
-            { 
-                if (mainMenu.GetSelectedMenuItemIndex() == 0) mainMenu.SetActive(false);
-                else if (mainMenu.GetSelectedMenuItemIndex() == 2) CloseWindow();
+            if (waitTimer == 0)
+            {
+                if (IsKeyPressed(KEY_UP)) mainMenu.DecrementSelectedMenuItem();
+                if (IsKeyPressed(KEY_DOWN)) mainMenu.IncrementSelectedMenuItem();
+                if (IsKeyPressed(SPACEBAR))
+                {
+                    if (mainMenu.GetSelectedMenuItemIndex() == 0) mainMenu.SetActive(false);
+                    else if (mainMenu.GetSelectedMenuItemIndex() == 2) CloseWindow();
+                }
             }
+            else waitTimer--;
 
             BeginDrawing();
-            ClearBackground(BLACK);          
+            ClearBackground(BLACK);
             DrawText("Crosstoads!", gameSizeX * 0.40, 100, 30, GREEN);
 
-            if(mainMenu.GetSelectedMenuItemIndex() == 0) 
+            if (mainMenu.GetSelectedMenuItemIndex() == 0)
                 DrawText(mainMenu.GetMenuItemByIndex(0)->GetText().c_str(), gameSizeX * 0.40, 150, 30, RED);
             else DrawText(mainMenu.GetMenuItemByIndex(0)->GetText().c_str(), gameSizeX * 0.40, 150, 30, WHITE);
 
             if (mainMenu.GetSelectedMenuItemIndex() == 1)
-            DrawText(mainMenu.GetMenuItemByIndex(1)->GetText().c_str(), gameSizeX * 0.40, 200, 30, RED);
+                DrawText(mainMenu.GetMenuItemByIndex(1)->GetText().c_str(), gameSizeX * 0.40, 200, 30, RED);
             else DrawText(mainMenu.GetMenuItemByIndex(1)->GetText().c_str(), gameSizeX * 0.40, 200, 30, WHITE);
 
             if (mainMenu.GetSelectedMenuItemIndex() == 2)
-            DrawText(mainMenu.GetMenuItemByIndex(2)->GetText().c_str(), gameSizeX * 0.40, 250, 30, RED);
+                DrawText(mainMenu.GetMenuItemByIndex(2)->GetText().c_str(), gameSizeX * 0.40, 250, 30, RED);
             else DrawText(mainMenu.GetMenuItemByIndex(2)->GetText().c_str(), gameSizeX * 0.40, 250, 30, WHITE);
 
             EndDrawing();
@@ -104,11 +109,7 @@ int main()
 
         Game game;
         game.Setup();
-
-        bool scoreLoaded = false;
-        int currentHighscore = 0;
-
-        if (!scoreLoaded) { currentHighscore = GetHighscoreFromFile(); scoreLoaded = true; }
+        int currentHighscore = currentHighscore = GetHighscoreFromFile();
 
         //Game loop
         while (!game.IsGameOver() && !game.IsGameWon())
@@ -295,7 +296,6 @@ int main()
             {
                 game.SetGameWon(false);
                 game.SetGameOver(false);
-                scoreLoaded = false;
                 break;
             }
         }
@@ -319,7 +319,6 @@ int main()
                 {
                     game.SetGameWon(false);
                     game.SetGameOver(false);
-                    scoreLoaded = false;
                     break;
                 }
             }
