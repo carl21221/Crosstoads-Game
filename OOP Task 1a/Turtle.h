@@ -4,6 +4,8 @@ class Turtle : public MovableSticky
 {
 public:	
 	Turtle(int newX, int newY, int moveDelay, std::string direction, int sinkDelay);
+	bool IsSubmerged();
+	bool IsInTransition();
 	void Update();
 	void ToggleState();
 

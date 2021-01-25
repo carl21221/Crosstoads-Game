@@ -213,6 +213,16 @@ int main()
                         DrawTexture(texture_lillypad, xPosition, yPosition, WHITE);
                         break;
                     case TURTLE:
+                        if (game.GetTurtleInstance(x + 1, y + 1)->IsInTransition())
+                        {
+                            DrawTexture(texture_turtle_transition, xPosition, yPosition, WHITE); 
+                            break;
+                        }
+                        if (game.GetTurtleInstance(x + 1, y + 1)->IsSubmerged())
+                        {
+                            DrawTexture(texture_turtle_submerged, xPosition, yPosition, WHITE);
+                            break;
+                        }
                         DrawTexture(texture_turtle, xPosition, yPosition, WHITE);
                         break;
                     case 'x': break;

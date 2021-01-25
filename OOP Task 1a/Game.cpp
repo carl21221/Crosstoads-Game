@@ -542,7 +542,6 @@ const void Game::SetupTiles_MoveableStickies()
     lillypads.push_back(Lillypad(1, 5, 20, "left"));
 
     //Add turtles here
-    turtles.push_back(Turtle(10, 5, 20, "left", 320));
     turtles.push_back(Turtle(11, 5, 20, "left", 320));
 
     //loop through both log and lillypad vectors and pass pointers to each object to the movStickies vector
