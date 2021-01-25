@@ -7,14 +7,6 @@
 //Menu Librarys
 #include "Menu.h"
 
-
-// -----------------------------------------------------------
-//
-//          FIX PLAYER RESPONSE TO WIN AND DEATH SCREENS
-//
-// -----------------------------------------------------------
-
-
 //Source Header - Function Declarations
 const Texture2D GetTextureFromImagePath(const char* path, const int& cellSizeX, const int& cellSizeY);
 int GetHighscoreFromFile();
@@ -40,6 +32,7 @@ int main()
         mainMenu.SetActive(true);
 
         //Menu Section
+        const Texture2D menu_background = LoadTextureFromImage(LoadImage("images/frogger_menu_bg.png"));
         int waitTimer = 60;
         while (mainMenu.IsActive())
         {
@@ -50,26 +43,31 @@ int main()
                 if (IsKeyPressed(SPACEBAR))
                 {
                     if (mainMenu.GetSelectedMenuItemIndex() == 0) mainMenu.SetActive(false);
-                    else if (mainMenu.GetSelectedMenuItemIndex() == 2) CloseWindow();
+                    else if (mainMenu.GetSelectedMenuItemIndex() == 2) 
+                    {
+                        CloseWindow(); 
+                        break;
+                    }
                 }
             }
             else waitTimer--;
 
             BeginDrawing();
             ClearBackground(BLACK);
-            DrawText("Crosstoads!", gameSizeX * 0.40, 100, 30, GREEN);
+            DrawTexture(menu_background, 0, 0, WHITE);
+            DrawText("Menu", gameSizeX * 0.45, 250, 30, GREEN);
 
             if (mainMenu.GetSelectedMenuItemIndex() == 0)
-                DrawText(mainMenu.GetMenuItemByIndex(0)->GetText().c_str(), gameSizeX * 0.40, 150, 30, RED);
-            else DrawText(mainMenu.GetMenuItemByIndex(0)->GetText().c_str(), gameSizeX * 0.40, 150, 30, WHITE);
+                DrawText(mainMenu.GetMenuItemByIndex(0)->GetText().c_str(), gameSizeX * 0.35, 300, 30, RED);
+            else DrawText(mainMenu.GetMenuItemByIndex(0)->GetText().c_str(), gameSizeX * 0.35, 300, 30, WHITE);
 
             if (mainMenu.GetSelectedMenuItemIndex() == 1)
-                DrawText(mainMenu.GetMenuItemByIndex(1)->GetText().c_str(), gameSizeX * 0.40, 200, 30, RED);
-            else DrawText(mainMenu.GetMenuItemByIndex(1)->GetText().c_str(), gameSizeX * 0.40, 200, 30, WHITE);
+                DrawText(mainMenu.GetMenuItemByIndex(1)->GetText().c_str(), gameSizeX * 0.35, 350, 30, RED);
+            else DrawText(mainMenu.GetMenuItemByIndex(1)->GetText().c_str(), gameSizeX * 0.35, 350, 30, WHITE);
 
             if (mainMenu.GetSelectedMenuItemIndex() == 2)
-                DrawText(mainMenu.GetMenuItemByIndex(2)->GetText().c_str(), gameSizeX * 0.40, 250, 30, RED);
-            else DrawText(mainMenu.GetMenuItemByIndex(2)->GetText().c_str(), gameSizeX * 0.40, 250, 30, WHITE);
+                DrawText(mainMenu.GetMenuItemByIndex(2)->GetText().c_str(), gameSizeX * 0.35, 400, 30, RED);
+            else DrawText(mainMenu.GetMenuItemByIndex(2)->GetText().c_str(), gameSizeX * 0.35, 400, 30, WHITE);
 
             EndDrawing();
         }
@@ -96,6 +94,7 @@ int main()
         const Texture2D texture_player_down = GetTextureFromImagePath("images/frogger_frog_down.png", cellSize, cellSize);
         const Texture2D texture_player_left = GetTextureFromImagePath("images/frogger_frog_left.png", cellSize, cellSize);
         const Texture2D texture_player_right = GetTextureFromImagePath("images/frogger_frog_right.png", cellSize, cellSize);
+        const Texture2D gameover_background = LoadTextureFromImage(LoadImage("images/frogger_gameover.png"));
         
         //Precache game Sound 
         const Sound sound_splash = LoadSound("sound/frogger_splash.mp3");
@@ -112,7 +111,7 @@ int main()
         int currentHighscore = currentHighscore = GetHighscoreFromFile();
 
         //Game loop
-        while (!game.IsGameOver() && !game.IsGameWon())
+        while (!game.IsGameOver() && !game.IsGameWon() && !WindowShouldClose())
         {
             if (!IsSoundPlaying(sound_bgmusic))
             {
@@ -278,7 +277,7 @@ int main()
             else game.SetGameWon(false);
         }
 
-        while (game.IsGameOver())
+        while (game.IsGameOver() && !WindowShouldClose())
         {
             if (IsSoundPlaying(sound_bgmusic))
             {
@@ -287,8 +286,8 @@ int main()
             // Draw HUD elements
             BeginDrawing();
             ClearBackground(BLANK);
-            DrawText(("GAME OVER"), 180, 280, 40, RED);
-            DrawText(("| Press [SPACE] to return to the main menu |"), 177, 320, 8, WHITE);
+            DrawTexture(gameover_background, 0, 0, WHITE);
+            DrawText(("| Press [SPACE] to return to the main menu |"), 177, 400, 8, WHITE);
             EndDrawing();
 
             //check for key presses
@@ -300,7 +299,7 @@ int main()
             }
         }
 
-        if (game.IsGameWon())
+        if (game.IsGameWon() && !WindowShouldClose())
         {
             StopSound(sound_bgmusic);
             PlaySound(sound_victory);
