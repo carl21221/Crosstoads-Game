@@ -55,7 +55,6 @@ int main()
             BeginDrawing();
             ClearBackground(BLACK);
             DrawTexture(menu_background, 0, 0, WHITE);
-            DrawText("Menu", gameSizeX * 0.45, 250, 30, GREEN);
 
             if (mainMenu.GetSelectedMenuItemIndex() == 0)
                 DrawText(mainMenu.GetMenuItemByIndex(0)->GetText().c_str(), gameSizeX * 0.35, 300, 30, RED);
@@ -94,6 +93,9 @@ int main()
         const Texture2D texture_player_down = GetTextureFromImagePath("images/frogger_frog_down.png", cellSize, cellSize);
         const Texture2D texture_player_left = GetTextureFromImagePath("images/frogger_frog_left.png", cellSize, cellSize);
         const Texture2D texture_player_right = GetTextureFromImagePath("images/frogger_frog_right.png", cellSize, cellSize);
+        const Texture2D texture_turtle = GetTextureFromImagePath("images/frogger_turtle_left.png", cellSize, cellSize);
+        const Texture2D texture_turtle_transition = GetTextureFromImagePath("images/frogger_turtle_left_trans.png", cellSize, cellSize);
+        const Texture2D texture_turtle_submerged = GetTextureFromImagePath("images/frogger_turtle_left_submerged.png", cellSize, cellSize);
         const Texture2D gameover_background = LoadTextureFromImage(LoadImage("images/frogger_gameover.png"));
         
         //Precache game Sound 
@@ -209,7 +211,10 @@ int main()
 
                     case LILLYPAD:
                         DrawTexture(texture_lillypad, xPosition, yPosition, WHITE);
-
+                        break;
+                    case TURTLE:
+                        DrawTexture(texture_turtle, xPosition, yPosition, WHITE);
+                        break;
                     case 'x': break;
                     default:        assert(false);
                     }

@@ -9,6 +9,8 @@ public:
 	void UnlinkPlayer();
 	void CalculateMove(); // Overrides Movable's CalculateMove function, with added functionality
 	                      // specific to the sticky object
+
+	void Update();
 protected:
 	Player* player;
 };

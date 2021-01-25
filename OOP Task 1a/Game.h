@@ -21,6 +21,7 @@
 #include "Truck.h"
 #include "Log.h"
 #include "Lillypad.h"
+#include "Turtle.h"
 
 using namespace std;
 
@@ -40,6 +41,7 @@ public:
     vector<Movable> vehicles;
     vector<Log> logs;
     vector<Lillypad> lillypads;
+    vector<Turtle> turtles;
     vector<MovableSticky*> movStickies;
 
     void SetActive();
@@ -56,6 +58,7 @@ public:
     Player* GetPlayer();
     Log* GetLogInstance(int x, int y);
     Lillypad* GetLillypadInstance(int x, int y);
+    Turtle* GetTurtleInstance(int x, int y);
     Goal* GetGoalInstance(int x, int y);
     Movable* GetMovableInstance(int x, int y);
 
@@ -69,6 +72,7 @@ public:
     const bool IsLogAtPosition(const int& x, const int& y) const;
     const bool IsLillypadAtPosition(const int& x, const int& y) const;
     const bool IsStickyAtPosition(const int& x, const int& y) const;
+    const bool IsTurtleAtPosition(const int& x, const int& y) const;
     const bool IsPlayerAtPosition(const int& x, const int& y) const;
 
     bool CheckForPlayerDeathByVehicle();

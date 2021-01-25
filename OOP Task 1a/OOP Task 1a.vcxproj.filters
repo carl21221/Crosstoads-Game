@@ -20,6 +20,7 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MenuItem.cpp" />
+    <ClCompile Include="Turtle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h" />
@@ -41,5 +42,6 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MenuItem.h" />
+    <ClInclude Include="Turtle.h" />
   </ItemGroup>
 </Project>

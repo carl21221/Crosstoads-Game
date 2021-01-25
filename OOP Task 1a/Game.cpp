@@ -91,7 +91,8 @@ const vector<vector<char>> Game::PrepareMovGrid()
             else if (IsVanAtPosition(col, row))         line.push_back(VAN);
             else if (IsTruckAtPosition(col, row))       line.push_back(TRUCK);
             else if (IsLogAtPosition(col, row))         line.push_back(LOG);
-            else if (IsLillypadAtPosition(col, row)) {  line.push_back(LILLYPAD);}
+            else if (IsLillypadAtPosition(col, row))    line.push_back(LILLYPAD); 
+            else if (IsTurtleAtPosition(col, row))      line.push_back(TURTLE);
             else                                        line.push_back('x');
         }
         movGrid.push_back(line);
@@ -117,6 +118,15 @@ Lillypad* Game::GetLillypadInstance(int x, int y)
     for (Lillypad& lp : lillypads)
     {
         if (lp.GetX() == x && lp.GetY() == y) return &lp;
+    }
+    return nullptr;
+}
+// Gets a specific instance of turtle based on coordinates
+Turtle* Game::GetTurtleInstance(int x, int y)
+{
+    for (Turtle& t : turtles)
+    {
+        if (t.GetX() == x && t.GetY() == y) return &t;
     }
     return nullptr;
 }
@@ -220,6 +230,15 @@ bool Game::CheckForPlayerOnSticky()
         if (thisLillyPad != nullptr)
         {
             thisLillyPad->LinkPlayer(player);         // If there is a lillypad at the player position link the player to it
+            return true;
+        }
+    }
+    else if (IsTurtleAtPosition(playerX, playerY))
+    {
+        Turtle* thisTurtle = GetTurtleInstance(playerX, playerY);             // Get a reference to a particular turtle instance
+        if (thisTurtle != nullptr)
+        {
+            thisTurtle->LinkPlayer(player);         // If there is a turtle at the player position link the player to it
             return true;
         }
     }
@@ -344,10 +363,16 @@ const bool Game::IsStickyAtPosition(const int& x, const int& y) const
     return false;
 }
 
+const bool Game::IsTurtleAtPosition(const int& x, const int& y) const
+{
+    for (size_t i = 0; i < movStickies.size(); ++i)
+    {
+        if (movStickies[i]->IsAtPosition(x, y) && (movStickies[i]->GetSymbol() == LILLYPAD || movStickies[i]->GetSymbol() == TURTLE)) return true;
+    }
+    return false;
+}
 
 // -------------------------------------------------------------------
-
-
 
 //Load Tile functions
 const void Game::SetupEnvironmentTiles()
@@ -504,7 +529,7 @@ const void Game::CreateVan(const int& originX, const int& originY, const int& va
 const void Game::SetupTiles_MoveableStickies()
 {
     //Flush vectors in case game has been restarted
-    logs.clear(); lillypads.clear(); movStickies.clear();
+    logs.clear(); lillypads.clear(); turtles.clear(); movStickies.clear();
 
     //Create logs here using the "CreateLog" function
     CreateLog(11, 3, 3, 50, "left");
@@ -516,24 +541,28 @@ const void Game::SetupTiles_MoveableStickies()
     //Add lillypads here.
     lillypads.push_back(Lillypad(1, 5, 20, "left"));
 
+    //Add turtles here
+    turtles.push_back(Turtle(10, 5, 20, "left", 320));
+    turtles.push_back(Turtle(11, 5, 20, "left", 320));
+
     //loop through both log and lillypad vectors and pass pointers to each object to the movStickies vector
     for (auto& log : logs) { movStickies.push_back(&log); }
     for (auto& lillypad : lillypads) { movStickies.push_back(&lillypad); }
+    for (auto& turtle : turtles) { movStickies.push_back(&turtle); }
 }
 
 // Functions to calculate movements of tiles
 
 const void Game::UpdateTiles_Vehicle()
 {
-    for (auto& v : vehicles) { v.CalculateMove(); }
+     for (auto& v : vehicles) { v.Update(); }
 }
 
 const void Game::UpdateTiles_MovSticky()
 {
     for (MovableSticky* s : movStickies) 
     { 
-        s->CalculateMove();
-        s->UnlinkPlayer();
+        s->Update();
     }
 }
 

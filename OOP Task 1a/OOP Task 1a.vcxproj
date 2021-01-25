@@ -154,6 +154,7 @@
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Truck.cpp" />
+    <ClCompile Include="Turtle.cpp" />
     <ClCompile Include="Van.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +176,7 @@
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Truck.h" />
+    <ClInclude Include="Turtle.h" />
     <ClInclude Include="Van.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

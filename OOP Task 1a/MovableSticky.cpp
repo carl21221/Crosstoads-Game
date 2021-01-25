@@ -1,4 +1,9 @@
 #include "MovableSticky.h"
+void MovableSticky::Update()
+{
+	CalculateMove();
+	UnlinkPlayer();
+}
 
 //Links the player to the log using a pointer to the player
 void MovableSticky::LinkPlayer(Player& p)

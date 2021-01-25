@@ -20,6 +20,7 @@ public:
 	void CalculateMove();
 	void UpdateMoveTimer(int amount);
 	void UpdateX(int value);
+	void Update();
 
 protected:
 	int moveTimerMax = 60;
@@ -29,5 +30,6 @@ protected:
 
 	void ResetMoveTimer();
 	const bool IsDirectionValid(const std::string& direction) const;
+
 };
 

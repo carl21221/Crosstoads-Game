@@ -9,6 +9,8 @@
 #define FLOOR     'F'
 
 #define LOG		  'L'
+#define LILLYPAD  'P'
+#define TURTLE	  'O'
 
 // Death Tiles
 #define AQUA      'A'
@@ -18,7 +20,7 @@
 
 // Other Tiles
 #define GOAL      'G'
-#define LILLYPAD  'P'
+
 
 // The command letters to move the mouse on the maze
 #define KEY_RIGHT 262

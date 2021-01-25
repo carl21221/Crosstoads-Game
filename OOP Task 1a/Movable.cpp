@@ -4,6 +4,12 @@ Movable::Movable()
 {
 }
 
+void Movable::Update()
+{
+	CalculateMove();
+}
+
+
 // Moves if the object is ready to move, otherwise decrement the move timer
 // by 1. Should be called every frame.
 void Movable::CalculateMove()
