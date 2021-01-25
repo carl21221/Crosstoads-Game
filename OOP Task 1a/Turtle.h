@@ -10,9 +10,8 @@ public:
 	void ToggleState();
 
 private:
-	
 	int sinkDelay = 60;
-	int transitionDelay = 360;
+	int transitionDelay = 180;
 	int transitionCounter = 60;
 	bool isUnderwater = false;
 	bool inTransition = false;

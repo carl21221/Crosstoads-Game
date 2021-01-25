@@ -27,7 +27,6 @@ void Turtle::Update()
 
 	if (!inTransition) //if turtle is not in transition,
 	{
-		std::cout << "Turtle was NOT in transition\n";
 		if (transitionDelay <= 0)
 		{
 			this->inTransition = true;
@@ -35,25 +34,21 @@ void Turtle::Update()
 		else
 		{
 			transitionDelay--;
-			std::cout << "Transition Delay = " + to_string(transitionDelay) + ".\n";
 		}
 	}
 	else //otherwise calculate next state
 	{
-		std::cout << "Turtle IS in transition\n";
 		if (transitionCounter <= 0)
 		{
 			ToggleState();
 			this->inTransition = false;
 			transitionCounter = 60;
-			transitionDelay = 360;
+			transitionDelay = 180;
 		}
 		else
 		{
 			transitionCounter--;
-			std::cout << "Transition Counter= " + to_string(transitionCounter) + ".\n";
 		}
-
 	}
 }
 

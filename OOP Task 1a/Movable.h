@@ -20,7 +20,7 @@ public:
 	void CalculateMove();
 	void UpdateMoveTimer(int amount);
 	void UpdateX(int value);
-	void Update();
+	virtual void Update();
 
 protected:
 	int moveTimerMax = 60;
