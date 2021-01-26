@@ -10,18 +10,16 @@ Turtle::Turtle(int newX, int newY, int moveDelay, std::string direction, int sin
 	this->moveTimer = moveTimerMax;
 	this->player = nullptr;
 	this->sinkDelay = sinkDelay;
-
-
 	if (IsDirectionValid(direction)) this->direction = direction;
 	else this->direction = "left";
 }
 
 bool Turtle::IsSubmerged() { return isUnderwater; }
+
 bool Turtle::IsInTransition() { return inTransition; }
 
 void Turtle::Update()
 {
-	std::cout << "Turtle Updated.\n";
 	CalculateMove();
 	UnlinkPlayer();
 

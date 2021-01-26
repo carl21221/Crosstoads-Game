@@ -177,10 +177,15 @@ bool Game::CheckForPlayerDeathByAqua()
     // AQUA TILE CHECK
     if (IsAquaAtPosition(playerX, playerY))
     {
-        if (!IsLogAtPosition(playerX, playerY) && (!IsLillypadAtPosition(playerX, playerY)))
+        if (!IsLogAtPosition(playerX, playerY) && !IsLillypadAtPosition(playerX, playerY) && !IsTurtleAtPosition(playerX, playerY))
         {
             player.Die();
             return true;
+        }
+        if (IsTurtleAtPosition(playerX, playerY))
+        {
+            Turtle* t = GetTurtleInstance(playerX, playerY);
+            if (t->IsSubmerged() && !t->IsInTransition()) player.Die();
         }
     }
     return false;
@@ -534,15 +539,20 @@ const void Game::SetupTiles_MoveableStickies()
     //Create logs here using the "CreateLog" function
     CreateLog(11, 3, 3, 50, "left");
     CreateLog(1, 4, 4, 30, "right");
-    CreateLog(4, 5, 5, 20, "left");
     CreateLog(9, 6, 4, 30, "right");
     CreateLog(3, 7, 4, 10, "left");
 
     //Add lillypads here.
-    lillypads.push_back(Lillypad(1, 5, 20, "left"));
+    //lillypads.push_back(Lillypad(1, 5, 20, "left"));
 
     //Add turtles here
-    turtles.push_back(Turtle(11, 5, 20, "left", 320));
+
+    turtles.push_back(Turtle(2, 5, 30, "left", 320));
+    turtles.push_back(Turtle(3, 5, 30, "left", 320));
+    turtles.push_back(Turtle(4, 5, 30, "left", 320));
+    turtles.push_back(Turtle(11, 5, 30, "left", 320));
+    turtles.push_back(Turtle(12, 5, 30, "left", 320));
+    turtles.push_back(Turtle(13, 5, 30, "left", 320));
 
     //loop through both log and lillypad vectors and pass pointers to each object to the movStickies vector
     for (auto& log : logs) { movStickies.push_back(&log); }
